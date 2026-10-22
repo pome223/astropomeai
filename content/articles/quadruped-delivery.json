@@ -1,0 +1,64 @@
+{
+  "slug": "quadruped-delivery",
+  "title": "From Agent Judgment to Verified Return: A Governed Quadruped Delivery Study",
+  "subtitle": "Two MuJoCo Go2 scenarios distinguish mission-level reasoning from local obstacle response",
+  "domain": "Robotics & AI",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "Two recorded Go2 simulator runs connect approval, navigation, simulated receipt, and return while showing exactly when DeepSeek was—and was not—invoked.",
+  "abstract": "A robot configured for AI supervision need not call a language model for every disturbance. MissionOS tests this distinction through two recorded Unitree Go2 deliveries in MuJoCo. A temporary passage closure elicited two actual DeepSeek judgments: wait, then reroute to the same approved destination. Both passed Rules checks and the second was linked to verified navigation. A separate moving-obstacle run completed through local yielding with zero LLM judgments. Both verified simulated receipt, return, and a five-second terminal hold. The study establishes an integrated simulator workflow and explicit responsibility boundaries; it does not establish physical delivery, perception-based navigation, or superiority over a matched rules comparator.",
+  "keywords": [
+    "Unitree Go2",
+    "Mission supervision",
+    "DeepSeek",
+    "MuJoCo",
+    "Quadruped navigation",
+    "Outcome verification"
+  ],
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "1. Introduction",
+      "html": "<p>Autonomous delivery combines decisions operating at different timescales. Joint control maintains gait, navigation follows a route, local avoidance handles an immediate conflict, and mission supervision decides whether an interruption justifies waiting, replanning, or returning undelivered. Assigning all of these behaviors to “the AI agent” obscures both engineering responsibility and experimental evidence.</p><p>The MissionOS Go2 study makes that separation visible. It reports one saved moving-obstacle run and one saved temporary-closure run, both configured for Agent supervision. Only the closure run invoked the language model. The records connect operator approval to bounded execution and later verification, rather than treating a selected UI setting as evidence of inference. <a class=\"citation\" href=\"#s1\">[1]</a></p>"
+    },
+    {
+      "id": "methods",
+      "title": "2. Methods: Layered Control in a Known Office",
+      "html": "<p>The mission travels from reception to Meeting Room A, records a simulated recipient receipt, returns to reception, and verifies a five-second terminal hold. Approval binds the destination, scenario, input hashes, Agent configuration, and action envelope. The installed CLI workflow checks rejection before approval, then invokes the normal approval and run commands.</p><p>Navigation uses known-map A* on a 0.1 m grid, heading feedback, and simulator pose. An RL-SAR TorchScript walking policy runs on the CPU at 50 Hz, producing targets for twelve joints. A torque-limited PD controller tracks those targets while MuJoCo advances at 200 Hz. Neither ROS 2 Nav2 nor Unitree's Sport API is part of these runs. The model responsible for mission exceptions is deepseek-flash through an ADK/LiteLLM host runner; it does not output joint actions. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>The approved mission envelope allows at most three exception judgments, a cumulative twenty simulated seconds of explicitly requested waiting, bounded replanning to the same destination, undelivered return, or operator attention. Rules validate response structure and bindings, then recheck fresh state, posture, contacts, cancellation, geofence, map revision, and remaining budget. A valid model response may still be refused if circumstances change.</p><p>For the moving-obstacle scenario, local control reads obstacle geometry and estimates velocity from previous observations. It checks projected conflict, requests yielding, verifies an observed stop, and resumes after a clear-path interval. The navigation controller receives no future obstacle trajectory. Nevertheless, simulator-truth geometry is a substantially easier observation problem than real camera or LiDAR perception. <a class=\"citation\" href=\"#s2\">[2]</a></p>"
+    },
+    {
+      "id": "results",
+      "title": "3. Results: Two Scenarios, Different Responsibilities",
+      "html": "<figure><img src=\"/assets/figures/quadruped-delivery-agent-poster.jpg\" alt=\"Recorded MuJoCo Go2 scene during the temporary passage closure, with supervisor-judging status and known office map\" loading=\"lazy\" width=\"1280\" height=\"800\"><figcaption>Figure 1. Recorded MuJoCo state from the temporary-closure run, which used two actual DeepSeek judgments. The map reads simulator pose; receipt is simulated. The linked recording plays at approximately 3× speed and is not physical robot footage. <a href=\"https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent.mp4\">View the source recording</a>. <a class=\"citation\" href=\"#s1\">[1]</a></figcaption></figure><table><thead><tr><th>Metric</th><th>Moving obstacle</th><th>Temporary closure</th></tr></thead><tbody><tr><td>Actual LLM judgments</td><td>0</td><td>2: wait → reroute</td></tr><tr><td>Terminal simulation time</td><td>87.390 s</td><td>95.455 s</td></tr><tr><td>Outbound arrival</td><td>44.760 s</td><td>53.130 s</td></tr><tr><td>Return arrival</td><td>82.365 s</td><td>90.430 s</td></tr><tr><td>Terminal hold</td><td>5.0 s</td><td>5.0 s</td></tr><tr><td>Walking-policy calls</td><td>4,370</td><td>4,773</td></tr><tr><td>Physics steps</td><td>17,478</td><td>19,091</td></tr></tbody></table><p>Both runs recorded simulated receipt, an empty terminal contact list, and no latched safety violation. They are different scenarios, not an Agent-on versus Agent-off comparison. Their times therefore cannot estimate the Agent's benefit or overhead. <a class=\"citation\" href=\"#s1\">[1]</a></p><h3>Moving obstacle: local yielding</h3><p>The local controller issued two yields lasting 0.820 and 8.630 simulated seconds. Measured stopped states followed the requests after 0.470 and 0.460 seconds; the robot traveled 0.016884 and 0.015025 m during those intervals. This was not instantaneous stopping. A brief resumption between the yields should remain visible when assessing the release condition.</p><p>Moving-obstacle contact occurred on zero physics steps. Minimum center separation was 1.236451 m. Subtracting the declared 0.45 m robot radius and 0.24 m obstacle radius gives 0.546451 m of conservative-envelope clearance. That number is not foot-to-obstacle surface distance. The run completed without mission-level escalation or any LLM call.</p><h3>Temporary closure: actual Agent decisions</h3><p>The scenario closed both passages at 9.005 simulated seconds. At 11.005 seconds, the captured state showed no delivery route, an available return route, and a facility notice estimating reopening in about ten seconds. DeepSeek proposed a ten-second wait, admitted at 16.215 seconds. The passages reopened at 21.005 seconds, and a fresh observation after waiting found a delivery route. A second judgment proposed rerouting; Rules admitted it at 27.480 seconds. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>Outbound arrival at 53.130 seconds carried the second decision's identifier, linking judgment to an executed and verified navigation leg. Return and the final hold completed at 95.455 seconds. The failed first outbound attempt remained explicitly unverified rather than being overwritten. Host invocation intervals were 5.259115 and 1.090103 wall-clock seconds; these two observations are not a latency distribution or equivalent to simulator-side holding time.</p>"
+    },
+    {
+      "id": "discussion",
+      "title": "4. Discussion",
+      "html": "<p>The system result is stronger than a transcript showing plausible model advice: the closure record links actual request and response hashes, Rules admission, a decision identifier, subsequent navigation, and terminal verification. At the same time, the zero-call moving-obstacle run demonstrates that local control retained responsibility for a short-horizon maneuver.</p><p>The facility notice makes the closure case interpretable but also constrains the claim. DeepSeek did not infer an unseen future through a world model. A simple rule using the same reopening estimate could choose to wait. Likewise, reroute means recomputing a path to the same approved destination; the action name alone does not prove selection of a long detour.</p>"
+    },
+    {
+      "id": "limitations",
+      "title": "5. Limitations",
+      "html": "<p>One run per scenario establishes neither a general success rate nor a safety guarantee. Ground-truth pose and obstacle observations omit occlusion, detection failures, localization errors, and physical communication delays. Receipt is a logical simulated event; parcel handling, real people, and physical Go2 locomotion were not evaluated. No WAM, VLA, SimDist, or NavThinker benefit was tested.</p><p>The public videos render recorded physics at approximately three times playback speed. Video length, elapsed simulation time, and wall-clock inference intervals are different quantities. The public replay and verification scripts audit published records rather than independently reproducing the original simulator episodes. The source report's 2,715 passing tests, including 76 Go2 tests, supplement the runtime evidence; they are not substitute delivery trials. <a class=\"citation\" href=\"#s1\">[1]</a></p>"
+    },
+    {
+      "id": "conclusion",
+      "title": "6. Conclusion",
+      "html": "<p>The Go2 records demonstrate a governed connection from bounded AI judgment to verified simulator navigation, simulated receipt, and return. They also show successful local yielding without invoking the LLM. A next performance experiment should compare Agent and rules decisions under identical closures, notices, observations, and action bounds, measuring whether meaningful improvement remains possible before expanding inference use.</p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "MissionOS × Go2: From Agent Supervision to Verified Delivery",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/report-en.md",
+      "detail": "Two saved scenarios, exact timing and invocation counts, telemetry metrics, architecture, and publication limits."
+    },
+    {
+      "id": "s2",
+      "title": "Go2 indoor delivery implementation and verification",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/agents/go2-indoor-delivery.md",
+      "detail": "Bounded supervision, local obstacle rules, runtime entrypoints, and distinct historical verification episodes."
+    }
+  ]
+}

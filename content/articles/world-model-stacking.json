@@ -1,0 +1,76 @@
+{
+  "slug": "world-model-stacking",
+  "title": "Predict, Continue, or Bank: World Models for Governed Block Stacking",
+  "subtitle": "Comparative stopping experiments and distinct ExtraTrees and neural ACWM integration records",
+  "domain": "Robotics & AI",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "Predictive stopping improved simulated stacking scores over weak baselines, while strong simple rules and known-case integration runs define the limits of the claim.",
+  "abstract": "Predicting a hazardous placement is useful only if the prediction improves an executed decision under a fair endpoint. MissionOS studies this problem with staged SmolVLA stacking, matched stopping comparisons, and governed execution. In the final forty-game ExtraTrees evaluation, predictive stopping scored 279 points versus 198 for a current-state rule and 30 for unconditional continuation; a validation-selected width rule scored 280. Separate known-case integrations connected actual DeepSeek judgments to bounded authorization, Rules, motor execution, and measured outcomes: ExtraTrees runs banked eight and eight blocks, and neural ACWM runs banked nine and four. These integration results establish an executed chain, not improved general performance or LLM superiority.",
+  "keywords": [
+    "World models",
+    "ExtraTrees",
+    "ACWM",
+    "SmolVLA",
+    "Predictive stopping",
+    "Robotic stacking"
+  ],
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "1. Introduction",
+      "html": "<p>In a stacking game, continuing can add one point or collapse the tower and erase the score. A forecast therefore has an operational test: does using it improve when to stop? MissionOS explored this question through several model families and experimental stages. Model identity matters. The later state-based predictor is a task-specific ExtraTrees classifier and regressor fitted on simulator examples, not a fine-tuned pretrained world model. A later neural ACWM generates future video and forms a separate prediction path. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>The work separates predictive capability from system integration. A comparison of stopping strategies estimates score differences. A governed run tests whether forecasts, actual model judgments, authorization, dispatch, and measurements remain correctly connected. Neither result should stand in for the other.</p>"
+    },
+    {
+      "id": "methods",
+      "title": "2. Methods: Common Actions and Comparable Endpoints",
+      "html": "<p>Each game permits at most ten placements. Retained blocks earn one point each; an operational collapse yields zero. Collapse is latched when a score-bearing block drops more than 30 mm from its accepted reference height. In the final v7 cohort, every termination receives the same 14.2-second hold, including ten completed placements. This endpoint addresses an earlier mismatch in which voluntary banking waited but ten-block completion was scored immediately. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>The simulator stages grasp acquisition. SmolVLA controls parts of lowering and release within a registered procedure, so the experiment does not demonstrate autonomous picking. Within a seed, methods share initial state, physical properties, and the executed VLA prefix until their stopping choices diverge. Saved-state branches provide outcome labels and audits, not future information for the predictor.</p><p>Comparators include unconditional continuation, a current-state rule using tilt and drift, fixed-count policies, and a validation-selected width rule that banks eight blocks in wide games and six in narrow games. ExtraTrees receives exact object states, known physical properties, engineered geometry, robot state, and the registered placement or bank procedure. It does not receive a realized future motor tape. Its risk output is an uncalibrated classifier score, not a measured physical collapse probability.</p><p>The later cohorts each contain forty predeclared games. Paired bootstrap intervals preserve width strata; sign-flip tests and cohort-specific Holm correction address multiple comparisons. Scores are compared within a cohort, because model choices, starts, and endpoints changed across development stages.</p>"
+    },
+    {
+      "id": "results",
+      "title": "3. Results: Stronger Baselines Change the Interpretation",
+      "html": "<p>An early centered experiment produced nine complete comparisons out of ten starts, with totals of 72 for predictive stopping, 35 for a current-state rule, and 10 for unconditional continuation. Every completed predictive game banked eight. Its reached decisions were therefore indistinguishable from fixed-eight stopping, and a post-hoc ninth-placement counterfactual was safe despite a warning. The widely shown animation is a saved-action simulator replay of this earlier work, not footage of later DeepSeek-governed runs. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><thead><tr><th>Final v7 method</th><th>Total points, 40 games</th><th>Mean points</th></tr></thead><tbody><tr><td>Unconditional continuation</td><td>30</td><td>0.750</td></tr><tr><td>Current-state rule</td><td>198</td><td>4.950</td></tr><tr><td>Earlier ExtraTrees predictor</td><td>225</td><td>5.625</td></tr><tr><td>New ExtraTrees predictor</td><td>279</td><td>6.975</td></tr><tr><td>Width rule</td><td>280</td><td>7.000</td></tr></tbody></table><p>Against the width rule, the new predictor's paired mean difference was −0.025 points, with an unadjusted 95% interval of [−0.700, 0.450] and Holm-adjusted p=1.00000. It improved on the current-state rule by 2.025 points per game, with interval [1.025, 3.050] and adjusted p=0.00515. These results support improvement over the measured current-state comparator, while leaving superiority over the strong width rule unestablished. <a class=\"citation\" href=\"#s1\">[1]</a></p><figure><img src=\"/assets/figures/world-model-stacking-03-v7-paired-intervals.png\" alt=\"V7 paired score differences with unadjusted 95 percent bootstrap intervals and Holm-adjusted p-values; new predictor versus width rule is near zero\" loading=\"lazy\" width=\"1782\" height=\"879\"><figcaption>Figure 1. Published v7 comparisons across forty games. Intervals are unadjusted; the seven-comparison Holm p-values determine the reported significance. New and old refer to ExtraTrees predictors. This is the capability cohort, not the later two-case DeepSeek integration. <a class=\"citation\" href=\"#s1\">[1]</a></figcaption></figure><h3>Separate governed integrations</h3><p>The corrected ExtraTrees/DeepSeek integration banked 8+8 blocks on two previously inspected seeds. It recorded 18 actual DeepSeek judgments, 208 SmolVLA inference chunks, and 5,112 motor steps. A prior prompt had stopped one game at five; the correction exposed provisional score arithmetic and changed that known-case decision. The deterministic predictive rule scored 8+9 on those seeds, so the integration did not exceed its comparator. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>The neural ACWM integration banked 9+4 blocks on two different known cases. Fifteen predictions generated 37 future frames each over 14.2 seconds. A frozen readout converted those frames to an uncalibrated score; DeepSeek received the structured forecast evidence, not the frames. The runs recorded 15 actual judgments, 169 SmolVLA chunks, and 4,260 motor steps. All choices matched the retained threshold-policy reference. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "4. Discussion: Prediction and Authority Remain Separate",
+      "html": "<p>In both governed paths, human preauthorization covered named simulator cases and registered operations. Rules rechecked bindings, state freshness, expiry, and budgets before issuing execution tickets. SmolVLA inference and motor execution followed dispatch, and the next decision awaited a measurement receipt. Six invalid dispatch probes in each final integration were rejected before motor calls. Preauthorization was not a fresh human click at every placement.</p><p>The neural forecast covered continuation only. It supplied no bank forecast or prediction of the additional terminal hold. Consequently a stable bank is a measured result, not an ACWM prediction verified over a matched horizon. Both neural runs passed the hold with maximum drops below 30 mm, but their bank forecast-comparison receipts correctly remained incomparable.</p>"
+    },
+    {
+      "id": "limitations",
+      "title": "5. Limitations",
+      "html": "<p>Exact simulator state and known physical properties simplify prediction. Simulation paused for forecast and judgment, so these runs do not establish real-time control performance. Staged grasp acquisition, task-specific procedures, limited physical variation, and finite observation windows constrain transfer to physical robotics.</p><p>The two-case governed runs are inspected integration regressions. The ExtraTrees prompt correction was post-hoc, and neural decisions matched an existing threshold rule. Neither supports generalization or an LLM benefit. The public neural package preserves a historical inconsistent top-level invocation flag; actual API requests, responses, and proposal-level evidence establish the 15 calls. Its verifier audits the published chain rather than independently rerunning model inference and physics. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
+    },
+    {
+      "id": "conclusion",
+      "title": "6. Conclusion",
+      "html": "<p>Predictive stopping can improve this simulated task over unconditional continuation and a measured current-state rule. A strong width rule nevertheless matches its aggregate performance. MissionOS additionally demonstrates how both a tree-based predictor and a neural video model can participate in governed execution. The next capability claim requires new matched cases with meaningful outcome headroom over those strong comparators.</p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Integrating ExtraTrees Outcome Prediction into Governed VLA Execution",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/agents/missionos-wam-system-technical-report-20260919.md",
+      "detail": "Model identity, v5–v7 cohorts, uniform terminal hold, baselines, and paired statistical results."
+    },
+    {
+      "id": "s2",
+      "title": "Block-stacking WAM technical report",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/agents/block-stacking-wam-technical-report-20260918.md",
+      "detail": "Early pilots, nine complete centered comparisons, fixed-eight confound, and replay provenance."
+    },
+    {
+      "id": "s3",
+      "title": "Governed stacking mission demonstration",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/agents/stacking-mission-e2e.md",
+      "detail": "ExtraTrees known-case R4 results, actual DeepSeek and SmolVLA invocation counts, and prompt correction limits."
+    },
+    {
+      "id": "s4",
+      "title": "Online neural ACWM in the MissionOS governed execution loop",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/acwm-governed-stacking-20260921/REPORT.md",
+      "detail": "Two neural known-case runs, causal chain, bank horizon limits, and historical metadata inconsistency."
+    }
+  ]
+}

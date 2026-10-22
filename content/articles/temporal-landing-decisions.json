@@ -1,0 +1,89 @@
+{
+  "slug": "temporal-landing-decisions",
+  "title": "When a Clear Landing Pad May Become Occupied Again",
+  "subtitle": "Temporal prediction, stale authority, and the difference between better images and better decisions",
+  "domain": "Autonomous missions",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "Landing-pad studies separate verified waiting and permission renewal from unqualified native forecasts and modest, correlated replay-only decision changes.",
+  "abstract": "A landing pad is a temporal resource: current clearance does not establish clearance throughout an approach, and a prediction may expire while inference runs. MissionOS experiments examined this problem through a scripted lead aircraft, PX4/Gazebo queue supervision, native ANWM image forecasts, post-training, and CPU state-prediction replays. A fixture-supervised flight completed waiting, delivery, and return; a latency-injected flight renewed permission before approach. Native post-training reduced image-wide error but increased false-clear readings. A separate optional return-risk policy reduced first-entry proposals followed by near-term reoccupation from 4/15 to 2/15 in recorded-image replays. These results support distinct integration and diagnostic claims, with no demonstrated native-model improvement to live delivery outcomes.",
+  "keywords": [
+    "temporal prediction",
+    "landing-pad occupancy",
+    "ANWM",
+    "stale permissions",
+    "uncertainty",
+    "re-entry"
+  ],
+  "sections": [
+    {
+      "id": "problem",
+      "title": "1. Temporal clearance as an operational question",
+      "html": "<p>A departure image may support several futures: a lead aircraft can leave, stall, or return. An endpoint forecast also omits conflicts occurring before that endpoint. The experiment series therefore distinguishes current occupancy, forecasted occupancy, interval conflict, fresh execution permission, and actual delivery. MissionOS may propose waiting or advancing, but an independent Rules check must still admit the action using current evidence. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s2\">[2]</a></p><p>The baseline scene contains a PX4-controlled delivery aircraft and a scripted Gazebo lead entity. Lead motion is not a second autopilot flight, and its unloading is not a validated mechanism. The fixed pad camera is an experimental observation surface; its visibility does not establish what an arriving aircraft can see. These limitations matter when interpreting apparently convincing videos.</p>"
+    },
+    {
+      "id": "integration",
+      "title": "2. Queue supervision and permission freshness",
+      "html": "<p>One zero-wind CPU fixture flight waited for the occupied pad, reobserved clearance, delivered cargo, returned to the ship, landed, and disarmed. Occupancy report to entry permission took 31.500 simulator seconds. Clearance required at least five uninterrupted simulator seconds; minimum sampled aircraft separation was 12.817 m. All thirteen normal thirty-second holds passed. Missing service acknowledgements were retained, while clearance was based on observed poses rather than the existence of a reply. No native VLA/WAM, image perception, or model-added-value comparison occurred in this flight. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>A separate full flight injected model-like waits: approximately 170 s for startup, 10 s for VLA, and 55 s for WAM. The original entry permission was renewed 85.20 wall seconds later, rather than reused beyond its thirty-second validity. Permission age at the D3 dispatch check was 3.45 s; the renewed receipt matched the dispatch identity. Replaying the same observations through the production check rejected the old permission and accepted the fresh one. This establishes freshness enforcement under fixture delay, not native-model timing or decision capability. <a class=\"citation\" href=\"#s3\">[3]</a></p>"
+    },
+    {
+      "id": "native",
+      "title": "3. Native temporal forecasts and post-training",
+      "html": "<p>The initial native diagnostic recorded 888 RGBD frames at 4 Hz and evaluated four fixed conditions: departing, departed, stalled, and returning. Each request received sixteen past RGBD frames and camera poses, with future lead poses and schedules withheld. A frame offset of 64 requested an endpoint sixteen simulator seconds ahead. A frozen scene-specific reader matched only 1/4 endpoints, returned unknown twice, and falsely read the returning-lead case as clear. Current-image persistence matched 2/4. Although a background-consistency check passed all four forecasts, recognizable lead and pad content was not preserved. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>Post-training used forty-five supervised pairs and 2,048 optimization steps after development-only probes triggered a predeclared training branch. It improved background appearance, but did not preserve the small dynamic object. <a class=\"citation\" href=\"#s5\">[5]</a></p><table><caption>Four fresh-timing native forecast cases; repeated appearances limit independence</caption><thead><tr><th scope=\"col\">Metric</th><th scope=\"col\">Before training</th><th scope=\"col\">After training</th></tr></thead><tbody><tr><th scope=\"row\">Endpoint matches</th><td>1/4</td><td>2/4</td></tr><tr><th scope=\"row\">False-clear readings</th><td>1</td><td>2</td></tr><tr><th scope=\"row\">Unknown readings</th><td>2</td><td>0</td></tr><tr><th scope=\"row\">Image-wide RGB error, 0–255</th><td>33.71</td><td>6.32</td></tr></tbody></table><p>Every after-training forecast was read as clear. The approximately 81% reduction in image error therefore accompanied worse false-clear behavior. Two of four evaluation histories and all four future targets had pixel-identical appearances in training. Evaluation records were withheld from the training machine, but that procedural separation does not create unseen-scene generalization. The adapter was retained without registration as a flight provider. <a class=\"citation\" href=\"#s5\">[5]</a></p><figure><img src=\"/assets/figures/temporal-landing-decisions-fresh-comparison.png\" alt=\"Published comparison of observed frames, before-training forecasts, after-training forecasts, and actual future frames\" loading=\"lazy\"><figcaption>Observed images, native predictions before and after training, and actual future images from the public diagnostic. Improved backgrounds did not establish reliable lead-aircraft occupancy. Source: MissionOS; modified Yokohama City / Project PLATEAU scene, <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>. <a class=\"citation\" href=\"#s5\">[5]</a></figcaption></figure>"
+    },
+    {
+      "id": "reentry",
+      "title": "4. State learning and return-risk advice",
+      "html": "<p>A separate CPU state learner used sixteen past RGB frames, camera poses, and timestamps. Gazebo lead poses were available for current Rules and scoring, never as forecast inputs. Adding 240 return-training frames and 248 selection frames improved supported inputs from one to eight of eight relevant decision windows. Yet future occupancy remained unknown, so the production decision fell back to current Rules: first-entry proposals followed by reoccupation stayed at 4/15. This negative result shows that better input support need not change behavior. <a class=\"citation\" href=\"#s6\">[6]</a></p><p>An optional policy then used supported inward image motion and predicted center entry into the six-metre pad radius to propose waiting and reobservation. Frozen before a new timing evaluation, it reduced the reoccupation-associated first entries from 4/15 to 2/15. Two arrival conditions delayed entry proposals by thirty-four simulated seconds each; all fifteen eventually proposed entry. Two near-term reoccupation conditions remained unresolved. These were decision replays, not fifteen flights, prevented collisions, or completed deliveries. <a class=\"citation\" href=\"#s7\">[7]</a></p><p>Independence remains limited: 407/724 evaluation RGB frames and 53/154 evaluated histories were byte-identical to training or development data. Overlapping windows and arrival conditions are correlated. The policy creates no entry authority, and synthetic aircraft-hold, battery, and authority fixtures were never passed to a dispatcher. <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "5. Interpretation and next experimental boundary",
+      "html": "<p>Three findings should remain separate. Queue and latency flights demonstrate an execution interface that waits and renews permission. Native ANWM studies expose a mismatch between image-wide improvement and operationally relevant object preservation. The CPU replay policy changes a small number of first-entry proposals under narrow, overlapping observations. None of these transfers its success criterion to the others.</p><p>The prediction adapter already rejects stale observations, uncalibrated horizons, and forecasts that no longer cover action completion; CPU cases confirm that changing only a forecast can change a proposal. That is connection evidence, not proof that a native model supplies valid forecasts. A meaningful next trial must demonstrate onboard observation, interval occupancy, admitted hold/reobservation, and independently verified delivery and return with a returning actor. Until then, clear-looking generated pixels cannot substitute for fresh operational evidence. <a class=\"citation\" href=\"#s2\">[2]</a></p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Aircraft-requested occupied-pad supervision",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/REPORT.md",
+      "detail": "One completed fixture-supervised flight; scripted lead and current-state pose Rules."
+    },
+    {
+      "id": "s2",
+      "title": "Prediction-to-judgment integration",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-prediction/REPORT-ja.md",
+      "detail": "Eight CPU integration and rejection cases; no native flight benefit."
+    },
+    {
+      "id": "s3",
+      "title": "D3 delay and entry-permission renewal",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-d3-latency/REPORT-ja.md",
+      "detail": "Fixture latency, successful full flight, measured renewal times and stale-permission rejection."
+    },
+    {
+      "id": "s4",
+      "title": "Native temporal WAM diagnostic",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-temporal/REPORT.md",
+      "detail": "Four native endpoint forecasts, qualification failures, frame-offset timing contract."
+    },
+    {
+      "id": "s5",
+      "title": "Native WAM post-training",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-learning/REPORT.md",
+      "detail": "Training design, four-case before/after results, repeated-pixel audit and original comparison figure."
+    },
+    {
+      "id": "s6",
+      "title": "Post-training alone does not anticipate return",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-reentry-learning/REPORT-en.md",
+      "detail": "CPU state-learning negative result: support improves, first-entry outcome remains 4/15."
+    },
+    {
+      "id": "s7",
+      "title": "Optional return-risk advice",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-reentry/REPORT-en.md",
+      "detail": "Replay-only 4/15 to 2/15 change with correlation and RGB-overlap audit."
+    }
+  ]
+}

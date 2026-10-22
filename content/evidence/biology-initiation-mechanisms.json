@@ -1,0 +1,368 @@
+{
+  "schema": "astropome-biology-evidence.v1",
+  "curated_date": "2026-10-22",
+  "study_ids": [
+    "dna-mechanism-validation-20261022",
+    "dna-human-calibration-20261022"
+  ],
+  "provenance": "Newly curated from retained local computational study records; not sourced from a public repository main branch.",
+  "publication_status": "Independent research record; not peer reviewed.",
+  "curation_scope": "Selected aggregate values, declared assumptions, source hashes and saved verification outcomes. No new simulations or biological experiments were performed for this article.",
+  "reproducibility_limit": "This is a portable evidence summary, not a complete reproducibility release. Hashes identify retained source artifacts and do not establish independent timestamps or external replication.",
+  "source_artifacts": [
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation-protocol.json",
+      "sha256": "296b1c03a5ba0d12d42ad09585c6747b28836683f8e227714c316df199ebbf8b",
+      "bytes": 4058,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation/summary.json",
+      "sha256": "08c4790519973f9164434cbf380ea144f14ac5e0182650687955b1f54b7159c8",
+      "bytes": 477193,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation/joint-outcomes.json",
+      "sha256": "8a7dfb21662e5e48c6e12180cdef9cde324ee96d50ce2d7cf5221ddc6bda97bd",
+      "bytes": 13857,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation/main-verification.json",
+      "sha256": "37c74c46e83a0bc01ee4a8bf3ed67f60b990e8ff181de8ee166e1d80c7a2f2dc",
+      "bytes": 2500,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "statistics-verification.json",
+      "sha256": "7c225360658833d6c2fbc92ffeaf573732bcf9bbaa26a12af9aaafbdaa04ca16",
+      "bytes": 8386,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "literature-evidence.json",
+      "sha256": "abafc70edcf263d1006076e70058985334608b75790b5149268df96ab238accf",
+      "bytes": 13260,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-human-calibration-20261022",
+      "artifact": "clock-identifiability/summary.json",
+      "sha256": "57775529484d1e8a585afd554c1965540bd54f02019a735911cc60c6bf9c7c98",
+      "bytes": 11514,
+      "availability": "Retained original study artifact; not included in this public summary."
+    }
+  ],
+  "protocol": {
+    "genome": {
+      "length_bp": 6400000000,
+      "fork_speed_bp_min": 1500,
+      "licensed_origins": 400000,
+      "topology": "one hypothetical circle"
+    },
+    "capacity_fork_units": 24000,
+    "law": "free_fraction: each remaining unreplicated candidate has hazard lambda0 * free / final_capacity. Initiation uses2 units, a collision releases2 after the recycling wait. No remaining-length or deadline feedback.",
+    "factorial": {
+      "lambda0_per_min": [
+        0.001,
+        0.1,
+        1
+      ],
+      "initial_loading_tau_min": [
+        0,
+        30
+      ],
+      "recycle_wait_min": [
+        0,
+        480
+      ]
+    },
+    "interpretation": "0.001 is the old rate;0.1 and1 are faster binding probes, not measured human constants.30min initial exponential supply is a synthetic perturbation, not a fit.480min recycling wait means no recycling before the480min comparison deadline, not permanent disabling of recycling.",
+    "initial_loading": "For tau>0, all final K units begin dormant in12000pairs. Each pair enters the free pool once, at tau times an independent Exp(1) mark. Expected cumulative available units K*(1-exp(-time/tau)). Loading times are exogenous; no origin senses progress. Tau0 makes all K free initially and must reproduce the old engine.",
+    "units": "Fork-supporting capacity; Arbona's factor-per-initiation convention would count half as many factors. Not absolute protein counts.",
+    "joint_outcome_rule": "For each same parameter cell report observed completion fraction>=95% by480min and a descriptive interior-hump flag. On contiguous bins with>=1% exposure andtime<480, compare the maximum pooled3-bin(30min) initiation rate from windows not overlapping the first/last3bins against those first/last3-bin rates. A hump flag requires both peak/early andpeak/late>=1.2. This20% cutoff is an explicit qualitative shape descriptor, not a goodness-of-fit test to empirical data or a biological criterion. Report continuous ratios, support and peak location alongside the flag. No shape criterion may be changed after results.",
+    "support": "Only bins with average remaining-DNA exposure >=1% of initial exposure are plotted as reliable. Raw bins retained. Comparisons with480min wait restricted to t<480, after which returns can occur.",
+    "uncertainty": "2000 paired bootstrap resamples across200layouts, seed2026102277; pointwise intervals; no biological parameter uncertainty.",
+    "empirical_boundary": "Xenopus and yeast numeric curves provide a measured rising-and-falling pattern and mechanism context. Different organisms/time origins and no matched human I(t) time series prevent quantitative validation of human6.4Gb/8h capacity. No time/amplitude fitting or claims of universal mechanism identification."
+  },
+  "design": {
+    "factorial_conditions": 12,
+    "paired_layouts_per_condition": 200,
+    "new_trials_in_saved_study": 2400,
+    "prior_condition_replays_in_saved_study": 2800
+  },
+  "factorial_results": [
+    {
+      "model": "binding_0p001_load_0_wait_0",
+      "lambda0_per_min": 0.001,
+      "tau_min": 0,
+      "wait_min": 0,
+      "success_at480": 0,
+      "completion_median_min": 530.8530424480402,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p001_load_0_wait_480",
+      "lambda0_per_min": 0.001,
+      "tau_min": 0,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 922.6415759334824,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p001_load_30_wait_0",
+      "lambda0_per_min": 0.001,
+      "tau_min": 30,
+      "wait_min": 0,
+      "success_at480": 0,
+      "completion_median_min": 560.8656061537971,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p001_load_30_wait_480",
+      "lambda0_per_min": 0.001,
+      "tau_min": 30,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 944.8197118399507,
+      "descriptive_hump_on_prespecified_support": true,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p1_load_0_wait_0",
+      "lambda0_per_min": 0.1,
+      "tau_min": 0,
+      "wait_min": 0,
+      "success_at480": 200,
+      "completion_median_min": 237.17554872646468,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p1_load_0_wait_480",
+      "lambda0_per_min": 0.1,
+      "tau_min": 0,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 639.823477517172,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p1_load_30_wait_0",
+      "lambda0_per_min": 0.1,
+      "tau_min": 30,
+      "wait_min": 0,
+      "success_at480": 200,
+      "completion_median_min": 267.1771964359565,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_0p1_load_30_wait_480",
+      "lambda0_per_min": 0.1,
+      "tau_min": 30,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 662.292263868801,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_1_load_0_wait_0",
+      "lambda0_per_min": 1,
+      "tau_min": 0,
+      "wait_min": 0,
+      "success_at480": 200,
+      "completion_median_min": 226.28741944235827,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_1_load_0_wait_480",
+      "lambda0_per_min": 1,
+      "tau_min": 0,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 614.6898081373092,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_1_load_30_wait_0",
+      "lambda0_per_min": 1,
+      "tau_min": 30,
+      "wait_min": 0,
+      "success_at480": 200,
+      "completion_median_min": 255.94400819897487,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    },
+    {
+      "model": "binding_1_load_30_wait_480",
+      "lambda0_per_min": 1,
+      "tau_min": 30,
+      "wait_min": 480,
+      "success_at480": 0,
+      "completion_median_min": 637.1191528042696,
+      "descriptive_hump_on_prespecified_support": false,
+      "joint_pass": false
+    }
+  ],
+  "example": {
+    "model": "binding_1_load_30_wait_0",
+    "completion_median_min": 255.94400819897487,
+    "success_at480": 200,
+    "peak_bin_min": [
+      200,
+      210
+    ],
+    "peak_rate_per_Mb_min": 2.9442733509845995,
+    "peak_bootstrap95": [
+      2.9376789378173402,
+      2.950523674062766
+    ],
+    "next_bin_min": [
+      210,
+      220
+    ],
+    "next_rate_per_Mb_min": 0.1764979662543007,
+    "next_bootstrap95": [
+      0.17148427427180324,
+      0.1815267080503817
+    ],
+    "next_total_starts": 10905,
+    "next_mean_remaining_fraction": 0.004826985506294697,
+    "next_support_1percent": false
+  },
+  "joint_descriptor": {
+    "joint_passes": 0,
+    "n_cells": 12,
+    "hump_flags": [
+      "binding_0p001_load_30_wait_480"
+    ],
+    "interpretation": "Zero joint passes is specific to the prespecified support-limited shape descriptor and deadline; it is not evidence that fast-recycling curves lack a raw hump."
+  },
+  "public_experimental_summary_sources": {
+    "xenopus": {
+      "source_file": "elife-35192-fig2-data1-v2.csv",
+      "n_points": 57,
+      "time_min_range": [
+        3.456731666666667,
+        31.471844583333336
+      ],
+      "digitized": false,
+      "transformations": [
+        "Renamed columns.",
+        "Multiplied kb-denominated rate and uncertainty by 1000 for Mb units.",
+        "No smoothing, fitting, time shifting, or amplitude normalization."
+      ],
+      "uncertainty_caution": "CSV column is named Experimental std; Figure 2 caption describes Xenopus bins of four points and SEM. Preserve supplied values without reinterpretation. The files do not provide independent replicate identities, covariance, or raw fibers. Do not treat weighted residuals as a calibrated chi-square test.",
+      "doi": "10.7554/eLife.35192.006",
+      "species": "Xenopus laevis",
+      "conditions": "Sperm nuclei replicated in egg extract; source chain Arbona2018 Figure2a -> Goldar2009 Figure1a -> Goldar2008 Figure7 and Methods.",
+      "measurement": "DNA-combing estimate: count replication eyes 0.5-2.0 kb; divide by 2 min and unreplicated fiber length; map replication fraction f to time using a measured f(t) curve.",
+      "time_caveat": "Time is inferred from fiber replication fraction and approximates each fiber starting time, not exactly synchronized whole-nucleus S-phase time.",
+      "averaging_caveat": "Published binned experimental summary, not raw event/fiber or cell data. Arbona2018 Figure2a bins groups of 4 original points."
+    },
+    "s_cerevisiae": {
+      "source_file": "elife-35192-fig2-data2-v2.csv",
+      "n_points": 24,
+      "time_min_range": [
+        16.217705000000002,
+        59.31639249999999
+      ],
+      "digitized": false,
+      "transformations": [
+        "Renamed columns.",
+        "Multiplied kb-denominated rate and uncertainty by 1000 for Mb units.",
+        "No smoothing, fitting, time shifting, or amplitude normalization."
+      ],
+      "uncertainty_caution": "CSV column is named Experimental std; Figure 2 caption describes Xenopus bins of four points and SEM. Preserve supplied values without reinterpretation. The files do not provide independent replicate identities, covariance, or raw fibers. Do not treat weighted residuals as a calibrated chi-square test.",
+      "doi": "10.7554/eLife.35192.007",
+      "species": "Saccharomyces cerevisiae",
+      "conditions": "Normal-growth S-phase time course, not hydroxyurea. Source chain Arbona2018 Figure2b -> Goldar2009 Figure1b -> Raghuraman2001 replication timing profiles.",
+      "measurement": "Population replication-timing microarrays. Heavy-isotope-grown cells arrested at G1/S, released in light medium; replicated HL and unreplicated HH DNA assayed. Goldar2009 extracts 332 efficient origins, 3-minute origin-time bins, and spline interpolation.",
+      "time_caveat": "Population-average replication timing assigned as origin activation time; not direct counts of single-cell events.",
+      "averaging_caveat": "Temporal correlations from interpolation and inferred origin time are not supplied as a covariance matrix."
+    }
+  },
+  "public_data_downloads": [
+    {
+      "path": "literature/elife-35192-fig2-data1-v2.csv",
+      "url": "https://cdn.elifesciences.org/articles/35192/elife-35192-fig2-data1-v2.csv",
+      "bytes": 3415,
+      "sha256": "2dd22bf60fd152c66763a04a4819fd67c5f2ebda9f25e787063fb70eebcc4de0"
+    },
+    {
+      "path": "literature/elife-35192-fig2-data2-v2.csv",
+      "url": "https://cdn.elifesciences.org/articles/35192/elife-35192-fig2-data2-v2.csv",
+      "bytes": 1291,
+      "sha256": "30e391127ed3adbe294ba6616c4c46534c67f0cc0834a575ee8ebaea31bba79f"
+    },
+    {
+      "path": "literature/elife-35192-fig2-data3-v2.csv",
+      "url": "https://cdn.elifesciences.org/articles/35192/elife-35192-fig2-data3-v2.csv",
+      "bytes": 413,
+      "sha256": "b48e59218e624c797f9e2bfdc8ec4fc88edf4414db8cd5c7ff97ba21dae7ecf7"
+    }
+  ],
+  "empirical_comparison_limit": "Published numerical experimental summary tables were inspected and converted from per-kb to per-Mb units. No new microscope experiment, raw-fiber reanalysis, fitted cross-species comparison, or calibrated human model is claimed.",
+  "clock_control": {
+    "schema": "clock-scale-identifiability-control.v1",
+    "status": "passed",
+    "n_stochastic_layouts": 1,
+    "n_replays": 2,
+    "genome_bp": 6400000000,
+    "origin_marks_unchanged": true,
+    "events_compared": 112973,
+    "max_scaled_event_time_error_min": 0.0,
+    "max_operational_hazard_error": 0.0,
+    "interpretation": "An uncalibrated relative-time/relative-amplitude curve cannot identify physical completion time. A matched absolute clock or speed measurement would break this symmetry. This does not prove nonidentifiability once such measurements are supplied.",
+    "conditions": [
+      {
+        "scale": 1,
+        "v_bp_min": 1500.0,
+        "lambda0_min": 1.0,
+        "loading_tau_min": 30,
+        "completion_min": 263.64013975623465,
+        "completed_by480": true,
+        "actual_fired": 50486
+      },
+      {
+        "scale": 2,
+        "v_bp_min": 750.0,
+        "lambda0_min": 0.5,
+        "loading_tau_min": 60,
+        "completion_min": 527.2802795124693,
+        "completed_by480": false,
+        "actual_fired": 50486
+      }
+    ]
+  },
+  "verification": [
+    {
+      "artifact": "dna-mechanism-validation-20261022/ablation/main-verification.json",
+      "saved_status": "passed",
+      "saved_check_count": 372025,
+      "interpretation": "Numerical/artifact verification, not independent biological experiments. The saved verifier was not rerun for this publication."
+    },
+    {
+      "artifact": "dna-mechanism-validation-20261022/statistics-verification.json",
+      "saved_status": "passed",
+      "saved_check_count": 1545,
+      "interpretation": "Numerical/artifact verification, not independent biological experiments. The saved verifier was not rerun for this publication."
+    }
+  ]
+}

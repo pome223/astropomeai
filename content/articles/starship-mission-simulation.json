@@ -1,0 +1,94 @@
+{
+  "slug": "starship-mission-simulation",
+  "title": "Mission-Level Replanning in a Starship-Inspired Simulator",
+  "subtitle": "Coupled six-degree-of-freedom dynamics, finite return qualification, and observed AI decisions",
+  "domain": "Space systems",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "A development simulator connects approved mission scope to live return replanning while distinguishing record integrity, modeled contact, and real vehicle capability.",
+  "abstract": "A mission controller must respond to changed recovery information while preserving the distinction between deciding, executing, and verifying an outcome. Public MissionOS work studies this problem in a Starship-inspired six-degree-of-freedom simulator with finite actuators and independently propagated payload bodies. A shared return controller passed a finite thirty-nine-case inventory and fuel census. A subsequent three-scenario HTTP experiment preserved the nominal return, executed a live-model-selected later orbital opportunity after an availability update, and exercised a checked outage fallback. These are bounded development-model results. Failed propulsion cases, calibration dependence, numerical sensitivity, and unfinished launch-derived catch remain visible, and no result establishes SpaceX flight fidelity, real landing, recovery, or satellite service.",
+  "keywords": [
+    "mission replanning",
+    "six-degree-of-freedom simulation",
+    "Starship-inspired",
+    "Jev",
+    "return qualification",
+    "verification"
+  ],
+  "sections": [
+    {
+      "id": "model",
+      "title": "1. Model and research boundary",
+      "html": "<p>The simulator couples rigid-body translation and rotation. Engine positions, achieved gimbal angles, finite aerodynamic surfaces, and reaction-control forces determine motion; fuel changes mass, center of mass, and inertia. A commanded attitude is a controller request rather than a direct assignment to the integrated quaternion. Launch, rigid separation, orbital motion, finite payload release, and return are connected, with released bodies propagated separately. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>This is an engineering development model informed by public source inventories, not identified SpaceX software or a validated reconstruction of a particular flight. Plate aerodynamics, generic guidance, and navigation assumptions omit structural flexibility, slosh, thermal-protection dynamics, and general open-system rotational mass-flux effects. Numerical reference comparisons qualify declared subproblems only. Generic payload separation does not model unfolding, communications, orbit raising, or Starlink service. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s2\">[2]</a></p>"
+    },
+    {
+      "id": "authority",
+      "title": "2. Mission authority and verification methods",
+      "html": "<p>MissionOS binds a displayed plan to source and configuration identities. Once-approved scope permits a separate simulator process to execute bounded commands. Rules constrain the available actions; independent checks compare signed receipts, saved outputs, and later observations. A returned verified status can mean record integrity alone. It does not automatically certify successful return, capture, or mission completion. The public short gimbal fixture and historical full-flight records are separate observations. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>Return qualification retains four modeled contact limits: 5 m/s speed, 5° tilt, 0.02 rad/s body rotation, and 28 t fuel reserve. The shared controller prepares entry bank and flap trim from current mass, geometry, and flow. Admission requires consistency with a recorded coast trajectory, including time, position, velocity, attitude, and fuel. A source change requires renewed qualification. Neither an AI decision nor an automatic fallback bypasses these checks. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
+    },
+    {
+      "id": "qualification",
+      "title": "3. Finite qualification and preserved failures",
+      "html": "<p>The reported census passed 39/39 cases: twenty-seven retained-payload inventories, from zero through twenty-six, and twelve selected initial-fuel perturbations. Maximum contact speed was 4.691 m/s, maximum tilt 2.755°, and minimum remaining fuel 45.231 t. These are finite, source-bound cases rather than a broad orbit or disturbance envelope. Matching tolerances accommodate sampled data; they are not evidence of physical robustness. <a class=\"citation\" href=\"#s4\">[4]</a></p><figure><img src=\"/assets/figures/starship-mission-simulation-qualification-census.png\" alt=\"Public qualification census across retained payload inventories and selected fuel perturbations\" loading=\"lazy\"><figcaption>Finite return census from the published MissionOS qualification bundle. Passing modeled contact limits does not establish vehicle survival or recovery. <a class=\"citation\" href=\"#s4\">[4]</a></figcaption></figure><p>Five fixture conditions separately exercised normal operation, a release fault, fuel shortage, tower unavailability, and an operations notice. Record checks passed, but fuel shortage prohibited return and remained unresolved after observation. A late engine-loss probe retained a 22.735 m/s impact. A delayed-response probe held for 25.25 s and shifted remaining release times by 10.75 s while still satisfying its return checks; this does not cover arbitrary waiting histories. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>Earlier live experiments also remain historical. A release-fault comparison changed modeled contact from 238.74 to 3.22 m/s, but the current fixed baseline now uses the improved return tool. That old difference is therefore not a current measure of AI benefit. Another historical live response failed format validation and ended in a 619.78 m/s impact. Preserving these results prevents controller repairs from retroactively becoming successful AI trials. <a class=\"citation\" href=\"#s5\">[5]</a></p>"
+    },
+    {
+      "id": "prediction",
+      "title": "4. Shared prediction and delayed return",
+      "html": "<p>Prediction was connected to the same Ship return controller used for execution. A regression reproduced 97,703 samples from thirty-nine recorded flights, including commands, events, and outcomes. Fixed candidate delays included a later orbital opportunity. In the earlier timing screen, a sixty-second change in return-request timing moved the modeled contact location by about 278 km, despite similar contact speed and tilt. Thus a return planner must evaluate location and availability as well as terminal kinematics. <a class=\"citation\" href=\"#s6\">[6]</a></p><p>These screens used frozen candidates, saved plant state, and no hosted-model calls. Matching predictions from the same model establish numerical reproduction rather than physical accuracy. Roughly forty-eight-second CPU forecasts also raised a live integration question: the mission continues to advance while a prediction is computed. The later M1 workflow adds recovery-area admission, bounded waiting resources, updated observations, and an explicit decision loop. <a class=\"citation\" href=\"#s6\">[6]</a> <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    },
+    {
+      "id": "m1",
+      "title": "5. Live mission replanning results",
+      "html": "<p>Three recorded HTTP runs reached their declared M1 criteria. All released twenty-six generic rigid payloads and used zero human inflight commands. The normal scenario preserved the initial return. In the update scenario, a recovery coordinator withdrew the planned area, Jev selected the next orbital opportunity, and execution followed a revised return. The outage scenario used a fixture decision outage and independently checked fallback. <a class=\"citation\" href=\"#s7\">[7]</a></p><table><caption>Three distinct M1 scenarios; Ship contact is a modeled endpoint</caption><thead><tr><th scope=\"col\">Scenario</th><th scope=\"col\">Return</th><th scope=\"col\">Contact speed / tilt</th><th scope=\"col\">Jev calls</th></tr></thead><tbody><tr><th scope=\"row\">Normal</th><td>Original opportunity</td><td>4.608 m/s / 2.375°</td><td>3 live</td></tr><tr><th scope=\"row\">Recovery update</th><td>Later opportunity</td><td>4.613 m/s / 2.396°</td><td>10 live</td></tr><tr><th scope=\"row\">Persistent decision outage</th><td>Checked later-opportunity fallback</td><td>4.613 m/s / 2.396°</td><td>0; fixture outage</td></tr></tbody></table><p>The changed return occurred approximately 90.85 minutes later and contacted inside the fixed western study area's available interval. Rescoring the original contact against the changed notice put it outside the available area/time; that rescoring was not another baseline flight. DeepSeek was available but not requested. The actual model choice and its subsequent effect establish AI participation; call counts alone do not establish benefit. <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "6. Interpretation and limitations",
+      "html": "<p>The two recovery study areas were calibrated using earlier engineering forecasts. The result consequently shows selection among admitted study opportunities, not guidance to arbitrary real sites. Quantized navigation and waiting power, temperature, and propellant-loss bounds are explicit synthetic assumptions. Three perturbed forecasts and a finer-step forecast had to pass, yet the finer-step check shifted predicted locations by about 77 km. Precise physical recovery guidance is unestablished. <a class=\"citation\" href=\"#s7\">[7]</a></p><p>Low-speed hull contact does not establish structural or thermal survival, actual water entry, recovery, or reuse. Launch-derived tower catch remains unfinished; a separately initialized near-tower arm-support test cannot replace arrival from launch. Public compact evidence enables inspection of decisions and results but is not the complete raw study archive. The next defensible research advance is broader source-bound uncertainty and failure coverage with retained negative outcomes, rather than relabeling these development scenarios as operational spacecraft capability. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s3\">[3]</a> <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Coupled six-degree-of-freedom model",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-sixdof.md",
+      "detail": "Finite actuators, integrated dynamics, and explicit fidelity/catch boundaries."
+    },
+    {
+      "id": "s2",
+      "title": "What the spacecraft research supports",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-research.md",
+      "detail": "Primary-source inventory boundaries and limits on vehicle and mission interpretation."
+    },
+    {
+      "id": "s3",
+      "title": "MissionOS spacecraft simulation showcase",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-mission-showcase.md",
+      "detail": "Public fixture versus historical full-flight evidence; approval, execution, receipt, and claim boundaries."
+    },
+    {
+      "id": "s4",
+      "title": "State-dependent return qualification",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-state-return.md",
+      "detail": "39-case census, current fixture conditions, unresolved fuel shortage, and terminal engine-loss impact."
+    },
+    {
+      "id": "s5",
+      "title": "Historical mission decisions and failures",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-mission-decisions.md",
+      "detail": "Live-model and fixture distinctions; historical comparator changes and preserved failed outcomes."
+    },
+    {
+      "id": "s6",
+      "title": "Return prediction for replanning",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-return-replanning.md",
+      "detail": "39-flight shared-controller regression, fixed timing screens, exact reproduction and CPU-time limits."
+    },
+    {
+      "id": "s7",
+      "title": "M1 live return replanning",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-m1-operations.md",
+      "detail": "Three recorded HTTP scenarios, Jev counts, observed changed return, calibrated areas and numerical sensitivity."
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "slug": "urban-drone-recovery",
+  "title": "From Urban Model Proposals to Verified Drone Delivery",
+  "subtitle": "A Yokohama simulation study of native model integration, bounded recovery, and wind-induced failure",
+  "domain": "Autonomous missions",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "Native VLA and world-model proposals completed a bounded simulated delivery, while separate wind and gust experiments exposed unresolved recovery limits.",
+  "abstract": "An urban autonomy demonstration must establish more than a plausible model output: the proposed action must pass independent constraints, reach the intended state, deliver its payload, and return. This article synthesizes public MissionOS experiments in a Yokohama-derived PX4/Gazebo scene. A native AeroVLA and ANWM integration eventually completed a 3,529.33 m cargo round trip with two model-mediated urban movements and independently verified simulated receipt. Earlier model and integration failures remain separate records. CPU fixture experiments subsequently completed a limited 2 m/s wind condition but failed stronger-wind and city-gust recovery protocols. The resulting evidence supports a bounded simulation integration, with explicit limits on perception, environmental fidelity, recovery, and energy measurement.",
+  "keywords": [
+    "MissionOS",
+    "PX4",
+    "Gazebo",
+    "AeroVLA",
+    "ANWM",
+    "urban delivery",
+    "failure preservation"
+  ],
+  "sections": [
+    {
+      "id": "question",
+      "title": "1. Research question and system boundary",
+      "html": "<p>The central question is whether native visual models can participate in an auditable mission without becoming the authority that approves or certifies their own actions. The experimental system separates model proposals, operator-approved scope, geometric Rules, PX4 execution, and later verification. Most travel follows a predefined autopilot route. Models operate at two short urban decision segments, D1 and D2, where fresh camera observations are acquired during a hold. The city geometry derives from Yokohama City / Project PLATEAU, with modified geometry and conservative collision proxies; the added ship and coast connections are authored simulation settings. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s2\">[2]</a></p><p>The studies are a development sequence with changed implementations and conditions. They are therefore reported individually, rather than treated as repeated draws from a single success-rate experiment. A successful later integration does not erase an earlier rejected model response.</p>"
+    },
+    {
+      "id": "methods",
+      "title": "2. Methods: proposals, constraints, and observed effects",
+      "html": "<p>AeroVLA selects short-segment movement parameters. ANWM predicts images for holding and for the proposed movement. The integration requires agreement with known visible geometry before allowing the candidate through independent building-clearance Rules. The image gate requires at least 60% known pixels, sufficient reference edges, edge correspondence of at least 55%, luminance mean absolute error no greater than 45, and bounded predicted edge density. These checks establish consistency with observed structure; they do not certify unseen space. <a class=\"citation\" href=\"#s2\">[2]</a></p><p>The action space was explicitly narrowed to the intended movement phase after a stop output exposed a mismatch between generation and execution contracts. This is a task-specific interface change, not evidence of improved unrestricted action selection. A further coordinate repair reanchors observations after startup and converts fixed world targets into the current autopilot frame after inference. It uses simulator truth and does not validate a physical heading estimator. <a class=\"citation\" href=\"#s2\">[2]</a></p><p>Cargo verification adds a separate chain. A 50 g dynamic box is attached to the aircraft, released by joint removal during an approved low-altitude hold, and observed for separation, pad contact, and sustained rest. A host-side simulated receiver issues a fresh receipt; only then may the aircraft climb and return. Landing and disarming require their own observations. <a class=\"citation\" href=\"#s1\">[1]</a></p>"
+    },
+    {
+      "id": "results",
+      "title": "3. Native integration results",
+      "html": "<p>The first urban native-model series exposed two distinct boundaries. Two implementations rejected AeroVLA responses because 9,568,256 bytes of CUDA allocation remained after CPU offload; neither ran ANWM on flight observations. After workspace cleanup was repaired, one AeroVLA call and one ANWM request produced two predictions, but both failed image qualification. The hold prediction had luminance error 52.23 and the movement prediction 58.37, above the unchanged limit of 45. No model-directed segment was dispatched. A high edge score alone had concealed a visibly inconsistent scene. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>A later city-only flight integrated two native decisions and completed a 696.51 m round trip in 903.61 simulator seconds. It reached the designated delivery waypoint but did not carry or deliver cargo. The subsequent cargo flight established the longer boundary below. These are different missions. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><caption>One native cargo mission in a static, wind-free scene</caption><thead><tr><th scope=\"col\">Measurement</th><th scope=\"col\">Recorded result</th></tr></thead><tbody><tr><th scope=\"row\">Trajectory / duration</th><td>3,529.33 m / 1,687.43 simulator seconds</td></tr><tr><th scope=\"row\">Position records / normal holds</th><td>7,232 / 13 of 13 passed</td></tr><tr><th scope=\"row\">Native flight-input evidence</th><td>2 VLA calls; 4 WAM prediction images</td></tr><tr><th scope=\"row\">D1 / D2 observed movement</th><td>3.01 m / 2.73 m</td></tr><tr><th scope=\"row\">Cargo endpoint</th><td>0.013 m from pad center; 3.344 s rest</td></tr><tr><th scope=\"row\">Terminal verification</th><td>Simulated receipt, ship return, landing, disarm</td></tr></tbody></table><p>WAM exchanges took 51.73 and 49.05 wall seconds. No model startup, warmup, or inference occurred on the sea segment. After the urban decisions, model resources were stopped while the same local flight continued. The receiver was simulated, not a human accepting a real parcel. <a class=\"citation\" href=\"#s1\">[1]</a></p><figure><img src=\"/assets/figures/urban-drone-recovery-cargo-after-receipt.png\" alt=\"Saved Gazebo camera frame showing the small cargo box resting on the delivery pad\" loading=\"lazy\"><figcaption>A saved simulator camera frame after simulated cargo receipt in the native-model mission. Contact and sustained rest were verified separately from the image. Modified Yokohama City / Project PLATEAU scene, <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>. <a class=\"citation\" href=\"#s1\">[1]</a> <a href=\"https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/cargo-delivery.mp4\">View the source delivery recording</a>.</figcaption></figure>"
+    },
+    {
+      "id": "disturbances",
+      "title": "4. Disturbance and recovery results",
+      "html": "<p>Separate CPU fixture flights examined wind without invoking native VLA/WAM. A 2 m/s setting applied from vehicle creation prevented takeoff. A separately declared condition applied that wind only after takeoff and a stable hold, completing delivery and return with all thirteen holds. A 5 m/s airborne condition timed out before reaching the city. These outcomes do not identify a maximum tolerable real wind speed. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>Replacing fifty unnecessary offshore fly-through waypoints with one endpoint and loiter increased observed ground speed from 0.583 to 2.931 m/s in the common 150–240 s window. The seeded-gust flight nevertheless stopped at the first city decision. Its final gust was approximately 9.153 m/s; speed exceeded the 0.3 m/s decision-hold bound. Only the completed gust prefix had force-verification coverage. <a class=\"citation\" href=\"#s5\">[5]</a></p><p>Three subsequent recovery trials observed no recovered hold, fresh decision, or resumed segment. One exposed a duplicate-clock issue; the original 1 m protocol stopped at 1.0706 m drift; a separately mapped 3 m protocol stopped at 3.0071 m. The latter is a changed protocol, not success under the original limit. Delivery and return remained unverified in all three. <a class=\"citation\" href=\"#s6\">[6]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "5. Interpretation and limitations",
+      "html": "<p>The strongest positive result is a connected, observed simulation mission. The strongest negative result is that successful nominal integration did not transfer to the studied gust-recovery conditions. The model and recovery evidence answer different questions: an image can fail before movement, a movement can succeed without cargo receipt, and a cargo mission can succeed without demonstrating robust recovery.</p><p>Wind forces are synthetic and uncalibrated; building turbulence, moving decks, physical payload handling, and multi-aircraft operation are unverified. Battery telemetry is time-based simulation output, with no measured current, watt-hours, or inference-energy comparison. Public bundles preserve reviewed summaries and hashes, while full raw records and weights remain outside the publication. Hashes alone do not reproduce those records. The appropriate next research boundary is a predeclared disturbance case that demonstrates renewed observation, valid recovery admission, and completed delivery and return without changing its acceptance limits after execution. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s4\">[4]</a> <a class=\"citation\" href=\"#s6\">[6]</a></p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Native cargo delivery and return",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/REPORT-ja.md",
+      "detail": "One native VLA/WAM PX4/Gazebo cargo mission; measured receipt and return, with preserved startup failure."
+    },
+    {
+      "id": "s2",
+      "title": "Integrated urban native-model flight",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-integrated-flight/REPORT-ja.md",
+      "detail": "Two native decisions, action-space and coordinate changes, city-only round-trip limits."
+    },
+    {
+      "id": "s3",
+      "title": "Rejected native urban predictions",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-native-flight/REPORT-ja.md",
+      "detail": "Three distinct native implementations; CUDA and image-gate failures, with zero dispatched model movement in the reported final attempt."
+    },
+    {
+      "id": "s4",
+      "title": "Wind and battery experiments",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-wind-battery/REPORT-ja.md",
+      "detail": "All three wind conditions, uncalibrated force model, time-based battery limits."
+    },
+    {
+      "id": "s5",
+      "title": "Seeded gusts and sea-endpoint repair",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-gust-flight/REPORT.md",
+      "detail": "Bounded route change, improved offshore progress, incomplete delivery and gust evidence."
+    },
+    {
+      "id": "s6",
+      "title": "Interrupted city decisions and bounded recovery",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-recovery-flight/REPORT.md",
+      "detail": "Three failed recovery trials, distinct radius protocols, and preserved verification limits."
+    }
+  ]
+}

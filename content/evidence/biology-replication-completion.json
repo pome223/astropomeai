@@ -1,0 +1,727 @@
+{
+  "schema": "astropome-biology-evidence.v1",
+  "curated_date": "2026-10-22",
+  "study_ids": [
+    "dna-global-completion-20261022",
+    "dna-resource-delay-20261022"
+  ],
+  "provenance": "Newly curated from retained local computational study records; not sourced from a public repository main branch.",
+  "publication_status": "Independent research record; not peer reviewed.",
+  "curation_scope": "Selected aggregate values, declared assumptions, source hashes and saved verification outcomes. No new simulations or biological experiments were performed for this article.",
+  "reproducibility_limit": "This is a portable evidence summary, not a complete reproducibility release. Hashes identify retained source artifacts and do not establish independent timestamps or external replication.",
+  "source_artifacts": [
+    {
+      "study_id": "dna-global-completion-20261022",
+      "artifact": "protocol.json",
+      "sha256": "167f8b6904166f814138293016103944cfcfe7aae150506882f53d866b12dbc7",
+      "bytes": 6769,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-global-completion-20261022",
+      "artifact": "runs/main/summary.json",
+      "sha256": "6e4cd62a524685ec852205ddf9a9a192f5f2d363e33860ac59d800ddfe741e3b",
+      "bytes": 123046,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-global-completion-20261022",
+      "artifact": "verification.json",
+      "sha256": "010730f25f50340662ac536bcf6a07164875e08bf9e82927eca304ead89f7307",
+      "bytes": 3878,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-resource-delay-20261022",
+      "artifact": "protocol.json",
+      "sha256": "3c5283124fe060227dcc40bb9ac684ad3a4e32e6135bfdfbe2eec0cce41c1f45",
+      "bytes": 5539,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-resource-delay-20261022",
+      "artifact": "runs/main/summary.json",
+      "sha256": "03635d55a39dad7c94484641e81bf2d45e8d23b8063aad5dd7fc5bd9c31fbaac",
+      "bytes": 4398689,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-resource-delay-20261022",
+      "artifact": "runs/main/manifest.json",
+      "sha256": "0fd2fdc5669e952c3436534bb3eb246c43e4701c404ad0a5583785d8874cf584",
+      "bytes": 1694,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-resource-delay-20261022",
+      "artifact": "verification.json",
+      "sha256": "80eeec0b46ed55321e2a302a19f3be5ac5bea3733ea8f39068df4cc888b7d270",
+      "bytes": 7208,
+      "availability": "Retained original study artifact; not included in this public summary."
+    }
+  ],
+  "protocol": {
+    "genome": {
+      "length_bp": 6400000000,
+      "topology": "one hypothetical circle",
+      "fork_speed_bp_min": 1500,
+      "licensed_candidates": 400000,
+      "local_base_hazard_per_min": 0.001
+    },
+    "reference_deadline_min": 480,
+    "capacity_units": "One unit is effective reusable-factor capacity supporting one fork, not one protein molecule, a newly licensed MCM, or an intact CMG reused as-is.",
+    "resource_rules": {
+      "initial": "K free units; no active or cooling units. K is even.",
+      "initiation": "An unreplicated licensed candidate consumes 2 free units and starts 2 constant-speed forks.",
+      "termination": "When two forks meet, both active units enter a return delay of delta minutes; 2 units then re-enter the homogeneous free pool.",
+      "license": "Candidate licensing is fixed at S-phase start. Incoming forks passively inactivate unused candidates. No relicensing or re-replication.",
+      "delay": "Fixed effective delay for recovery/reassembly/transport after termination. It is not a measured human delay or checkpoint-warning transmission time.",
+      "allocation": "No origin reads progress, gap size, slack, or priorities. Free-pool availability modifies identical independent local initiation hazards.",
+      "mixing": "After return, capacity is immediately available to any licensed candidate. Spatial targeting and nuclear transport are not explicitly simulated."
+    },
+    "hazard_models": [
+      {
+        "id": "hard_gate",
+        "law": "lambda_eff=lambda0 when free>=2, otherwise zero",
+        "meaning": "Optimistic availability gate: no association-rate slowdown until the free pool is exhausted."
+      },
+      {
+        "id": "free_fraction",
+        "law": "lambda_eff=lambda0*free/K when free>=2, otherwise zero",
+        "meaning": "Phenomenological depletion sensitivity with identical initial initiation rate at every K. This is not a fixed microscopic binding coefficient: lambda0/K changes with K."
+      }
+    ],
+    "capacity_grid": [
+      8000,
+      12000,
+      16000,
+      24000,
+      32000,
+      48000,
+      80000,
+      128000,
+      256000
+    ],
+    "delay_grid_min": [
+      0,
+      1,
+      5,
+      15,
+      30,
+      60,
+      120,
+      240,
+      480
+    ],
+    "n_replicates_per_cell": 200,
+    "boundary_rule": "For each law and tested delay, report the smallest TESTED K with observed completion fraction>=0.95; also report whether Wilson95 lower bound>=0.95. No interpolation, universal guarantee, or assumption of paired pathwise monotonicity. Separately report all grid cells.",
+    "limits": [
+      "No measured absolute human K or delta calibration.",
+      "Single ring omits chromosome ends and replication domains.",
+      "No dNTP budget, fork stalls, heterogeneous speeds, checkpoint dynamics, concentration gradients, or cell-to-cell biological parameter variation.",
+      "Fork speed is held fixed even when pool is depleted; real factor overexpression can alter speed.",
+      "Finite pool is only one reusable capacity class; initiation-only factors may recycle before termination.",
+      "Successful synthetic completion establishes model-conditional feasibility, not cellular capacity or physical communication performance."
+    ]
+  },
+  "design": {
+    "unconstrained_trials": 1400,
+    "resource_trials": 32600,
+    "paired_layouts": 200,
+    "unconstrained_conditions": 7,
+    "resource_conditions_including_control": 163
+  },
+  "unconstrained_results": [
+    {
+      "id": "sync_random40k",
+      "licensed_candidates": 40000,
+      "completion_median_min": 582.5519804329872,
+      "completion_q95_min": 676.7135396228889,
+      "completed_by480": {
+        "count": 2,
+        "n": 200,
+        "estimate": 0.01,
+        "wilson95": [
+          0.0027466581335444384,
+          0.0357217617161768
+        ]
+      },
+      "mean_actual_origins_fired": 40000.0,
+      "mean_peak_forks": 80000.0,
+      "mean_remaining_bp_at480": 721746.5727632564,
+      "mean_largest_gap_bp_at480": 319145.1791761691
+    },
+    {
+      "id": "sync_stratified40k",
+      "licensed_candidates": 40000,
+      "completion_median_min": 106.3426189455986,
+      "completion_q95_min": 106.5819229749759,
+      "completed_by480": {
+        "count": 200,
+        "n": 200,
+        "estimate": 1.0,
+        "wilson95": [
+          0.9811546736227335,
+          1.0
+        ]
+      },
+      "mean_actual_origins_fired": 40000.0,
+      "mean_peak_forks": 80000.0,
+      "mean_remaining_bp_at480": 0.0,
+      "mean_largest_gap_bp_at480": 0.0
+    },
+    {
+      "id": "sparse_constant",
+      "licensed_candidates": 40000,
+      "completion_median_min": 778.3587086215736,
+      "completion_q95_min": 893.6090000150862,
+      "completed_by480": {
+        "count": 0,
+        "n": 200,
+        "estimate": 0.0,
+        "wilson95": [
+          1.734723475976807e-18,
+          0.018845326377266575
+        ]
+      },
+      "mean_actual_origins_fired": 19422.89,
+      "mean_peak_forks": 21163.61,
+      "mean_remaining_bp_at480": 23765005.781535357,
+      "mean_largest_gap_bp_at480": 944194.9852691217
+    },
+    {
+      "id": "dense_constant",
+      "licensed_candidates": 400000,
+      "completion_median_min": 525.2440580748951,
+      "completion_q95_min": 584.1210618463755,
+      "completed_by480": {
+        "count": 6,
+        "n": 200,
+        "estimate": 0.03,
+        "wilson95": [
+          0.013820314340111346,
+          0.06389429245451925
+        ]
+      },
+      "mean_actual_origins_fired": 25176.51,
+      "mean_peak_forks": 24690.31,
+      "mean_remaining_bp_at480": 308140.38914268656,
+      "mean_largest_gap_bp_at480": 154280.27844869555
+    },
+    {
+      "id": "dense_rising_matched",
+      "licensed_candidates": 400000,
+      "completion_median_min": 592.7138758700116,
+      "completion_q95_min": 633.9508424432828,
+      "completed_by480": {
+        "count": 0,
+        "n": 200,
+        "estimate": 0.0,
+        "wilson95": [
+          1.734723475976807e-18,
+          0.018845326377266575
+        ]
+      },
+      "mean_actual_origins_fired": 22659.205,
+      "mean_peak_forks": 19949.35,
+      "mean_remaining_bp_at480": 7936362.300648139,
+      "mean_largest_gap_bp_at480": 404683.4762407905
+    },
+    {
+      "id": "dense_rising_extra",
+      "licensed_candidates": 400000,
+      "completion_median_min": 464.04960831820074,
+      "completion_q95_min": 509.9061789780453,
+      "completed_by480": {
+        "count": 153,
+        "n": 200,
+        "estimate": 0.765,
+        "wilson95": [
+          0.7015863111723746,
+          0.8184256658476741
+        ]
+      },
+      "mean_actual_origins_fired": 27700.345,
+      "mean_peak_forks": 26340.0,
+      "mean_remaining_bp_at480": 16974.02682107934,
+      "mean_largest_gap_bp_at480": 15951.888293398655
+    },
+    {
+      "id": "dense_fast_constant",
+      "licensed_candidates": 400000,
+      "completion_median_min": 381.4066020949762,
+      "completion_q95_min": 423.1097282993055,
+      "completed_by480": {
+        "count": 200,
+        "n": 200,
+        "estimate": 1.0,
+        "wilson95": [
+          0.9811546736227335,
+          1.0
+        ]
+      },
+      "mean_actual_origins_fired": 35203.79,
+      "mean_peak_forks": 34648.45,
+      "mean_remaining_bp_at480": 0.0,
+      "mean_largest_gap_bp_at480": 0.0
+    }
+  ],
+  "resource_boundary": [
+    {
+      "mode": "hard_gate",
+      "delay_min": 0,
+      "smallest_tested_K_observed95": 24000,
+      "smallest_tested_K_wilson_lower95": 24000,
+      "passing_tested_K_observed95": [
+        24000,
+        32000,
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 1,
+      "smallest_tested_K_observed95": 24000,
+      "smallest_tested_K_wilson_lower95": 24000,
+      "passing_tested_K_observed95": [
+        24000,
+        32000,
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 5,
+      "smallest_tested_K_observed95": 24000,
+      "smallest_tested_K_wilson_lower95": 32000,
+      "passing_tested_K_observed95": [
+        24000,
+        32000,
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 15,
+      "smallest_tested_K_observed95": 32000,
+      "smallest_tested_K_wilson_lower95": 32000,
+      "passing_tested_K_observed95": [
+        32000,
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 30,
+      "smallest_tested_K_observed95": 32000,
+      "smallest_tested_K_wilson_lower95": 32000,
+      "passing_tested_K_observed95": [
+        32000,
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 60,
+      "smallest_tested_K_observed95": 48000,
+      "smallest_tested_K_wilson_lower95": 48000,
+      "passing_tested_K_observed95": [
+        48000,
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 120,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 80000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 240,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 80000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "hard_gate",
+      "delay_min": 480,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 80000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 0,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 128000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 1,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 128000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 5,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 128000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 15,
+      "smallest_tested_K_observed95": 80000,
+      "smallest_tested_K_wilson_lower95": 128000,
+      "passing_tested_K_observed95": [
+        80000,
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 30,
+      "smallest_tested_K_observed95": 128000,
+      "smallest_tested_K_wilson_lower95": 128000,
+      "passing_tested_K_observed95": [
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 60,
+      "smallest_tested_K_observed95": 128000,
+      "smallest_tested_K_wilson_lower95": 256000,
+      "passing_tested_K_observed95": [
+        128000,
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 120,
+      "smallest_tested_K_observed95": 256000,
+      "smallest_tested_K_wilson_lower95": 256000,
+      "passing_tested_K_observed95": [
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 240,
+      "smallest_tested_K_observed95": 256000,
+      "smallest_tested_K_wilson_lower95": null,
+      "passing_tested_K_observed95": [
+        256000
+      ]
+    },
+    {
+      "mode": "free_fraction",
+      "delay_min": 480,
+      "smallest_tested_K_observed95": 256000,
+      "smallest_tested_K_wilson_lower95": null,
+      "passing_tested_K_observed95": [
+        256000
+      ]
+    }
+  ],
+  "resource_selected_conditions": [
+    {
+      "scenario": {
+        "id": "hard_gate_k16000_d30",
+        "K": 16000,
+        "delay_min": 30,
+        "mode": "hard_gate"
+      },
+      "completed_by480": {
+        "count": 0,
+        "n": 200,
+        "estimate": 0.0,
+        "wilson95": [
+          1.734723475976807e-18,
+          0.018845326377266575
+        ]
+      },
+      "completion_median_min": 551.0032980818539,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 1312350.6905866144,
+          "median": 1291407.5461881482,
+          "q05": 633598.634538927,
+          "q95": 1983483.1692415013,
+          "min": 445930.55085081,
+          "max": 2417659.369701131,
+          "mc_se_mean": 28305.599544871213
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 228991.86010797418,
+          "median": 221362.69644563872,
+          "q05": 118389.11058789634,
+          "q95": 365262.51603403996,
+          "min": 87735.12504093062,
+          "max": 506967.98364624195,
+          "mc_se_mean": 5582.140537870673
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "hard_gate_k24000_d0",
+        "K": 24000,
+        "delay_min": 0,
+        "mode": "hard_gate"
+      },
+      "completed_by480": {
+        "count": 197,
+        "n": 200,
+        "estimate": 0.985,
+        "wilson95": [
+          0.9568342712073097,
+          0.9948857622067417
+        ]
+      },
+      "completion_median_min": 419.63107868515795,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 593.0304856325777,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 102349.58736243806,
+          "mc_se_mean": 514.7686711517046
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 593.0304856325777,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 102349.58736243806,
+          "mc_se_mean": 514.7686711517046
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "hard_gate_k32000_d30",
+        "K": 32000,
+        "delay_min": 30,
+        "mode": "hard_gate"
+      },
+      "completed_by480": {
+        "count": 197,
+        "n": 200,
+        "estimate": 0.985,
+        "wilson95": [
+          0.9568342712073097,
+          0.9948857622067417
+        ]
+      },
+      "completion_median_min": 415.83121771801376,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 489.94178960183393,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 93495.35751916369,
+          "mc_se_mean": 467.6326147867921
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 489.94178960183393,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 93495.35751916369,
+          "mc_se_mean": 467.6326147867921
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "hard_gate_k80000_d480",
+        "K": 80000,
+        "delay_min": 480,
+        "mode": "hard_gate"
+      },
+      "completed_by480": {
+        "count": 200,
+        "n": 200,
+        "estimate": 1.0,
+        "wilson95": [
+          0.9811546736227335,
+          1.0
+        ]
+      },
+      "completion_median_min": 381.4066020949768,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 0.0,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "mc_se_mean": 0.0
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 0.0,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "mc_se_mean": 0.0
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "free_fraction_k80000_d0",
+        "K": 80000,
+        "delay_min": 0,
+        "mode": "free_fraction"
+      },
+      "completed_by480": {
+        "count": 196,
+        "n": 200,
+        "estimate": 0.98,
+        "wilson95": [
+          0.9497129130941735,
+          0.9921955735836505
+        ]
+      },
+      "completion_median_min": 420.851680576264,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 918.721720053553,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 127864.37763278233,
+          "mc_se_mean": 666.0164333531998
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 918.721720053553,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 127864.37763278233,
+          "mc_se_mean": 666.0164333531998
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "free_fraction_k128000_d30",
+        "K": 128000,
+        "delay_min": 30,
+        "mode": "free_fraction"
+      },
+      "completed_by480": {
+        "count": 198,
+        "n": 200,
+        "estimate": 0.99,
+        "wilson95": [
+          0.9642782382838231,
+          0.9972533418664555
+        ]
+      },
+      "completion_median_min": 414.82986300498305,
+      "metrics": {
+        "unreplicated_bp_at_deadline": {
+          "mean": 646.8668604512089,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 111267.9528658741,
+          "mc_se_mean": 563.20770540512
+        },
+        "max_gap_bp_at_deadline": {
+          "mean": 646.8668604512089,
+          "median": 0.0,
+          "q05": 0.0,
+          "q95": 0.0,
+          "min": 0.0,
+          "max": 111267.9528658741,
+          "mc_se_mean": 563.20770540512
+        }
+      }
+    }
+  ],
+  "work_conservation": {
+    "genome_bp": 6400000000,
+    "fork_speed_bp_min": 1500,
+    "total_fork_minutes": 4266666.666666667,
+    "average_active_forks_required_for480min": 8888.888888888889,
+    "smallest_even_capacity_meeting_work_only_lower_bound": 8890,
+    "limitation": "Necessary only; initiation, reuse delays, and the last unreplicated gaps can require much more capacity."
+  },
+  "verification": [
+    {
+      "artifact": "dna-global-completion-20261022/verification.json",
+      "saved_status": "passed",
+      "saved_check_count": 42644,
+      "interpretation": "Numerical/artifact verification, not independent biological experiments. The saved verifier was not rerun for this publication."
+    },
+    {
+      "artifact": "dna-resource-delay-20261022/verification.json",
+      "saved_status": "passed",
+      "saved_check_count": 2000522,
+      "interpretation": "Numerical/artifact verification, not independent biological experiments. The saved verifier was not rerun for this publication."
+    }
+  ]
+}

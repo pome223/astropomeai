@@ -1,0 +1,37 @@
+{
+  "source_repository": "https://github.com/pome223/missionos",
+  "source_commit": "7f0128491ac1e998c05580b50707ee8cab7543c6",
+  "description": "Unmodified public report figures, retained with source provenance. Article captions distinguish their respective experimental records.",
+  "files": [
+    {
+      "path": "/assets/figures/world-model-stacking-03-v7-paired-intervals.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/03-v7-paired-intervals.png",
+      "sha256": "a3bec05ff4debd7b910cbd5f93a5927415084f71a92b2095737b114d7bc90b52",
+      "bytes": 72018
+    },
+    {
+      "path": "/assets/figures/temporal-landing-decisions-fresh-comparison.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-learning/fresh-comparison.png",
+      "sha256": "8d8bfb3a610742ce8cbeb42bca994338a5f163662216f6779bcf8208a6183480",
+      "bytes": 597763
+    },
+    {
+      "path": "/assets/figures/quadruped-delivery-agent-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+      "bytes": 47421
+    },
+    {
+      "path": "/assets/figures/starship-mission-simulation-qualification-census.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-state-return-qualification/qualification-census.png",
+      "sha256": "64672438930fac6b804b71b8477acb3cbea10076c196a270c77251a27190358c",
+      "bytes": 111223
+    },
+    {
+      "path": "/assets/figures/urban-drone-recovery-cargo-after-receipt.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cargo-after-receipt.png",
+      "sha256": "c3460fe4d010d318b3b9eb7ada5d63a42f6133b5d553b5902e43ab798e907c4b",
+      "bytes": 11653
+    }
+  ]
+}
