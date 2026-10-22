@@ -1,0 +1,62 @@
+.films-section{padding:48px 0 38px;border-bottom:1px solid var(--line)}
+.films-section .section-head h2{font-size:34px}
+.films-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.film-card{display:block;text-decoration:none;min-width:0}
+.film-image{display:block;position:relative;background:var(--dark);overflow:hidden;border-radius:4px;margin-bottom:17px;aspect-ratio:16/10}
+.film-image img{width:100%;height:100%;object-fit:contain;transition:transform .2s}
+.film-card:hover .film-image img{transform:scale(1.03)}
+.play-mark{position:absolute;left:16px;bottom:16px;background:var(--paper);color:var(--ink);width:39px;height:39px;border-radius:50%;display:grid;place-items:center;font-size:13px;padding-left:2px;box-shadow:0 2px 15px #0005}
+.film-card>.eyebrow{display:block;font-size:9px;color:var(--muted)}
+.film-card>strong{display:block;font:400 25px/1.25 var(--serif);margin:6px 0 10px}
+.film-action{font-size:11px;color:var(--accent)}
+.card-cover{position:relative;display:block;margin:-25px -25px 22px;background:var(--dark);border-radius:3px 3px 0 0;overflow:hidden;aspect-ratio:16/9}
+.card-cover img{height:100%;width:100%;object-fit:contain}
+.card-cover span{position:absolute;left:12px;bottom:12px;background:var(--paper);color:var(--ink);font-size:9px;letter-spacing:.04em;padding:5px 9px;border-radius:2px}
+.lead-media{max-width:1040px;margin:0 auto 43px}
+.lead-media .media-gallery{display:block;margin:0}
+.media-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px;margin:32px 0 38px}
+.media-item{min-width:0;margin:0!important}
+.media-item--video{grid-column:1/-1}
+.media-label{font:600 10px/1.6 var(--sans);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:9px}
+.media-item video{display:block;width:100%;height:auto;max-height:650px;background:#0d1e23;border:1px solid var(--line);border-radius:4px}
+.media-item figcaption{font:12px/1.8 var(--sans);color:var(--muted);margin-top:13px}
+.media-item figcaption strong{display:block;font:550 15px/1.5 var(--sans);color:var(--ink);margin-bottom:6px}
+.media-item figcaption p{margin:0 0 8px}
+.media-links{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:10px}
+.media-links a{color:var(--accent)}
+.zoom-link{display:block;position:relative;background:white;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.zoom-link img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:contain;border:none!important;border-radius:0!important}
+.zoom-hint{position:absolute;right:9px;bottom:9px;background:var(--ink);color:white;border-radius:3px;width:27px;height:27px;display:grid;place-items:center;font:16px var(--sans)}
+.image-dialog{border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);padding:20px;max-width:min(1420px,94vw);max-height:94vh;overflow:auto;box-shadow:0 15px 70px #0008}
+.image-dialog::backdrop{background:#0b1c22df}
+.image-dialog img{display:block;max-width:100%;width:auto;max-height:72vh;object-fit:contain;margin:auto}
+.image-dialog p{font:12px/1.7 var(--sans);max-width:1000px;margin:15px auto 0}
+.image-dialog-close{display:block;position:sticky;top:0;margin:0 0 15px auto;background:var(--ink);border:1px solid var(--line);border-radius:3px;color:white;padding:8px 14px;font:12px var(--sans);z-index:2}
+body.image-open{overflow:hidden}
+@media(max-width:700px){
+ .films-section{padding:33px 0}
+ .films-section .section-head h2{font-size:29px}
+ .films-grid{grid-template-columns:1fr;gap:29px}
+ .film-image{aspect-ratio:16/9;margin-bottom:12px}
+ .film-card>strong{font-size:24px}
+ .card-cover{margin:-23px -23px 20px}
+ .lead-media{margin-bottom:29px}
+ .media-gallery{grid-template-columns:1fr;gap:28px;margin:27px 0}
+ .media-item figcaption{font-size:11px}
+ .media-item figcaption strong{font-size:14px}
+ .media-label{font-size:9px}
+ .image-dialog{padding:12px;max-width:97vw}
+ .image-dialog p{font-size:11px}
+ .visual-bottom>span{display:none}
+ .visual-bottom strong{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){.film-card:hover .film-image img{transform:none}}
+@media print{
+ .media-gallery{display:block}
+ .media-item{break-inside:avoid;margin-bottom:24px!important}
+ .media-item video{max-height:300px}
+ .zoom-link img{max-height:300px;aspect-ratio:auto;object-fit:contain}
+ .zoom-hint,.image-dialog,.media-label{display:none}
+ .media-item figcaption{font-size:9pt}
+ .media-links a[href$='.mp4']:after{content:' (' attr(href) ')'}
+}

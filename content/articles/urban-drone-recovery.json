@@ -30,7 +30,7 @@
     {
       "id": "results",
       "title": "3. Native integration results",
-      "html": "<p>The first urban native-model series exposed two distinct boundaries. Two implementations rejected AeroVLA responses because 9,568,256 bytes of CUDA allocation remained after CPU offload; neither ran ANWM on flight observations. After workspace cleanup was repaired, one AeroVLA call and one ANWM request produced two predictions, but both failed image qualification. The hold prediction had luminance error 52.23 and the movement prediction 58.37, above the unchanged limit of 45. No model-directed segment was dispatched. A high edge score alone had concealed a visibly inconsistent scene. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>A later city-only flight integrated two native decisions and completed a 696.51 m round trip in 903.61 simulator seconds. It reached the designated delivery waypoint but did not carry or deliver cargo. The subsequent cargo flight established the longer boundary below. These are different missions. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><caption>One native cargo mission in a static, wind-free scene</caption><thead><tr><th scope=\"col\">Measurement</th><th scope=\"col\">Recorded result</th></tr></thead><tbody><tr><th scope=\"row\">Trajectory / duration</th><td>3,529.33 m / 1,687.43 simulator seconds</td></tr><tr><th scope=\"row\">Position records / normal holds</th><td>7,232 / 13 of 13 passed</td></tr><tr><th scope=\"row\">Native flight-input evidence</th><td>2 VLA calls; 4 WAM prediction images</td></tr><tr><th scope=\"row\">D1 / D2 observed movement</th><td>3.01 m / 2.73 m</td></tr><tr><th scope=\"row\">Cargo endpoint</th><td>0.013 m from pad center; 3.344 s rest</td></tr><tr><th scope=\"row\">Terminal verification</th><td>Simulated receipt, ship return, landing, disarm</td></tr></tbody></table><p>WAM exchanges took 51.73 and 49.05 wall seconds. No model startup, warmup, or inference occurred on the sea segment. After the urban decisions, model resources were stopped while the same local flight continued. The receiver was simulated, not a human accepting a real parcel. <a class=\"citation\" href=\"#s1\">[1]</a></p><figure><img src=\"/assets/figures/urban-drone-recovery-cargo-after-receipt.png\" alt=\"Saved Gazebo camera frame showing the small cargo box resting on the delivery pad\" loading=\"lazy\"><figcaption>A saved simulator camera frame after simulated cargo receipt in the native-model mission. Contact and sustained rest were verified separately from the image. Modified Yokohama City / Project PLATEAU scene, <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>. <a class=\"citation\" href=\"#s1\">[1]</a> <a href=\"https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/cargo-delivery.mp4\">View the source delivery recording</a>.</figcaption></figure>"
+      "html": "<p>The first urban native-model series exposed two distinct boundaries. Two implementations rejected AeroVLA responses because 9,568,256 bytes of CUDA allocation remained after CPU offload; neither ran ANWM on flight observations. After workspace cleanup was repaired, one AeroVLA call and one ANWM request produced two predictions, but both failed image qualification. The hold prediction had luminance error 52.23 and the movement prediction 58.37, above the unchanged limit of 45. No model-directed segment was dispatched. A high edge score alone had concealed a visibly inconsistent scene. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>A later city-only flight integrated two native decisions and completed a 696.51 m round trip in 903.61 simulator seconds. It reached the designated delivery waypoint but did not carry or deliver cargo. The subsequent cargo flight established the longer boundary below. These are different missions. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><caption>One native cargo mission in a static, wind-free scene</caption><thead><tr><th scope=\"col\">Measurement</th><th scope=\"col\">Recorded result</th></tr></thead><tbody><tr><th scope=\"row\">Trajectory / duration</th><td>3,529.33 m / 1,687.43 simulator seconds</td></tr><tr><th scope=\"row\">Position records / normal holds</th><td>7,232 / 13 of 13 passed</td></tr><tr><th scope=\"row\">Native flight-input evidence</th><td>2 VLA calls; 4 WAM prediction images</td></tr><tr><th scope=\"row\">D1 / D2 observed movement</th><td>3.01 m / 2.73 m</td></tr><tr><th scope=\"row\">Cargo endpoint</th><td>0.013 m from pad center; 3.344 s rest</td></tr><tr><th scope=\"row\">Terminal verification</th><td>Simulated receipt, ship return, landing, disarm</td></tr></tbody></table><p>WAM exchanges took 51.73 and 49.05 wall seconds. No model startup, warmup, or inference occurred on the sea segment. After the urban decisions, model resources were stopped while the same local flight continued. The receiver was simulated, not a human accepting a real parcel. <a class=\"citation\" href=\"#s1\">[1]</a></p>"
     },
     {
       "id": "disturbances",
@@ -79,6 +79,144 @@
       "title": "Interrupted city decisions and bounded recovery",
       "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-recovery-flight/REPORT.md",
       "detail": "Three failed recovery trials, distinct radius protocols, and preserved verification limits."
+    }
+  ],
+  "media": [
+    {
+      "id": "yokohama-native-cargo-flight",
+      "type": "video",
+      "title": "Watch the native cargo mission — onboard, 8×",
+      "caption": "Recorded Gazebo onboard imagery from the same native-model cargo mission: ship departure, sea transit, urban decisions, delivery and return. The 798 recorded frames span simulator t=4.352–1689.752 s and play at 8×. These are observed simulator images, not generated WAM frames. One aircraft, a stationary ship and no wind; the two native decisions cover short urban segments. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Recorded onboard simulator view throughout the native cargo delivery and return mission, played at eight times speed",
+      "source_ref": "s1",
+      "after_section": "lead",
+      "src": "/assets/media/urban-drone-recovery-yokohama-native-cargo-flight.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/onboard-timelapse.mp4",
+      "width": 640,
+      "height": 360,
+      "poster": "/assets/media/urban-drone-recovery-yokohama-native-cargo-flight-poster.png",
+      "duration_seconds": 211.166667
+    },
+    {
+      "id": "yokohama-rejected-observation",
+      "type": "image",
+      "title": "Preserved failed trial — camera observation",
+      "caption": "The observed camera input for cycle 1 of the earlier rejected native trial. Compare it only with the adjacent rejected forecast from this same trial, not with the later cargo mission. No model-directed segment was dispatched. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Saved cycle-one camera observation from the earlier native-model trial whose prediction failed qualification",
+      "source_ref": "s3",
+      "after_section": "methods",
+      "src": "/assets/media/urban-drone-recovery-yokohama-rejected-observation.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-native-flight/images/cycle-1-observed.png",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "yokohama-rejected-prediction",
+      "type": "image",
+      "title": "Preserved failed trial — rejected movement forecast",
+      "caption": "Native ANWM prediction for the VLA movement candidate in the same earlier cycle. Its luminance MAE was 58.37 against the independent visible-structure reference, above the unchanged limit of 45. The hold prediction also failed. This is a generated forecast, not a camera image or an executed outcome. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Generated movement-candidate forecast from the same failed cycle, rejected by the visible-structure consistency gate",
+      "source_ref": "s3",
+      "after_section": "methods",
+      "src": "/assets/media/urban-drone-recovery-yokohama-rejected-prediction.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-native-flight/images/cycle-1-vla-prediction.png",
+      "width": 224,
+      "height": 224
+    },
+    {
+      "id": "yokohama-cargo-cycle1-observed",
+      "type": "image",
+      "title": "Cargo mission, D1 — observed input",
+      "caption": "Fresh camera observation for cycle 1 of the successful native cargo mission. The next two images are ANWM forecasts for hold and VLA movement candidates from this same cycle. Their roles remain separate from the later observed arrival. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Camera input for the first urban decision in the successful native cargo mission",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/urban-drone-recovery-yokohama-native-cargo-flight-poster.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-observed.png",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "yokohama-cargo-cycle1-hold-prediction",
+      "type": "image",
+      "title": "Cargo mission, D1 — hold forecast",
+      "caption": "Generated ANWM view for holding position, from cargo-mission cycle 1. It is a candidate forecast, not an observed frame or a separate flight. Passing the image gate established consistency with known visible structure; it did not certify unseen space. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Generated ANWM hold-candidate view for the first cargo-mission urban decision",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-hold-prediction.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-hold-prediction.png",
+      "width": 224,
+      "height": 224
+    },
+    {
+      "id": "yokohama-cargo-cycle1-movement-prediction",
+      "type": "image",
+      "title": "Cargo mission, D1 — movement forecast",
+      "caption": "Generated ANWM view for the VLA-proposed movement in cargo-mission cycle 1. This forecast and the hold forecast passed the unchanged visible-structure checks before independent geometric Rules admitted the movement. The measured displacement was 3.01 m. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Generated ANWM movement-candidate view corresponding to the first cargo-mission decision",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-movement-prediction.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-vla-prediction.png",
+      "width": 224,
+      "height": 224
+    },
+    {
+      "id": "yokohama-cargo-cycle1-arrival",
+      "type": "image",
+      "title": "Cargo mission, D1 — observed near arrival",
+      "caption": "An actual camera frame from the same cycle, captured at simulator t=698.500 s, 0.828 s before settled arrival was recorded. It illustrates the executed result but is not an exactly synchronized future-image target: the source explicitly leaves exact prediction-time alignment unverified. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Recorded camera frame shortly before verified arrival after the first native-model movement in the cargo mission",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-arrival.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-arrival-observed.png",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "yokohama-cargo-release-closeup",
+      "type": "video",
+      "title": "Watch the cargo release — delivery camera, 1×",
+      "caption": "Recorded delivery-camera frames from the same native cargo mission, played at 1×. The 50 g box is released by joint removal and observed on the pad. The release request, observed detachment and simulated receipt have separate timestamps; contact and rest were checked independently of this video. This is simulator payload handling and a simulated receiver, not physical delivery to a person. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Real-time simulator delivery-camera recording of the cargo box being released and reaching the pad",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/urban-drone-recovery-yokohama-cargo-release-closeup.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/cargo-delivery.mp4",
+      "width": 640,
+      "height": 360,
+      "poster": "/assets/media/urban-drone-recovery-yokohama-cargo-release-closeup-poster.png",
+      "duration_seconds": 25.0
+    },
+    {
+      "id": "yokohama-cargo-receipt",
+      "type": "image",
+      "title": "Cargo mission — after simulated receipt",
+      "caption": "Saved delivery-camera frame after the same mission's simulated receipt. Separate measurements placed the box 0.013 m from pad center and observed 3.344 s of rest before return was permitted. The still alone does not establish rest duration or receipt validity. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Saved simulator camera frame of the delivered cargo after the independently verified simulated receipt",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/figures/urban-drone-recovery-cargo-after-receipt.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cargo-after-receipt.png",
+      "width": 640,
+      "height": 360
+    },
+    {
+      "id": "yokohama-preserved-wind-failure",
+      "type": "video",
+      "title": "Wind-limited sea transit — preserved failure, 8×",
+      "caption": "Recorded onboard imagery from the separate 5 m/s constant-wind trial, played at 8×. Wind began after takeoff and a stable hold. The sea-transit phase timed out about 122.9 m short of its coastal target; urban decisions and cargo release never began. The 242 camera frames cover simulator t=4.620–510.500 s. This CPU-fixture configuration invoked no native VLA/WAM or GPU. Battery overlays are time-based simulator values, not measured wind or inference energy. One synthetic wind condition does not establish a real aircraft wind limit. Modified Yokohama City / Project PLATEAU scene (CC BY 4.0).",
+      "alt": "Recorded onboard simulator sea transit in the five-metres-per-second wind trial that failed to reach its coastal target, with synthetic battery overlays",
+      "source_ref": "s4",
+      "after_section": "disturbances",
+      "src": "/assets/media/urban-drone-recovery-yokohama-preserved-wind-failure.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-wind-battery/wind-5-airborne/video/battery-flight.mp4",
+      "width": 640,
+      "height": 448,
+      "poster": "/assets/media/urban-drone-recovery-yokohama-preserved-wind-failure-poster.png",
+      "duration_seconds": 63.708333
     }
   ]
 }

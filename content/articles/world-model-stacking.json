@@ -29,7 +29,7 @@
     {
       "id": "results",
       "title": "3. Results: Stronger Baselines Change the Interpretation",
-      "html": "<p>An early centered experiment produced nine complete comparisons out of ten starts, with totals of 72 for predictive stopping, 35 for a current-state rule, and 10 for unconditional continuation. Every completed predictive game banked eight. Its reached decisions were therefore indistinguishable from fixed-eight stopping, and a post-hoc ninth-placement counterfactual was safe despite a warning. The widely shown animation is a saved-action simulator replay of this earlier work, not footage of later DeepSeek-governed runs. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><thead><tr><th>Final v7 method</th><th>Total points, 40 games</th><th>Mean points</th></tr></thead><tbody><tr><td>Unconditional continuation</td><td>30</td><td>0.750</td></tr><tr><td>Current-state rule</td><td>198</td><td>4.950</td></tr><tr><td>Earlier ExtraTrees predictor</td><td>225</td><td>5.625</td></tr><tr><td>New ExtraTrees predictor</td><td>279</td><td>6.975</td></tr><tr><td>Width rule</td><td>280</td><td>7.000</td></tr></tbody></table><p>Against the width rule, the new predictor's paired mean difference was −0.025 points, with an unadjusted 95% interval of [−0.700, 0.450] and Holm-adjusted p=1.00000. It improved on the current-state rule by 2.025 points per game, with interval [1.025, 3.050] and adjusted p=0.00515. These results support improvement over the measured current-state comparator, while leaving superiority over the strong width rule unestablished. <a class=\"citation\" href=\"#s1\">[1]</a></p><figure><img src=\"/assets/figures/world-model-stacking-03-v7-paired-intervals.png\" alt=\"V7 paired score differences with unadjusted 95 percent bootstrap intervals and Holm-adjusted p-values; new predictor versus width rule is near zero\" loading=\"lazy\" width=\"1782\" height=\"879\"><figcaption>Figure 1. Published v7 comparisons across forty games. Intervals are unadjusted; the seven-comparison Holm p-values determine the reported significance. New and old refer to ExtraTrees predictors. This is the capability cohort, not the later two-case DeepSeek integration. <a class=\"citation\" href=\"#s1\">[1]</a></figcaption></figure><h3>Separate governed integrations</h3><p>The corrected ExtraTrees/DeepSeek integration banked 8+8 blocks on two previously inspected seeds. It recorded 18 actual DeepSeek judgments, 208 SmolVLA inference chunks, and 5,112 motor steps. A prior prompt had stopped one game at five; the correction exposed provisional score arithmetic and changed that known-case decision. The deterministic predictive rule scored 8+9 on those seeds, so the integration did not exceed its comparator. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>The neural ACWM integration banked 9+4 blocks on two different known cases. Fifteen predictions generated 37 future frames each over 14.2 seconds. A frozen readout converted those frames to an uncalibrated score; DeepSeek received the structured forecast evidence, not the frames. The runs recorded 15 actual judgments, 169 SmolVLA chunks, and 4,260 motor steps. All choices matched the retained threshold-policy reference. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
+      "html": "<p>An early centered experiment produced nine complete comparisons out of ten starts, with totals of 72 for predictive stopping, 35 for a current-state rule, and 10 for unconditional continuation. Every completed predictive game banked eight. Its reached decisions were therefore indistinguishable from fixed-eight stopping, and a post-hoc ninth-placement counterfactual was safe despite a warning. The widely shown animation is a saved-action simulator replay of this earlier work, not footage of later DeepSeek-governed runs. <a class=\"citation\" href=\"#s2\">[2]</a></p><table><thead><tr><th>Final v7 method</th><th>Total points, 40 games</th><th>Mean points</th></tr></thead><tbody><tr><td>Unconditional continuation</td><td>30</td><td>0.750</td></tr><tr><td>Current-state rule</td><td>198</td><td>4.950</td></tr><tr><td>Earlier ExtraTrees predictor</td><td>225</td><td>5.625</td></tr><tr><td>New ExtraTrees predictor</td><td>279</td><td>6.975</td></tr><tr><td>Width rule</td><td>280</td><td>7.000</td></tr></tbody></table><p>Against the width rule, the new predictor's paired mean difference was −0.025 points, with an unadjusted 95% interval of [−0.700, 0.450] and Holm-adjusted p=1.00000. It improved on the current-state rule by 2.025 points per game, with interval [1.025, 3.050] and adjusted p=0.00515. These results support improvement over the measured current-state comparator, while leaving superiority over the strong width rule unestablished. <a class=\"citation\" href=\"#s1\">[1]</a></p><h3>Separate governed integrations</h3><p>The corrected ExtraTrees/DeepSeek integration banked 8+8 blocks on two previously inspected seeds. It recorded 18 actual DeepSeek judgments, 208 SmolVLA inference chunks, and 5,112 motor steps. A prior prompt had stopped one game at five; the correction exposed provisional score arithmetic and changed that known-case decision. The deterministic predictive rule scored 8+9 on those seeds, so the integration did not exceed its comparator. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>The neural ACWM integration banked 9+4 blocks on two different known cases. Fifteen predictions generated 37 future frames each over 14.2 seconds. A frozen readout converted those frames to an uncalibrated score; DeepSeek received the structured forecast evidence, not the frames. The runs recorded 15 actual judgments, 169 SmolVLA chunks, and 4,260 motor steps. All choices matched the retained threshold-policy reference. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
     },
     {
       "id": "discussion",
@@ -71,6 +71,103 @@
       "title": "Online neural ACWM in the MissionOS governed execution loop",
       "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/acwm-governed-stacking-20260921/REPORT.md",
       "detail": "Two neural known-case runs, causal chain, bank horizon limits, and historical metadata inconsistency."
+    }
+  ],
+  "media": [
+    {
+      "id": "centered-stacking-replay",
+      "type": "video",
+      "title": "The same start, three stopping choices",
+      "caption": "Saved-action simulator replay of the earlier centered experiment, seed 47000: unconditional continuation scores 0, predictive banking scores 8, and a post-hoc ninth-placement-then-bank counterfactual scores 9. The ninth placement was safe; its forecast was a false alarm. Playback is 4×, and finished panels freeze. Replaying recorded controls added no model inference or benchmark trials. This is separate from the later DeepSeek-governed runs; grasp acquisition is staged, and no physical robot appears.",
+      "alt": "Three-panel simulated block-stacking replay comparing collapse after unconditional continuation, banking eight, and a safe nine-block counterfactual.",
+      "source_ref": "s2",
+      "after_section": "lead",
+      "src": "/assets/media/world-model-stacking-centered-stacking-replay.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-20260918/centered-game-replay.mp4",
+      "width": 768,
+      "height": 348,
+      "poster": "/assets/media/world-model-stacking-centered-stacking-replay-poster.png",
+      "duration_seconds": 24.5
+    },
+    {
+      "id": "offset-pilot-replay",
+      "type": "video",
+      "title": "One useful intervention in the offset pilot",
+      "caption": "The fifth pilot game, seed 45104, uses an 18 mm offset per level. The current-state rule permits a release and scores 0; predictive banking preserves 1; the same-state release counterfactual also scores 0. Predicted downward motion was 42.223 mm and measured motion 42.607 mm. The two release panels reproduce the same outcome, not two independent successes. This saved-action replay runs at normal simulation speed, adds no new inference, and retains scripted grasp acquisition.",
+      "alt": "Three-panel offset-stacking simulation: a second release collapses, withholding release preserves one block, and the release counterfactual confirms collapse.",
+      "source_ref": "s2",
+      "after_section": "introduction",
+      "src": "/assets/media/world-model-stacking-offset-pilot-replay.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-pilot-20260918/offset-pilot-replay.mp4",
+      "width": 768,
+      "height": 348,
+      "poster": "/assets/media/world-model-stacking-offset-pilot-replay-poster.png",
+      "duration_seconds": 24.6
+    },
+    {
+      "id": "governed-stacking-responsibilities",
+      "type": "image",
+      "title": "What predicts, what decides, and what authorizes",
+      "caption": "Responsibility sequence for the governed ExtraTrees stacking integration: prediction evidence enters Assurance; an actual LLM proposes; an approved bounded policy and Rules constrain dispatch; the executor acts and the verifier measures. Human authorization is preapproval of a defined simulator envelope, not a fresh click after every judgment. This is an architecture diagram, not execution footage or an independent result.",
+      "alt": "MissionOS architecture diagram separating prediction, LLM judgment, human bounded preapproval, Rules, execution, and verification.",
+      "source_ref": "s1",
+      "after_section": "methods",
+      "src": "/assets/media/world-model-stacking-governed-stacking-responsibilities.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/06-governed-architecture.png",
+      "width": 2141,
+      "height": 1241
+    },
+    {
+      "id": "v7-every-game",
+      "type": "image",
+      "title": "Every game, including zero-point failures",
+      "caption": "All forty v7 games, grouped by wide and narrow blocks with seed order shown. Every method uses the same 0–10 score scale and the common 14.2-second terminal hold. Zero remains zero whether collapse occurs during placement or banking. Historical old/new WAM labels here name the ExtraTrees predictors. These paired capability results are separate from the two-seed governed DeepSeek demonstration.",
+      "alt": "Heatmap with numeric terminal scores for all forty v7 stacking games across learned predictors and deterministic stopping baselines.",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/world-model-stacking-v7-every-game.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/02-v7-game-scores.png",
+      "width": 2260,
+      "height": 718
+    },
+    {
+      "id": "v7-paired-comparisons",
+      "type": "image",
+      "title": "A strong simple rule remains competitive",
+      "caption": "Paired mean score differences over the forty-game v7 cohort. Intervals are unadjusted 95% bootstrap intervals; the displayed p-values apply Holm correction across seven comparisons. The new ExtraTrees predictor outperforms the measured current-state rule, but neither its comparison with width stopping nor with the old predictor establishes significance under this family. These are previously reported statistics, not new calculations or later DeepSeek-run scores.",
+      "alt": "V7 paired score differences with bootstrap intervals and Holm-adjusted p-values; the new predictor versus width-rule difference is near zero.",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/figures/world-model-stacking-03-v7-paired-intervals.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/03-v7-paired-intervals.png",
+      "width": 1782,
+      "height": 879
+    },
+    {
+      "id": "v7-gains-and-losses",
+      "type": "image",
+      "title": "Fifteen small gains, two large losses",
+      "caption": "Against width stopping, the new ExtraTrees predictor gains one point in fifteen games, loses eight points in two, and ties in twenty-three: a net difference of −1 point. The adjacent distribution shows attempted banking counts, including two nine-block attempts that collapse and score zero. The figure explains the aggregate result while preserving the difference between attempted stack height and verified retained score.",
+      "alt": "Gain-loss decomposition relative to the width rule and attempted banking-count distributions, including two collapsed nine-block bank attempts.",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/world-model-stacking-v7-gains-and-losses.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/04-v7-tradeoff.png",
+      "width": 1961,
+      "height": 788
+    },
+    {
+      "id": "deepseek-known-case-correction",
+      "type": "image",
+      "title": "A corrected judgment on two inspected cases",
+      "caption": "Left: measured scores for DeepSeek R3, corrected R4, and the deterministic predictor-based stop rule on the same two known seeds. R4 increases the total from 13 to 16; the deterministic reference totals 17. Right: provisional one-placement utility arithmetic at the earlier stopping states. Those proxies substitute uncalibrated risk scores for probabilities; they are neither calibrated expected returns nor measured outcomes. The post-hoc correction does not establish generalization or LLM superiority.",
+      "alt": "Two-panel DeepSeek comparison showing measured R3 and R4 scores beside a deterministic reference, plus illustrative uncalibrated utility proxies.",
+      "source_ref": "s1",
+      "after_section": "discussion",
+      "src": "/assets/media/world-model-stacking-deepseek-known-case-correction.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/05-deepseek-correction.png",
+      "width": 1960,
+      "height": 842
     }
   ]
 }

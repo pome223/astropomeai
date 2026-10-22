@@ -29,7 +29,7 @@
     {
       "id": "results",
       "title": "3. Results: Two Scenarios, Different Responsibilities",
-      "html": "<figure><img src=\"/assets/figures/quadruped-delivery-agent-poster.jpg\" alt=\"Recorded MuJoCo Go2 scene during the temporary passage closure, with supervisor-judging status and known office map\" loading=\"lazy\" width=\"1280\" height=\"800\"><figcaption>Figure 1. Recorded MuJoCo state from the temporary-closure run, which used two actual DeepSeek judgments. The map reads simulator pose; receipt is simulated. The linked recording plays at approximately 3× speed and is not physical robot footage. <a href=\"https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent.mp4\">View the source recording</a>. <a class=\"citation\" href=\"#s1\">[1]</a></figcaption></figure><table><thead><tr><th>Metric</th><th>Moving obstacle</th><th>Temporary closure</th></tr></thead><tbody><tr><td>Actual LLM judgments</td><td>0</td><td>2: wait → reroute</td></tr><tr><td>Terminal simulation time</td><td>87.390 s</td><td>95.455 s</td></tr><tr><td>Outbound arrival</td><td>44.760 s</td><td>53.130 s</td></tr><tr><td>Return arrival</td><td>82.365 s</td><td>90.430 s</td></tr><tr><td>Terminal hold</td><td>5.0 s</td><td>5.0 s</td></tr><tr><td>Walking-policy calls</td><td>4,370</td><td>4,773</td></tr><tr><td>Physics steps</td><td>17,478</td><td>19,091</td></tr></tbody></table><p>Both runs recorded simulated receipt, an empty terminal contact list, and no latched safety violation. They are different scenarios, not an Agent-on versus Agent-off comparison. Their times therefore cannot estimate the Agent's benefit or overhead. <a class=\"citation\" href=\"#s1\">[1]</a></p><h3>Moving obstacle: local yielding</h3><p>The local controller issued two yields lasting 0.820 and 8.630 simulated seconds. Measured stopped states followed the requests after 0.470 and 0.460 seconds; the robot traveled 0.016884 and 0.015025 m during those intervals. This was not instantaneous stopping. A brief resumption between the yields should remain visible when assessing the release condition.</p><p>Moving-obstacle contact occurred on zero physics steps. Minimum center separation was 1.236451 m. Subtracting the declared 0.45 m robot radius and 0.24 m obstacle radius gives 0.546451 m of conservative-envelope clearance. That number is not foot-to-obstacle surface distance. The run completed without mission-level escalation or any LLM call.</p><h3>Temporary closure: actual Agent decisions</h3><p>The scenario closed both passages at 9.005 simulated seconds. At 11.005 seconds, the captured state showed no delivery route, an available return route, and a facility notice estimating reopening in about ten seconds. DeepSeek proposed a ten-second wait, admitted at 16.215 seconds. The passages reopened at 21.005 seconds, and a fresh observation after waiting found a delivery route. A second judgment proposed rerouting; Rules admitted it at 27.480 seconds. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>Outbound arrival at 53.130 seconds carried the second decision's identifier, linking judgment to an executed and verified navigation leg. Return and the final hold completed at 95.455 seconds. The failed first outbound attempt remained explicitly unverified rather than being overwritten. Host invocation intervals were 5.259115 and 1.090103 wall-clock seconds; these two observations are not a latency distribution or equivalent to simulator-side holding time.</p>"
+      "html": "<table><thead><tr><th>Metric</th><th>Moving obstacle</th><th>Temporary closure</th></tr></thead><tbody><tr><td>Actual LLM judgments</td><td>0</td><td>2: wait → reroute</td></tr><tr><td>Terminal simulation time</td><td>87.390 s</td><td>95.455 s</td></tr><tr><td>Outbound arrival</td><td>44.760 s</td><td>53.130 s</td></tr><tr><td>Return arrival</td><td>82.365 s</td><td>90.430 s</td></tr><tr><td>Terminal hold</td><td>5.0 s</td><td>5.0 s</td></tr><tr><td>Walking-policy calls</td><td>4,370</td><td>4,773</td></tr><tr><td>Physics steps</td><td>17,478</td><td>19,091</td></tr></tbody></table><p>Both runs recorded simulated receipt, an empty terminal contact list, and no latched safety violation. They are different scenarios, not an Agent-on versus Agent-off comparison. Their times therefore cannot estimate the Agent's benefit or overhead. <a class=\"citation\" href=\"#s1\">[1]</a></p><h3>Moving obstacle: local yielding</h3><p>The local controller issued two yields lasting 0.820 and 8.630 simulated seconds. Measured stopped states followed the requests after 0.470 and 0.460 seconds; the robot traveled 0.016884 and 0.015025 m during those intervals. This was not instantaneous stopping. A brief resumption between the yields should remain visible when assessing the release condition.</p><p>Moving-obstacle contact occurred on zero physics steps. Minimum center separation was 1.236451 m. Subtracting the declared 0.45 m robot radius and 0.24 m obstacle radius gives 0.546451 m of conservative-envelope clearance. That number is not foot-to-obstacle surface distance. The run completed without mission-level escalation or any LLM call.</p><h3>Temporary closure: actual Agent decisions</h3><p>The scenario closed both passages at 9.005 simulated seconds. At 11.005 seconds, the captured state showed no delivery route, an available return route, and a facility notice estimating reopening in about ten seconds. DeepSeek proposed a ten-second wait, admitted at 16.215 seconds. The passages reopened at 21.005 seconds, and a fresh observation after waiting found a delivery route. A second judgment proposed rerouting; Rules admitted it at 27.480 seconds. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>Outbound arrival at 53.130 seconds carried the second decision's identifier, linking judgment to an executed and verified navigation leg. Return and the final hold completed at 95.455 seconds. The failed first outbound attempt remained explicitly unverified rather than being overwritten. Host invocation intervals were 5.259115 and 1.090103 wall-clock seconds; these two observations are not a latency distribution or equivalent to simulator-side holding time.</p>"
     },
     {
       "id": "discussion",
@@ -59,6 +59,38 @@
       "title": "Go2 indoor delivery implementation and verification",
       "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/agents/go2-indoor-delivery.md",
       "detail": "Bounded supervision, local obstacle rules, runtime entrypoints, and distinct historical verification episodes."
+    }
+  ],
+  "media": [
+    {
+      "id": "go2-agent-delivery",
+      "type": "video",
+      "title": "Wait, reroute, deliver, and return",
+      "caption": "Recorded MuJoCo delivery during a temporary passage closure. Two actual DeepSeek judgments, wait then reroute, passed Rules; later observations verified simulated receipt, return, and a five-second hold. Approximately 3× playback. This is a known-map simulator run, not a physical delivery.",
+      "alt": "Recorded MuJoCo office view of Go2 executing the temporary-closure delivery and return.",
+      "source_ref": "s1",
+      "after_section": "lead",
+      "src": "/assets/media/quadruped-delivery-go2-agent-delivery.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent.mp4",
+      "width": 1280,
+      "height": 800,
+      "poster": "/assets/figures/quadruped-delivery-agent-poster.jpg",
+      "duration_seconds": 31.866667
+    },
+    {
+      "id": "go2-local-yielding",
+      "type": "video",
+      "title": "Yielding to a moving obstacle without a model judgment",
+      "caption": "A separate recorded MuJoCo scenario uses local yielding and zero LLM judgments. Approximately 3× playback. The local controller uses simulator obstacle positions. Its different obstacle condition makes this an illustration of responsibility boundaries, not a matched comparison of Agent benefit.",
+      "alt": "Recorded MuJoCo Go2 delivery yielding to a moving obstacle, with a known indoor map.",
+      "source_ref": "s1",
+      "after_section": "results",
+      "src": "/assets/media/quadruped-delivery-go2-local-yielding.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/moving.mp4",
+      "width": 1280,
+      "height": 800,
+      "poster": "/assets/media/quadruped-delivery-go2-local-yielding-poster.jpg",
+      "duration_seconds": 29.166667
     }
   ]
 }
