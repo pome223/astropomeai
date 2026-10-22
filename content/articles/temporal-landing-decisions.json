@@ -85,5 +85,37 @@
       "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-reentry/REPORT-en.md",
       "detail": "Replay-only 4/15 to 2/15 change with correlation and RGB-overlap audit."
     }
+  ],
+  "media": [
+    {
+      "id": "pad-wait-clear-approach",
+      "type": "video",
+      "title": "Wait for the pad, then approach",
+      "caption": "A fixed explanatory camera records the occupied-pad sequence at 4× playback. PX4 flies the delivery aircraft; the lead aircraft follows scripted Gazebo poses. A deterministic MissionOS fixture checks observed clearance before approach. No native VLA/WAM or image-based occupancy judgment occurs in this recording.",
+      "alt": "Fixed Gazebo camera showing an occupied landing pad and subsequent delivery approach.",
+      "source_ref": "s1",
+      "after_section": "lead",
+      "src": "/assets/media/temporal-landing-decisions-pad-wait-clear-approach.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-queue/battery-flight.mp4",
+      "width": 640,
+      "height": 472,
+      "poster": "/assets/media/temporal-landing-decisions-pad-wait-clear-approach-poster.png",
+      "duration_seconds": 74.041667
+    },
+    {
+      "id": "pad-onboard-roundtrip",
+      "type": "video",
+      "title": "The same flight from the onboard camera",
+      "caption": "Recorded onboard round trip at 8× playback, covering offshore departure, waiting, approach, simulated delivery, return, and landing. The report records 31.500 simulator seconds from occupancy report to entry permission. The battery display is a time-based simulator indicator, not energy metering. This is separate from the later native forecast studies below.",
+      "alt": "Onboard Gazebo camera and simulated battery overlay during the occupied-pad mission.",
+      "source_ref": "s1",
+      "after_section": "integration",
+      "src": "/assets/media/temporal-landing-decisions-pad-onboard-roundtrip.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-onboard/battery-flight.mp4",
+      "width": 640,
+      "height": 472,
+      "poster": "/assets/media/temporal-landing-decisions-pad-onboard-roundtrip-poster.png",
+      "duration_seconds": 161.083333
+    }
   ]
 }

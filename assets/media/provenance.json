@@ -1,0 +1,402 @@
+{
+  "schema": "astropome-media.v1",
+  "source_repository": "https://github.com/pome223/missionos",
+  "source_commit": "7f0128491ac1e998c05580b50707ee8cab7543c6",
+  "description": "Unmodified public experiment recordings and figures. Playback and simulation clocks are described in the article captions.",
+  "files": [
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-launch-release.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/nominal-flight.mp4",
+      "source_git_blob_sha": "ca3503a644d847d8504ce363870f3b0c36342091",
+      "sha256": "b005d34f05fa8d144d9028e30fa075a720fb26f2ee8845a685a3590bc207d95c",
+      "bytes": 2224790,
+      "width": 960,
+      "height": 540,
+      "codec": "h264",
+      "duration_seconds": 36.0,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-launch-release-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/nominal-flight.jpg",
+      "source_git_blob_sha": "25f497cc458616621e3f6b2fc456315fdb58dec9",
+      "sha256": "a4b8fe82b6bcbb595c91ad5b35eaaa6c045c8cb5868d3fe8a59d8952e6d1487d",
+      "bytes": 40569,
+      "width": 960,
+      "height": 540,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-release-supervision.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/deployment-supervision.mp4",
+      "source_git_blob_sha": "90a8ff6069a89ee00277dec443364f53eae50438",
+      "sha256": "a75f46f6bdcfcbd75dad35208fac82b6a7f2944d00513112ff98fcf43cb31c85",
+      "bytes": 975867,
+      "width": 960,
+      "height": 540,
+      "codec": "h264",
+      "duration_seconds": 28.0,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-release-supervision-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/deployment-supervision.jpg",
+      "source_git_blob_sha": "613d8f23f88ac9c05c9e6ab5972e5dca8846fdf1",
+      "sha256": "4fcaebc621c987dcb5edbc7cf68529b4c77e8465bca5aeac537a5d9e59131862",
+      "bytes": 94048,
+      "width": 960,
+      "height": 540,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/figures/starship-mission-simulation-qualification-census.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-state-return-qualification/qualification-census.png",
+      "source_git_blob_sha": "70a9ee70fdc6c64f239e9cfae93b8c1dd18eeb60",
+      "sha256": "64672438930fac6b804b71b8477acb3cbea10076c196a270c77251a27190358c",
+      "bytes": 111223,
+      "width": 1275,
+      "height": 1050,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-booster-return-negative.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/return-negative.mp4",
+      "source_git_blob_sha": "6dee193af77c645f87d15135a3d9125ab21afbb9",
+      "sha256": "dd6709a0334d2ba02a824dbcd57a4eebeecdf114395b42942e363c1667afeb5e",
+      "bytes": 550249,
+      "width": 960,
+      "height": 540,
+      "codec": "h264",
+      "duration_seconds": 30.0,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-booster-return-negative-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/return-negative.jpg",
+      "source_git_blob_sha": "919c3a81407b69d1af44bf3ccbc4cd625e7fe0df",
+      "sha256": "0c0a30d7ed6e3639d910f5651f56d98c8aff862eb91692202cfe79cddb57bd93",
+      "bytes": 46488,
+      "width": 960,
+      "height": 540,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/media/starship-mission-simulation-starship-rejected-allocation.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-return-allocation-20261007/retained15-rejected-endpoint.png",
+      "source_git_blob_sha": "ddc52f08afbaa8305b256df4bfdfb1947571419a",
+      "sha256": "306c4115c5bef5efd402c496ea3b6d4f6834bf92e82b010eeee1e8a2c299e2bc",
+      "bytes": 101901,
+      "width": 1360,
+      "height": 880,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-centered-stacking-replay.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-20260918/centered-game-replay.mp4",
+      "source_git_blob_sha": "ec8cf946fcb454ac250e3c1d89caa84332deaa39",
+      "sha256": "05c7d935db2fbd7ff2405e77a5a7567b24b4b19623ee807e2aa980fe07ef33ea",
+      "bytes": 531560,
+      "width": 768,
+      "height": 348,
+      "codec": "h264",
+      "duration_seconds": 24.5,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/world-model-stacking-centered-stacking-replay-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-20260918/centered-game-replay-poster.png",
+      "source_git_blob_sha": "af814da510cd4488f02f2c142dd0fec95223063a",
+      "sha256": "5e1f609150c353ac44dae7d4e79bf97cba577b3ebe521c8796e7d964ae8930f6",
+      "bytes": 40213,
+      "width": 768,
+      "height": 348,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-offset-pilot-replay.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-pilot-20260918/offset-pilot-replay.mp4",
+      "source_git_blob_sha": "b6dbee9eb2371ce2199f3812446e037910b8a748",
+      "sha256": "8ceeea8474495e00b181ae7ba6c6155e7d69cdba5a459879184ffe3ba8cfc751",
+      "bytes": 302698,
+      "width": 768,
+      "height": 348,
+      "codec": "h264",
+      "duration_seconds": 24.6,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/world-model-stacking-offset-pilot-replay-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/block-stacking-pilot-20260918/offset-pilot-replay-poster.png",
+      "source_git_blob_sha": "e580c0535ee7b2d7103b80631ee08a32d2b93071",
+      "sha256": "2b42e19cb26155eb4fe8ac073856ce04a36e118f3a2ec4fc0e3fc64738df9c9a",
+      "bytes": 41973,
+      "width": 768,
+      "height": 348,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-governed-stacking-responsibilities.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/06-governed-architecture.png",
+      "source_git_blob_sha": "1ea07cf7ec94aca25929461a84f81c3d7a3a46df",
+      "sha256": "f13a54d1501dae879404cfc0292a5cad88bf72e2d4a83c41588ab41fa9af4087",
+      "bytes": 119009,
+      "width": 2141,
+      "height": 1241,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-v7-every-game.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/02-v7-game-scores.png",
+      "source_git_blob_sha": "d507ade6dea5c026ba12dca23ef189373abe970f",
+      "sha256": "021721d837dc0a396285e751623fdce95b9efed5a3f3bdaf58d2ba61d03aeff0",
+      "bytes": 66967,
+      "width": 2260,
+      "height": 718,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/figures/world-model-stacking-03-v7-paired-intervals.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/03-v7-paired-intervals.png",
+      "source_git_blob_sha": "6ccde478dd369259fc4a5d2dffc10f8210bf7bf8",
+      "sha256": "a3bec05ff4debd7b910cbd5f93a5927415084f71a92b2095737b114d7bc90b52",
+      "bytes": 72018,
+      "width": 1782,
+      "height": 879,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-v7-gains-and-losses.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/04-v7-tradeoff.png",
+      "source_git_blob_sha": "7a9f96b16c14cd2fc3f8e2b19d73754736cf86e9",
+      "sha256": "becb9ad7ff40742e31407d4be5450125b2c3a1af5b91b44fc7323c43d60353ff",
+      "bytes": 63161,
+      "width": 1961,
+      "height": 788,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/world-model-stacking-deepseek-known-case-correction.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/missionos-wam-20260919/05-deepseek-correction.png",
+      "source_git_blob_sha": "b9f9a111dd03fc0a1c8dccf79aa054a96c15d2ad",
+      "sha256": "1e33d7015cd44c7a7cfee0c9e2b350dedfecb960e59f482f6379f35866995092",
+      "bytes": 71418,
+      "width": 1960,
+      "height": 842,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-native-cargo-flight.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/onboard-timelapse.mp4",
+      "source_git_blob_sha": "3733e95938d06cc39f568c192ba8c3cb37d59e81",
+      "sha256": "bebd5cba28b35bbf1da56d645eedb6b3de31015c6371b33364967802c3411cf7",
+      "bytes": 1505621,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "duration_seconds": 211.166667,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-native-cargo-flight-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-observed.png",
+      "source_git_blob_sha": "394000e507f6475950f74620ddb3901eb718c958",
+      "sha256": "036cde7190f5e700b20891db2eee16c1875101b69e170ab003f07acb2e3cf5e2",
+      "bytes": 17187,
+      "width": 640,
+      "height": 360,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-rejected-observation.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-native-flight/images/cycle-1-observed.png",
+      "source_git_blob_sha": "a383dc1780178d64dfc80d3bc170a7013c04bb57",
+      "sha256": "6f96291f0bd3d2bfbdcc90582058ee7b61f3ee890c3470d802d58bc633c6dfc9",
+      "bytes": 21159,
+      "width": 640,
+      "height": 360,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-rejected-prediction.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-native-flight/images/cycle-1-vla-prediction.png",
+      "source_git_blob_sha": "69898470aa479a1c38e0c98afdb4e931eefbf1c1",
+      "sha256": "ed7992b0d716dd3663173bfcc3eebb917f83e244adc68fa4f397662c727d20e0",
+      "bytes": 67770,
+      "width": 224,
+      "height": 224,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-hold-prediction.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-hold-prediction.png",
+      "source_git_blob_sha": "44c61f11ff7fb8b1ea1aad7da9425c90430badfb",
+      "sha256": "486a8dc4ba668f2e0b7e3a8b5aa285f7e24150ef6767771343c099b9fddbc7fb",
+      "bytes": 35612,
+      "width": 224,
+      "height": 224,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-movement-prediction.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-vla-prediction.png",
+      "source_git_blob_sha": "7fd5f187461f688062be66375fcd112e53908c69",
+      "sha256": "d7cc1c574fc68c672f79a98b4d7358c46d529252503a46b57baff8a88ab2c58d",
+      "bytes": 39483,
+      "width": 224,
+      "height": 224,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-cargo-cycle1-arrival.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cycle-1-arrival-observed.png",
+      "source_git_blob_sha": "489c32725d777e751482c89cdcb58cbdb9d0a584",
+      "sha256": "42b2b2a867192bd37676b88990bd46dbe911575952d9166de051695ca09ce01a",
+      "bytes": 15159,
+      "width": 640,
+      "height": 360,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-cargo-release-closeup.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/cargo-delivery.mp4",
+      "source_git_blob_sha": "53feb1fe115da04d58523bea18c9bb70326d5dd8",
+      "sha256": "1c75de99539f0ef380f4b84071b351566d7c229630623b4bc597e6d1fbfcbf4f",
+      "bytes": 51847,
+      "width": 640,
+      "height": 360,
+      "codec": "h264",
+      "duration_seconds": 25.0,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-cargo-release-closeup-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cargo-before-release.png",
+      "source_git_blob_sha": "989a614569786cf0357aa0c9267407e0054dface",
+      "sha256": "0843e1c9c61960dfb7715242297a6189767889ac5ee1505ef6190a4afbc0555e",
+      "bytes": 11538,
+      "width": 640,
+      "height": 360,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/figures/urban-drone-recovery-cargo-after-receipt.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-cargo-flight/images/cargo-after-receipt.png",
+      "source_git_blob_sha": "6612e70891d924bd6ccac57b04616073c279c39d",
+      "sha256": "c3460fe4d010d318b3b9eb7ada5d63a42f6133b5d553b5902e43ab798e907c4b",
+      "bytes": 11653,
+      "width": 640,
+      "height": 360,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-preserved-wind-failure.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-wind-battery/wind-5-airborne/video/battery-flight.mp4",
+      "source_git_blob_sha": "156b54a369a48d0947cae9b4ac90e1373297d567",
+      "sha256": "88e9a4246c5ca1beb7a635e882ff4bbac483e6b7c260937677a1d42364c0b938",
+      "bytes": 169453,
+      "width": 640,
+      "height": 448,
+      "codec": "h264",
+      "duration_seconds": 63.708333,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/urban-drone-recovery-yokohama-preserved-wind-failure-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-wind-battery/wind-5-airborne/video/battery-preview.png",
+      "source_git_blob_sha": "c7d953431ffe395990771025931ab3a90467314c",
+      "sha256": "7d5e410ce42cf22db453c2b65b128795478c10740227ef626e65efd3c0b5cf36",
+      "bytes": 13279,
+      "width": 640,
+      "height": 448,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/quadruped-delivery-go2-agent-delivery.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent.mp4",
+      "source_git_blob_sha": "bcba997d28f42259ac827183f421acc5b8c724bc",
+      "sha256": "8b16a8579d893b4784eb6ae640ee0ffae7e2511f4a52abccf9df9c40df0e5772",
+      "bytes": 5047778,
+      "width": 1280,
+      "height": 800,
+      "codec": "h264",
+      "duration_seconds": 31.866667,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/figures/quadruped-delivery-agent-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "source_git_blob_sha": "a077cfed9e9a74b2c8eff3e0efb4638b013445a0",
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+      "bytes": 47421,
+      "width": 1280,
+      "height": 800,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/media/quadruped-delivery-go2-local-yielding.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/moving.mp4",
+      "source_git_blob_sha": "57fe095c18598bfd9bc073ccb9265393982622e9",
+      "sha256": "daa4c91eb1060c6fc9eeb987c4f2a203321d6a77457d1b922101fc5858b93c56",
+      "bytes": 5586636,
+      "width": 1280,
+      "height": 800,
+      "codec": "h264",
+      "duration_seconds": 29.166667,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/quadruped-delivery-go2-local-yielding-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/go2-agent-delivery-20260925/media/moving-poster.jpg",
+      "source_git_blob_sha": "bd9eba05a51372ae65cff0f9426e4c5d4cad2793",
+      "sha256": "c870f5075a457957537ef9a299ee7fd09e3bdf5a822e21d1939aa215794de108",
+      "bytes": 45908,
+      "width": 1280,
+      "height": 800,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/media/temporal-landing-decisions-pad-wait-clear-approach.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-queue/battery-flight.mp4",
+      "source_git_blob_sha": "2321653c9f634789dde41114738409b3e69f09bc",
+      "sha256": "229573695542a635df4b52a2e399fcfc36af997540e17f020c65b4e529dbcc2a",
+      "bytes": 310387,
+      "width": 640,
+      "height": 472,
+      "codec": "h264",
+      "duration_seconds": 74.041667,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/temporal-landing-decisions-pad-wait-clear-approach-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-queue/battery-preview.png",
+      "source_git_blob_sha": "2bfa641cfb4dc2ce8253107a534d30388e4a7778",
+      "sha256": "f2c0080cb2674bcd233530c5f81159adc53a4515d375c710dd173a528ac4878c",
+      "bytes": 38831,
+      "width": 640,
+      "height": 472,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/temporal-landing-decisions-pad-onboard-roundtrip.mp4",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-onboard/battery-flight.mp4",
+      "source_git_blob_sha": "6812a39790debb7d8b11827bce9949aa27b9068d",
+      "sha256": "8c319b347334cbc64f25bc9ce7df4bf09f2cb72e00b2a7b5538f77719c1dc25f",
+      "bytes": 1497915,
+      "width": 640,
+      "height": 472,
+      "codec": "h264",
+      "duration_seconds": 161.083333,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/temporal-landing-decisions-pad-onboard-roundtrip-poster.png",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/yokohama-pad-queue/video-onboard/battery-preview.png",
+      "source_git_blob_sha": "46e59117093c4f2f4d4fcbc9e4c6319c9e26950d",
+      "sha256": "c9f621c52f944a54a5e1439f10a6078a41c8162959d0c7bc229502ee3161d470",
+      "bytes": 34251,
+      "width": 640,
+      "height": 472,
+      "codec": "png"
+    }
+  ]
+}

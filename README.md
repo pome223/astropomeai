@@ -32,4 +32,10 @@ The generator uses only the Python standard library. Commit the generated `index
 - Do not add local paths, private repositories, raw logs, credentials, or unreviewed experiment artifacts.
 - Verify links, narrow-screen layout, keyboard navigation, search/filter behavior, and deployed pages when publishing.
 
+## Videos and figures
+
+Five articles include 12 inline MP4 recordings and 15 still figures in total. A structured `media` array places recordings and galleries alongside the relevant article sections. All recordings are source-verified H.264 copies with posters, native playback controls, inline mobile playback, and `preload="none"`. There is no autoplay. Selecting a gallery figure opens a keyboard-accessible enlargement; without JavaScript, the link opens the full-size image. The homepage features three recorded experiments.
+
+Media files and their hashes are listed in `assets/media/provenance.json`; source attribution is retained alongside them. Videos have scenario-specific captions that distinguish recorded simulation, generated prediction, playback compression, and separate research cohorts.
+
 The existing Medium and note links remain in the site navigation/footer. Original background image assets are retained in the repository.
