@@ -1,0 +1,90 @@
+{
+  "slug": "maritime-mission-assurance",
+  "title": "Assuring Ship-to-Shore Drone Missions",
+  "subtitle": "From matched route comparisons to native VLA and world-model integration",
+  "domain": "Autonomous missions",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "Ship-to-shore experiments distinguish route-selection value, camera-based execution, and native-model integration while preserving failed implementation cohorts.",
+  "abstract": "Ship-to-shore delivery provides a useful test of mission assurance because route choice, model inference, cargo receipt, and recovery have different evidence requirements. Public MissionOS studies progressed from PX4/Gazebo wait-versus-detour comparisons to image-based uncertainty gates and native AeroVLA/ANWM integration. A synthetic uncertainty study gained eight successful conditions among 7,560 without losing baseline successes, but the corresponding six-flight onboard comparison showed no additional completions. Native integration subsequently completed a targeted 1 km mission and three separately declared 100 m conditions on the same final implementation, following multiple preserved failures. This article treats these results as distinct studies rather than a pooled measure of AI superiority or operational reliability.",
+  "keywords": [
+    "maritime robotics",
+    "mission assurance",
+    "VLA",
+    "world models",
+    "comparators",
+    "PX4",
+    "simulation"
+  ],
+  "sections": [
+    {
+      "id": "design",
+      "title": "1. Research design and authority",
+      "html": "<p>The mission begins on a stationary ship, crosses water, chooses how to pass an urban obstacle, delivers a synthetic parcel, and returns. The research question has two parts: can a decision method improve a well-defined comparator, and can native models participate correctly in the execution chain? A system may satisfy the second without demonstrating the first. MissionOS keeps prior approval, model proposal, Rules admission, execution acknowledgement, observed movement, receipt, and recovery as separate facts. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s5\">[5]</a></p><p>Early experiments used simulator obstacle positions; later studies used captured RGB and onboard images. These are different observation contracts. Route lengths, timing conventions, implementation versions, and candidate sets also change between studies, so their denominators must remain local to each protocol.</p>"
+    },
+    {
+      "id": "comparators",
+      "title": "2. Establishing useful comparators",
+      "html": "<p>Four final-implementation PX4/Gazebo trials compared waiting and detouring under short and long blockage. Waiting took 57.3 wall seconds under short blockage versus 86.2 for detouring; under long blockage, waiting took 142.2 versus 105.7 for detouring. All four completed separately verified delivery and recovery. The comparison interval ran from urban-entry hold to low-altitude destination hold, excluding cargo contact and return. There was one trial per candidate, so the differences are observations, not statistical superiority. A simple speed rule selected the faster option in both conditions. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>A camera diagnostic then used twenty-one Gazebo RGB images across three motion conditions. Five past images per condition were supplied equally to four rules. A deceleration-aware rule selected the analytically best candidate in all three, while a constant-speed rule incorrectly favored waiting when the obstacle slowed to a stop. These were offline proposals and analytical route costs, not dispatched flights. <a class=\"citation\" href=\"#s2\">[2]</a></p><p>A separate 192-condition headroom screen found that a simple remaining-time rule and a zero-latency future-knowing oracle both reached 134 conditions. The other fifty-eight remained in the denominator. Assuming 41.19 seconds of processing wait reduced even the oracle to 56/192. No model ran in this screen; it is a sensitivity analysis showing why prediction latency and available outcome headroom belong in experiment admission. <a class=\"citation\" href=\"#s3\">[3]</a></p>"
+    },
+    {
+      "id": "uncertainty",
+      "title": "3. Uncertainty gates: benefit and non-transfer",
+      "html": "<p>With two dynamic routes, a conservative departure-only gate improved synthetic success from 7,092/7,560 to 7,100/7,560: eight gains and no lost baseline successes, approximately 0.106 percentage points. Gains occurred only when observed motion continued; unexpected changes yielded no added successes. The common-success subset was approximately 0.039 s slower on average. Allowing later replanning yielded the same eight gains but lost three successes, exposing the cost of incomplete motion hypotheses and route-switching delays. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>The onboard follow-up used three conditions and two methods, six flights in total. Every flight verified delivery and recovery, and all three route choices matched the ordinary rule when rescored on the same candidate-side images. The eight synthetic gains therefore did not transfer into an observed completion gain. A separate return to the original 1 km offshore distance first failed camera/heading calibration; after a distinct repair, one full mission completed. That pair remains one completion in two attempts, separate from the six-flight comparison. VLA and WAM were absent from these uncertainty flights. <a class=\"citation\" href=\"#s6\">[6]</a></p>"
+    },
+    {
+      "id": "native",
+      "title": "4. Native-model integration and preserved cohorts",
+      "html": "<p>Native AeroVLA and ANWM were then connected sequentially. The final role was a short level-inspection segment, with vertical proposals limited to about ±0.204 m. A repaired image reader associates the target with its projected pre-inference RGBD cross-section rather than globally ranking warm-colored regions. Independent bounds remained 5 m position error, 75 s WAM exchange, and 2 s dispatch freshness. The waypoint named urban entry was thirty metres before the coastline, and models ran on a cloud GPU with VLA warmup before takeoff. <a class=\"citation\" href=\"#s5\">[5]</a></p><table><caption>Separate frozen implementation cohorts; attempted and planned counts are retained</caption><thead><tr><th scope=\"col\">Cohort</th><th scope=\"col\">Attempted / planned</th><th scope=\"col\">Verified integration</th></tr></thead><tbody><tr><th scope=\"row\">Original</th><td>4 / 4</td><td>3</td></tr><tr><th scope=\"row\">Association repair</th><td>3 / 4</td><td>2</td></tr><tr><th scope=\"row\">Acknowledgement repair</th><td>4 / 4</td><td>3</td></tr><tr><th scope=\"row\">Action syntax</th><td>1 / 4</td><td>0</td></tr><tr><th scope=\"row\">Level inspection</th><td>3 / 4</td><td>2</td></tr><tr><th scope=\"row\">Canonical numbers; targeted 1 km</th><td>1 / 1</td><td>1</td></tr><tr><th scope=\"row\">Same final code; 100 m follow-up</th><td>3 / 3</td><td>3</td></tr></tbody></table><p>Failures included ambiguous target association, an acknowledgement arriving 1.779 ms after the selected state sample, malformed native output, an independently vetoed descent, and cross-platform permit differences as small as 1.11 × 10<sup>−16</sup> m. Each repair changed the tested implementation; unattempted conditions were never counted as passes. Generation-time constraints changed permissible outputs without rewriting returned values. Canonical numerical serialization repaired reproducibility without relaxing exact permit verification. <a class=\"citation\" href=\"#s5\">[5]</a></p><p>The targeted final 1 km flight recorded 2.905 m VLA movement, 0.659 m WAM position error, a 50.146 s WAM exchange, and 685.140 s elapsed time. Three subsequent 100 m conditions on unchanged code verified integration, delivery, and recovery separately. Their WAM errors were 0.630, 0.205, and 2.333 m. These constitute two cohorts, not one four-flight experiment. <a class=\"citation\" href=\"#s5\">[5]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "5. Interpretation and unresolved boundaries",
+      "html": "<p>The studies demonstrate why integration success and comparative value need separate tests. A conservative synthetic gate produced a small bounded gain; an onboard comparison found equal outcomes; native models then participated in verified simulated missions under a constrained task. None implies general perception or superiority over a conventional controller.</p><p>A subsequent urban-only loop exercised seventeen CPU process/HTTP conditions, with one expected normal completion and sixteen expected refusals. It did not connect native VLA/WAM and PX4, so the earlier coastal decision cannot certify repeated in-city inference. All delivery evidence remains one aircraft, a stationary ship, mapped geometry, and synthetic obstacles. Moving decks, general image perception, calibrated strong winds, ten-aircraft operation, physical delivery, and energy savings remain unverified. Public summaries and hashes support inspection, but private raw archives are required for full record-level reproduction. <a class=\"citation\" href=\"#s5\">[5]</a> <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Ship-to-shore wait-versus-detour flights",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-urban-delivery-report/REPORT-ja.md",
+      "detail": "Four matched candidate flights; worker wall-time comparison and separate delivery/recovery verification."
+    },
+    {
+      "id": "s2",
+      "title": "RGB obstacle-motion diagnostic",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-urban-camera-report/REPORT-ja.md",
+      "detail": "Twenty-one fixed-camera images, common-input rules, analytical costs, no dispatch."
+    },
+    {
+      "id": "s3",
+      "title": "CPU headroom screen before WAM evaluation",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-wam-headroom-report.md",
+      "detail": "192 evaluation conditions, saturated baseline, and processing-wait sensitivity."
+    },
+    {
+      "id": "s4",
+      "title": "Uncertainty-aware route decisions",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-uncertainty-report.md",
+      "detail": "7,560 new synthetic conditions; eight gains, no losses for departure-only gate; later replanning failures."
+    },
+    {
+      "id": "s5",
+      "title": "Native VLA and WAM integration",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-native-joint-report/REPORT-en.md",
+      "detail": "Seven preserved cohorts, exact final measurements, decoder/ACK/grammar/numeric repairs."
+    },
+    {
+      "id": "s6",
+      "title": "Onboard uncertainty gate and 1 km repair",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-onboard-uncertainty-report.md",
+      "detail": "Six-flight comparison with equal outcomes and separate failed/successful original-distance attempts."
+    },
+    {
+      "id": "s7",
+      "title": "Urban-only repeated-decision controller",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/ship-urban-loop-report.md",
+      "detail": "Seventeen CPU fixture cases; no native-model/PX4 repeated urban flight."
+    }
+  ]
+}

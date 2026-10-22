@@ -1,0 +1,1138 @@
+{
+  "schema": "astropome-biology-evidence.v1",
+  "curated_date": "2026-10-22",
+  "study_ids": [
+    "dna-population-inference-20261022"
+  ],
+  "provenance": "Newly curated from retained local computational study records; not sourced from a public repository main branch.",
+  "publication_status": "Independent research record; not peer reviewed.",
+  "curation_scope": "Selected aggregate values, declared assumptions, source hashes and saved verification outcomes. No new simulations or biological experiments were performed for this article.",
+  "reproducibility_limit": "This is a portable evidence summary, not a complete reproducibility release. Hashes identify retained source artifacts and do not establish independent timestamps or external replication.",
+  "source_artifacts": [
+    {
+      "study_id": "dna-population-inference-20261022",
+      "artifact": "protocol.json",
+      "sha256": "14dda94b9f0ecefa291eae13c5bbc7948c6024f0c5559be3315e70ac0bff7b37",
+      "bytes": 6331,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-population-inference-20261022",
+      "artifact": "runs/population-v1/summary.json",
+      "sha256": "afe6efd21b0cf1886992e1e202ed6fb5c996b5b40a5ebc9ee25375c7bcacca52",
+      "bytes": 13771245,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-population-inference-20261022",
+      "artifact": "runs/population-v1/numerical-audit.json",
+      "sha256": "2d2de02322f050fc285c5d1596af0a8d30d9490406f56f266d3de8a1878ee904",
+      "bytes": 51289,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-population-inference-20261022",
+      "artifact": "runs/population-v1/main-manifest.json",
+      "sha256": "221501aa096971bc27e718a98eb1abb9cce08a8e0adf78580b3efcfd7f1e66ba",
+      "bytes": 3729,
+      "availability": "Retained original study artifact; not included in this public summary."
+    },
+    {
+      "study_id": "dna-population-inference-20261022",
+      "artifact": "verification.json",
+      "sha256": "63d1122876f88575f762f86dd1573b45496b76fab8d6ffa335ce2808718b65c0",
+      "bytes": 102874,
+      "availability": "Retained original study artifact; not included in this public summary."
+    }
+  ],
+  "protocol": {
+    "purpose": "Synthetic acquisition-design and inference validation; not empirical evidence for a biological mechanism or a new occupancy assay.",
+    "models": {
+      "A": "P pauses; H slows during pause, then immediately returns to full speed. A persistent separation remains. O=1.",
+      "B": "Same P pause; H remains slow until P catches up. O=1.",
+      "C": "Same H/P trajectories as B; O=0 during the P pause and 1 otherwise."
+    },
+    "physical_parameters": {
+      "v_nt_s": 510,
+      "u_nt_s": 84
+    },
+    "observation": {
+      "window_s": 60,
+      "exposure_s": 0.4,
+      "sample_centers": "0.2 + k * cadence, with the whole exposure inside [0,60]",
+      "position_noise_sd_nt_assumed": 100,
+      "occupancy_noise_sd_assumed": 0.35,
+      "position_offset": "Unknown independent constant offset in H and P, removed by orthogonal contrast; the same operation is applied to observations and predictions.",
+      "occupancy_scale": "Known and calibrated off=0/on=1 baseline; no bleaching or intensity drift.",
+      "noise": "Independent Gaussian errors across frames/channels/molecules before position contrast; no smoothing.",
+      "cadence_control": "Same exposure and per-frame noise across cadences; observation time is fixed, total frames and total light dose are not matched."
+    },
+    "latent_prior_and_generation": {
+      "pause_onset_s": "Uniform(8,12), independently per molecule; the same coarse localization is available to inference.",
+      "pause_duration_s": "Exponential with known mean 2 s (primary), or known mean 12 s (sensitivity). No truncation; right-censored long pauses retained.",
+      "mean_duration_role": "Known population hyperparameter; not estimated from these simulated datasets.",
+      "unit": "One independent molecule with one prespecified candidate pause window. Not a search over unselected movies, not independent repeated events from the same molecule."
+    },
+    "inference": {
+      "molecule_likelihood": "Integrate Gaussian observation likelihood over s and D with their normalized common priors. Never maximize nuisance likelihood to choose a class.",
+      "numerical_resolution": "Resolution is a convergence control, not a random biological parameter; standard and fine quadrature must be compared on identical data.",
+      "pair_prior": "Equal prior model probabilities; AB uses HP and BC uses HPO.",
+      "population": "Within each homogeneous pair test, all molecules share one hypothesis; add independent per-molecule log Bayes factors.",
+      "confidence_threshold": 0.95,
+      "mixture": "Conditional on no A: one common theta with Beta(1,1) prior; product over molecules of (1-theta)*L_B + theta*L_C. Numerical theta integration on 1001 nodes with trapezoidal weights.",
+      "theta_interpretation": "Population fraction of C among independent molecules each with one prespecified candidate pause, not time occupancy, not a cell-wide detachment rate."
+    },
+    "interpretation_limits": [
+      "The P-only 1/3 and HP 2/3 ceilings follow from the definitions; pipeline controls, not discoveries.",
+      "Matched-model posterior calibration and coverage are computational checks, not experimental validation.",
+      "Known speed, pause distribution, localization, observation model, and independent molecules are favorable assumptions.",
+      "Misestimated noise is one illustrative model-misspecification stress, not a realistic calibrated microscope model.",
+      "No biological parameters are inferred from real images in this run.",
+      "Existing fluorescence occupancy experiments do not automatically supply independent H, P and O channels; real-data feasibility remains conditional."
+    ]
+  },
+  "design": {
+    "n_trajectories": 105000,
+    "n_conditions": 7,
+    "n_hypotheses": 3,
+    "replicates_per_true_class": 100,
+    "molecules_per_replicate": 50,
+    "confidence_threshold": 0.95,
+    "sample_sizes": [
+      1,
+      2,
+      5,
+      10,
+      20,
+      50
+    ]
+  },
+  "results": [
+    {
+      "condition": {
+        "id": "mean2_dt0p7",
+        "mean_duration_s": 2,
+        "cadence_s": 0.7
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.861,
+            "correct_count": 8610,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.8540808340247541,
+              0.8676419191516174
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.0865850003992488,
+            "log_loss": 0.2549681442927967,
+            "ece": 0.005031249977657
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 5,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.8892,
+            "correct_count": 8892,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.8828978942876158,
+              0.8952032013806495
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.06963670269416075,
+            "log_loss": 0.20803040392468028,
+            "ece": 0.0047767949649310274
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 5,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": -0.002175026254102252,
+        "rmse": 0.07083889694337012,
+        "mean_posterior_mean": 0.49782497374589774,
+        "mean_ci_width": 0.30896025545755473,
+        "coverage": {
+          "estimate": 0.97,
+          "count": 97,
+          "n": 100,
+          "wilson95": [
+            0.9154806357094724,
+            0.9897454759759611
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mean2_dt2p2",
+        "mean_duration_s": 2,
+        "cadence_s": 2.2
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.7981,
+            "correct_count": 7981,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.7901185602384229,
+              0.8058524999329797
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.12519360076426117,
+            "log_loss": 0.36677337615998856,
+            "ece": 0.005830826535208075
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 5,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.7734,
+            "correct_count": 7734,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.7650908894624698,
+              0.781499140228444
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.13448562512362888,
+            "log_loss": 0.39112901585573584,
+            "ece": 0.00845916148852427
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 10,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": -0.004771841495432409,
+        "rmse": 0.08555788047522721,
+        "mean_posterior_mean": 0.49522815850456764,
+        "mean_ci_width": 0.38314572836279276,
+        "coverage": {
+          "estimate": 0.98,
+          "count": 98,
+          "n": 100,
+          "wilson95": [
+            0.929988209271456,
+            0.9944980324498376
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mean2_dt4",
+        "mean_duration_s": 2,
+        "cadence_s": 4
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.7566,
+            "correct_count": 7566,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.7480916216761722,
+              0.7649113103599967
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.1461165929570024,
+            "log_loss": 0.426302753579429,
+            "ece": 0.00594080224939598
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 10,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.6776,
+            "correct_count": 6776,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.6683725301277499,
+              0.6866910736509857
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.17813838188986963,
+            "log_loss": 0.5070674236771343,
+            "ece": 0.00603829901991631
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 20,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": 0.004631921611545415,
+        "rmse": 0.10822240142274514,
+        "mean_posterior_mean": 0.5046319216115456,
+        "mean_ci_width": 0.4552301836111768,
+        "coverage": {
+          "estimate": 0.98,
+          "count": 98,
+          "n": 100,
+          "wilson95": [
+            0.929988209271456,
+            0.9944980324498376
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mean2_dt8",
+        "mean_duration_s": 2,
+        "cadence_s": 8
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.7201,
+            "correct_count": 7201,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.7112175097456874,
+              0.7288134541715405
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.1671112064863313,
+            "log_loss": 0.4834529326065746,
+            "ece": 0.007927887922731056
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 10,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.5443,
+            "correct_count": 5443,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.5345235683419862,
+              0.5540424094023719
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.23811450813492974,
+            "log_loss": 0.6638948285311158,
+            "ece": 0.002687667754182876
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": null,
+          "n50": {
+            "accuracy": {
+              "estimate": 0.98,
+              "correct_count": 196,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9497129130941735,
+                0.9921955735836505
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 0.87,
+              "count": 174,
+              "n": 200,
+              "wilson95": [
+                0.8163364812775159,
+                0.9097179772033067
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.13,
+              "count": 26,
+              "n": 200,
+              "wilson95": [
+                0.0902820227966932,
+                0.18366351872248407
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": 0.020103826022472505,
+        "rmse": 0.15741606698859406,
+        "mean_posterior_mean": 0.5201038260224725,
+        "mean_ci_width": 0.7682561961896343,
+        "coverage": {
+          "estimate": 1.0,
+          "count": 100,
+          "n": 100,
+          "wilson95": [
+            0.9630065017930143,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mean12_dt2p2",
+        "mean_duration_s": 12,
+        "cadence_s": 2.2
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.9477,
+            "correct_count": 9477,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.9431620418982289,
+              0.9518941259606672
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.03299527220883641,
+            "log_loss": 0.09847533837116466,
+            "ece": 0.0035543110816854324
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 2,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.9404,
+            "correct_count": 9404,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.9355885947520355,
+              0.9448731794830725
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.03621071660651171,
+            "log_loss": 0.10881679779320852,
+            "ece": 0.002998700417915497
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 2,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": 0.00521513813553989,
+        "rmse": 0.07098453445273858,
+        "mean_posterior_mean": 0.50521513813554,
+        "mean_ci_width": 0.2865877538548576,
+        "coverage": {
+          "estimate": 0.95,
+          "count": 95,
+          "n": 100,
+          "wilson95": [
+            0.8882495307680808,
+            0.9784563208456319
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mean12_dt4",
+        "mean_duration_s": 12,
+        "cadence_s": 4
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.9324,
+            "correct_count": 9324,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.9273114517106879,
+              0.937156466498351
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.043010938648393025,
+            "log_loss": 0.12712501930129225,
+            "ece": 0.005426077357888472
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 2,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.9083,
+            "correct_count": 9083,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.9024856316011236,
+              0.9138007953293819
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.05641834689224847,
+            "log_loss": 0.1693291897257591,
+            "ece": 0.005345524926786697
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 5,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": 0.0028643614331041933,
+        "rmse": 0.07609821381416464,
+        "mean_posterior_mean": 0.5028643614331042,
+        "mean_ci_width": 0.29983807253239014,
+        "coverage": {
+          "estimate": 0.96,
+          "count": 96,
+          "n": 100,
+          "wilson95": [
+            0.9016292856411208,
+            0.9843366960084523
+          ]
+        }
+      }
+    },
+    {
+      "condition": {
+        "id": "mismatch_mean2_dt4",
+        "mean_duration_s": 2,
+        "cadence_s": 4,
+        "actual_position_noise_sd_nt": 150,
+        "actual_occupancy_noise_sd": 0.7
+      },
+      "pairs": {
+        "AB": {
+          "single_molecule_accuracy": {
+            "estimate": 0.7067,
+            "correct_count": 7067,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.6976987664915882,
+              0.715542488581974
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.1868664762942237,
+            "log_loss": 0.575797717124497,
+            "ece": 0.07672629081499878
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 10,
+          "n50": {
+            "accuracy": {
+              "estimate": 1.0,
+              "correct_count": 200,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 1.0,
+              "count": 200,
+              "n": 200,
+              "wilson95": [
+                0.9811546736227335,
+                1.0
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            },
+            "undecided": {
+              "estimate": 0.0,
+              "count": 0,
+              "n": 200,
+              "wilson95": [
+                1.734723475976807e-18,
+                0.018845326377266575
+              ]
+            }
+          }
+        },
+        "BC": {
+          "single_molecule_accuracy": {
+            "estimate": 0.6143,
+            "correct_count": 6143,
+            "tie_count": 0,
+            "n": 10000,
+            "wilson95": [
+              0.6047175149485069,
+              0.6237947030239563
+            ],
+            "wilson95_tie_envelope": null
+          },
+          "single_molecule_calibration": {
+            "brier": 0.24247260944361287,
+            "log_loss": 0.8325372218186725,
+            "ece": 0.11923087215162345
+          },
+          "first_tested_n_with_correct_confident_frequency_at_least_0p95": 50,
+          "n50": {
+            "accuracy": {
+              "estimate": 0.99,
+              "correct_count": 198,
+              "tie_count": 0,
+              "n": 200,
+              "wilson95": [
+                0.9642782382838231,
+                0.9972533418664555
+              ],
+              "wilson95_tie_envelope": null
+            },
+            "correct_confident": {
+              "estimate": 0.99,
+              "count": 198,
+              "n": 200,
+              "wilson95": [
+                0.9642782382838231,
+                0.9972533418664555
+              ]
+            },
+            "wrong_confident": {
+              "estimate": 0.005,
+              "count": 1,
+              "n": 200,
+              "wilson95": [
+                0.0008831687156009814,
+                0.02777370439789293
+              ]
+            },
+            "undecided": {
+              "estimate": 0.005,
+              "count": 1,
+              "n": 200,
+              "wilson95": [
+                0.0008831687156009814,
+                0.02777370439789293
+              ]
+            }
+          }
+        }
+      },
+      "mixture_at_theta_0p5_n50": {
+        "n": 50,
+        "bias": 0.09340032457032489,
+        "rmse": 0.13841321302910892,
+        "mean_posterior_mean": 0.5934003245703249,
+        "mean_ci_width": 0.4023631401015729,
+        "coverage": {
+          "estimate": 0.87,
+          "count": 87,
+          "n": 100,
+          "wilson95": [
+            0.7901964855992357,
+            0.9224283257275948
+          ]
+        }
+      }
+    }
+  ],
+  "uncertainty": "Wilson intervals describe finite Monte Carlo frequencies under the stated model; Bayesian mixture intervals have a separately measured repeated-sample coverage. Reused prefixes correlate sample-size comparisons.",
+  "verification": [
+    {
+      "artifact": "dna-population-inference-20261022/verification.json",
+      "saved_status": "passed",
+      "saved_check_count": 493,
+      "interpretation": "Numerical/artifact verification, not independent biological experiments. The saved verifier was not rerun for this publication."
+    }
+  ],
+  "numerical_sensitivity": {
+    "saved_status": "passed",
+    "scope": "Same first 50 simulated trajectories per truth/condition at two quadrature accuracies; finite sensitivity check, not a proof of exact convergence.",
+    "tolerances": {
+      "max_abs_delta_log_bf": 0.1,
+      "max_abs_sum_delta_log_bf_n50": 0.5,
+      "max_abs_delta_posterior": 0.02,
+      "confidence_decisions_changed": 0,
+      "population_decision_changed": false,
+      "max_mixture_mean_shift": 0.005,
+      "max_mixture_ci_endpoint_shift": 0.01
+    },
+    "n_observations_compared": 1050
+  }
+}
