@@ -2,7 +2,7 @@
   "schema": "astropome-media.v1",
   "source_repository": "https://github.com/pome223/missionos",
   "source_commit": "7f0128491ac1e998c05580b50707ee8cab7543c6",
-  "description": "Unmodified public experiment recordings and figures. Playback and simulation clocks are described in the article captions.",
+  "description": "Initial public MissionOS assets are pinned to the source commit below. Dated additions from reviewed saved records identify their own source kind and portable evidence summary. All media copies retain source hashes; captions distinguish recordings, illustrative CG, and separate experiment cohorts.",
   "files": [
     {
       "path": "/assets/media/starship-mission-simulation-starship-launch-release.mp4",
@@ -396,6 +396,32 @@
       "bytes": 34251,
       "width": 640,
       "height": 472,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/starship-live-T-20261022-tower.mp4",
+      "source_url": "/content/evidence/starship-october-record-update.json",
+      "source_kind": "reviewed_saved_record_supplied_for_publication",
+      "source_record": "missionos.starship_saved_tower_video.v1",
+      "source_mission": "starship-final-live-T-20261022-v2",
+      "sha256": "2cbdda7069c2e3b3a03fb78c216c571ab6f0608e6fa88242578619f5dadc172f",
+      "bytes": 83910046,
+      "width": 1600,
+      "height": 900,
+      "codec": "h264",
+      "duration_seconds": 250.1,
+      "has_audio": false
+    },
+    {
+      "path": "/assets/media/starship-live-T-20261022-tower-poster.png",
+      "source_url": "/content/evidence/starship-october-record-update.json",
+      "source_kind": "reviewed_saved_record_supplied_for_publication",
+      "source_record": "missionos.starship_saved_tower_video.v1",
+      "source_mission": "starship-final-live-T-20261022-v2",
+      "sha256": "823bb825ce8a289f834afb01f67316ac48ac05d3b6e8cd1999dc9c843990bc6f",
+      "bytes": 803237,
+      "width": 1600,
+      "height": 900,
       "codec": "png"
     }
   ]
