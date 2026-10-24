@@ -6,7 +6,7 @@
   "kind": "Technical research article",
   "date": "2026-10-22",
   "summary": "A development simulator connects approved mission scope to live return replanning while distinguishing record integrity, modeled contact, and real vehicle capability.",
-  "abstract": "A mission controller must respond to changed recovery information while preserving the distinction between deciding, executing, and verifying an outcome. Public MissionOS work studies this problem in a Starship-inspired six-degree-of-freedom simulator with finite actuators and independently propagated payload bodies. A shared return controller passed a finite thirty-nine-case inventory and fuel census. A subsequent three-scenario HTTP experiment preserved the nominal return, executed a live-model-selected later orbital opportunity after an availability update, and exercised a checked outage fallback. These are bounded development-model results. Failed propulsion cases, calibration dependence, numerical sensitivity, and unfinished launch-derived catch remain visible, and no result establishes SpaceX flight fidelity, real landing, recovery, or satellite service.",
+  "abstract": "A mission controller must respond to changed recovery information while preserving the distinction between deciding, executing, and verifying an outcome. Public MissionOS work studies this problem in a Starship-inspired six-degree-of-freedom simulator with finite actuators and independently propagated payload bodies. A shared return controller passed a finite thirty-nine-case inventory and fuel census. A subsequent three-scenario HTTP experiment preserved the nominal return, executed a live-model-selected later orbital opportunity after an availability update, and exercised a checked outage fallback. These are bounded development-model results. Failed propulsion cases, calibration dependence, numerical sensitivity, and unfinished launch-derived catch remain visible, and no result establishes SpaceX flight fidelity, real landing, recovery, or satellite service. A dated update adds a 250.1-second replay of a separate 22 October mission, including six seconds of illustrative tower CG. No catch was performed; the original time-limit failure is preserved. A separate 23 October certificate preflight stopped at the history-size limit without issuing a return certificate.",
   "keywords": [
     "mission replanning",
     "six-degree-of-freedom simulation",
@@ -16,6 +16,11 @@
     "verification"
   ],
   "sections": [
+    {
+      "id": "october-update",
+      "title": "Update: the 22 October recording and 23 October certificate preflight",
+      "html": "<p><strong>Recording update, published 24 October 2026.</strong> The 4-minute-10-second video above is a saved-state CG presentation of <code>starship-final-live-T-20261022-v2</code>, the original 22 October simulator mission. Its first six seconds show an illustrative tower with stationary arms and fades. <strong>No tower catch was performed.</strong> From six seconds onward, the footage follows the original recording with a six-second offset; the final four seconds hold the saved terminal state for reading. This edit is presentation work, not a new flight or a revised experimental verdict. <a class=\"citation\" href=\"#s9\">[9]</a></p><p>The original flight recorded ten valid Jev responses out of ten and one valid DeepSeek response out of one, thirteen released payloads and thirteen retained, and a modeled Ship contact speed of approximately 3.46 m/s. The scope extension consumed one test-script HTTP approval; this was not approval by a human operator. These observations belong to this single saved mission and do not replace the earlier M1 cohort below. <a class=\"citation\" href=\"#s9\">[9]</a></p><p><strong>The registered timing condition was not met.</strong> Elapsed wall time was approximately 2,143.8 seconds against a 1,800-second limit, including about 862 seconds of computer suspension. This duration was reconstructed from preserved timestamps; a complete monotonic start/end pair and independent time authentication were unavailable. Passing saved-record checks and displaying a low modeled contact speed do not turn this timing failure into an accepted trial, a physical landing, or a successful catch. <a class=\"citation\" href=\"#s9\">[9]</a></p><p><strong>Separate certificate status, as reported on 23 October: not issued.</strong> A preflight for a different campaign covering four saved 23 October records rejected a 51,322,536-byte point bundle (approximately 48.9 MiB) against a 33,554,432-byte limit (32 MiB). Of that bundle, 51,235,624 bytes were actuator history covering 28,025 rows. The records were preserved and the attempt stopped before qualification. That stopped attempt and the video edit added no flights, provider API submissions, or retries. It was not a certification run for the 22 October video. <a class=\"citation\" href=\"#s10\">[10]</a></p><p>The next verification requirement is a mechanism that can compare the complete history in bounded chunks without omitting records. A later implementation or partial check must not be treated as a completed qualification campaign or an issued certificate. This dated report does not assess subsequent work in progress, and the historical 39-case census below does not supply a refreshed certificate for these later records.</p>"
+    },
     {
       "id": "model",
       "title": "1. Model and research boundary",
@@ -95,9 +100,36 @@
       "title": "MissionOS: Starship return actuator-allocation study",
       "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-return-allocation.md",
       "detail": "Historical source-bound comparison of linear and nonlinear allocation at a retained-payload checkpoint; the nonlinear candidate was rejected. Separate from the later qualification census."
+    },
+    {
+      "id": "s9",
+      "title": "22 October saved mission video and 23 October certificate-preflight status",
+      "url": "/content/evidence/starship-october-record-update.json",
+      "detail": "Curated publication supplement from reviewed saved records: video/source hashes, timing failure, illustrative tower and no-catch boundary, and a separate stopped certificate preflight. Raw histories and the full execution source are not reproduced."
+    },
+    {
+      "id": "s10",
+      "title": "23 October certificate-preflight stop receipt",
+      "url": "/content/evidence/starship-qualification-preflight-stop-20261023.json",
+      "detail": "Unchanged portable receipt: full point/history sizes, unchanged 32 MiB cap, no campaign start or certificate, preserved records and zero retry, flight, or provider call."
     }
   ],
   "media": [
+    {
+      "id": "starship-oct22-tower-replay",
+      "type": "video",
+      "title": "22 October mission replay — illustrative tower, no catch",
+      "caption": "A 4:10 saved-state CG video from the original 22 October live-model simulator mission. The first six seconds are an illustrative, stationary tower scene; no catch was performed. The remaining footage reuses the saved mission with a six-second offset. The original timing acceptance failed, and this presentation does not issue or refresh a return certificate. Japanese on-screen annotations are retained; the English update below explains the evidence and limitations.",
+      "alt": "Illustrative static recovery tower followed by the saved 22 October simulator mission; tower catch not performed.",
+      "source_ref": "s9",
+      "after_section": "lead",
+      "src": "/assets/media/starship-live-T-20261022-tower.mp4",
+      "source_url": "/content/evidence/starship-october-record-update.json",
+      "width": 1600,
+      "height": 900,
+      "poster": "/assets/media/starship-live-T-20261022-tower-poster.png",
+      "duration_seconds": 250.1
+    },
     {
       "id": "starship-launch-release",
       "type": "video",
@@ -105,7 +137,7 @@
       "caption": "Historical fixture-planned numerical mission: launch, stage separation, 26 generic rigid-body releases, and a Ship return attempt. No provider inference or LLM-selected releases. The 36-second montage uses time compression and explicit orbit cuts. It is separate from the later live M1 replanning experiment; modeled contact is not verified landing or recovery.",
       "alt": "Saved-state computer graphics replay of a Starship-inspired numerical launch, stage separation, generic payload releases, and return attempt.",
       "source_ref": "s3",
-      "after_section": "lead",
+      "after_section": "model",
       "src": "/assets/media/starship-mission-simulation-starship-launch-release.mp4",
       "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/nominal-flight.mp4",
       "width": 960,
@@ -169,5 +201,7 @@
       "width": 1360,
       "height": 880
     }
-  ]
+  ],
+  "updated": "2026-10-24",
+  "evidence_note": "The historical studies cite public MissionOS main at 7f012849. The dated October update additionally summarizes reviewed saved records and the supplied video; it is separate from the earlier M1 experiments. The portable supplement identifies evidence hashes and limits of public reproducibility."
 }
