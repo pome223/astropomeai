@@ -3,14 +3,18 @@
 import html
 import json
 import re
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://astropomeai.com'
-DATE = '2026-10-22'
 MISSION_SHA = '7f0128491ac1e998c05580b50707ee8cab7543c6'
 ORDER = ['mission-assurance', 'world-model-stacking', 'robot-manipulation-repair', 'quadruped-delivery', 'urban-drone-recovery', 'temporal-landing-decisions', 'maritime-mission-assurance', 'starship-mission-simulation', 'dna-observation-design', 'dna-replication-completion', 'dna-initiation-mechanisms']
 e = html.escape
+
+def display_date(value):
+    day = date.fromisoformat(value)
+    return f'{day.day} {day.strftime("%B %Y")}'
 
 def words(article):
     return len(re.sub('<[^>]+>', ' ', article['abstract'] + ' '.join(s['html'] for s in article['sections']) + ' '.join(m['caption'] for m in article.get('media', []))).split())
@@ -73,6 +77,8 @@ def render_home(articles):
     (ROOT/'index.html').write_text(document('Research in AI, autonomous systems & computational biology','Independent research on MissionOS, robot learning, autonomous missions, and DNA replication. Methods, measured results, limitations, and sources.','/',body,schema,True))
 
 def render_article(a):
+    published_date = display_date(a['date'])
+    updated_meta = f'<span>Updated <time datetime="{e(a["updated"], quote=True)}">{display_date(a["updated"])}</time></span>' if a.get('updated') else ''
     toc = ''.join(f'<li><a href="#{e(s["id"], quote=True)}">{e(s["title"])}</a></li>' for s in a['sections'])
     parts = []
     for s in a['sections']:
@@ -87,9 +93,11 @@ def render_article(a):
         toc = f'<li><a href="#{first["id"]}">Watch the experiment</a></li>' + toc
     media_link = ' · <a href="/assets/media/provenance.json">Media provenance</a>' if a.get('media') else ''
     figure_link = ' · <a href="/assets/figures/provenance.json">Figure provenance</a>' if any('<figure>' in part['html'] for part in a['sections']) else ''
-    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← Research library</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">22 October 2026</time><span>{max(1,round(words(a)/200))} min read</span><span class="status">Not peer reviewed</span></div></header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>Abstract</h2><p>{e(a['abstract'])}</p></div><div class="keywords"><strong>Keywords</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}<section class="references" id="references"><h2>References &amp; evidence</h2><ol>{references}</ol></section><div class="article-end">Published as part of the Astropome AI research collection. <a href="/content/articles/{a['slug']}.json">Article source</a>{figure_link}{media_link} · <a href="/#research">Browse all research ↗</a></div></div><aside class="article-sidebar" aria-label="Article navigation"><p class="eyebrow">In this article</p><ol class="toc"><li><a href="#abstract">Abstract</a></li>{toc}<li><a href="#references">References &amp; evidence</a></li></ol><div class="source-note"><strong>About the evidence</strong><p>{note}</p><p>Use your browser’s Print command to save a reading copy as PDF.</p><a href="/content/articles/{a['slug']}.json">View article source ↗</a></div></aside></div></article></main>'''
+    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← Research library</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">{published_date}</time>{updated_meta}<span>{max(1,round(words(a)/200))} min read</span><span class="status">Not peer reviewed</span></div></header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>Abstract</h2><p>{e(a['abstract'])}</p></div><div class="keywords"><strong>Keywords</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}<section class="references" id="references"><h2>References &amp; evidence</h2><ol>{references}</ol></section><div class="article-end">Published as part of the Astropome AI research collection. <a href="/content/articles/{a['slug']}.json">Article source</a>{figure_link}{media_link} · <a href="/#research">Browse all research ↗</a></div></div><aside class="article-sidebar" aria-label="Article navigation"><p class="eyebrow">In this article</p><ol class="toc"><li><a href="#abstract">Abstract</a></li>{toc}<li><a href="#references">References &amp; evidence</a></li></ol><div class="source-note"><strong>About the evidence</strong><p>{note}</p><p>Use your browser’s Print command to save a reading copy as PDF.</p><a href="/content/articles/{a['slug']}.json">View article source ↗</a></div></aside></div></article></main>'''
     path = '/research/'+a['slug']+'/'
     schema = {'@context':'https://schema.org','@type':'ScholarlyArticle','headline':a['title'],'description':a['summary'],'abstract':a['abstract'],'datePublished':a['date'],'inLanguage':'en','author':{'@type':'Organization','name':'Astropome AI'},'publisher':{'@type':'Organization','name':'Astropome AI'},'url':BASE+path,'keywords':a['keywords'],'citation':[BASE+s['url'] if s['url'].startswith('/') else s['url'] for s in a['sources']]}
+    if a.get('updated'):
+        schema['dateModified'] = a['updated']
     destination=ROOT/path.strip('/')
     destination.mkdir(parents=True,exist_ok=True)
     (destination/'index.html').write_text(document(a['title'],a['summary'],path,body,schema,media=bool(a.get('media'))))
@@ -116,7 +124,9 @@ def main():
         render_article(a)
     render_home(articles)
     urls=['/']+['/research/'+a['slug']+'/' for a in articles]
-    (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{BASE}{p}</loc><lastmod>{DATE}</lastmod></url>' for p in urls)+'</urlset>\n')
+    modified = {'/research/'+a['slug']+'/': a.get('updated', a['date']) for a in articles}
+    modified['/'] = max(modified.values())
+    (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{BASE}{p}</loc><lastmod>{modified[p]}</lastmod></url>' for p in urls)+'</urlset>\n')
     (ROOT/'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n')
     print(json.dumps({'articles':len(articles),'words':sum(words(a) for a in articles),'pages':len(urls),'slugs':slugs},indent=2))
 

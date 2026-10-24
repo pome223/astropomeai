@@ -1,0 +1,294 @@
+{
+  "schema": "astropome-biology-evidence.v1",
+  "curated_date": "2026-10-24",
+  "study_ids": [
+    "dna-research-synthesis-20261023",
+    "dna-global-completion-20261022",
+    "dna-resource-delay-20261022",
+    "dna-mechanism-validation-20261022",
+    "dna-human-calibration-20261022",
+    "dna-hct116-reanalysis-20261023",
+    "dna-hct116-denominator-recovery-20261023"
+  ],
+  "provenance": "Curated from retained computational study and public-data audit records. This supplement does not claim that the original study artifacts are hosted in a public repository.",
+  "publication_status": "Research synthesis and a single agent-assisted research case study; not peer reviewed.",
+  "curation_scope": "Selected aggregate results, definitions, explicit limits, and source artifact hashes. No new simulations, empirical fits, biological experiments, bulk data recovery, or author outreach were performed for this update.",
+  "reproducibility_limit": "This is a portable evidence summary, not a complete reproducibility release. Hashes identify retained source files; they do not establish independent timestamps, independent replication, or public availability of those files.",
+  "source_artifacts": [
+    {
+      "id": "synthesis",
+      "study_id": "dna-research-synthesis-20261023",
+      "artifact": "evidence.json",
+      "sha256": "5de772660b78d9c4ba12f88384de1449a9eb71f71acef547e1494f5f54c52e3c",
+      "bytes": 4038,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "global",
+      "study_id": "dna-global-completion-20261022",
+      "artifact": "runs/main/summary.json",
+      "sha256": "6e4cd62a524685ec852205ddf9a9a192f5f2d363e33860ac59d800ddfe741e3b",
+      "bytes": 123046,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "resource",
+      "study_id": "dna-resource-delay-20261022",
+      "artifact": "runs/main/summary.json",
+      "sha256": "03635d55a39dad7c94484641e81bf2d45e8d23b8063aad5dd7fc5bd9c31fbaac",
+      "bytes": 4398689,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "geometry",
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "geometry/summary.json",
+      "sha256": "e5db36c467767855f9896457f040b626116c4db8e79108e1f58a96fb0e5a12e5",
+      "bytes": 5936,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "ablation",
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation/summary.json",
+      "sha256": "08c4790519973f9164434cbf380ea144f14ac5e0182650687955b1f54b7159c8",
+      "bytes": 477193,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "joint",
+      "study_id": "dna-mechanism-validation-20261022",
+      "artifact": "ablation/joint-outcomes.csv",
+      "sha256": "bed319cf20e25dd6c361fb8ea86c79774acbe9f53b67658ace705b8c3c5cd72d",
+      "bytes": 4687,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "clock",
+      "study_id": "dna-human-calibration-20261022",
+      "artifact": "clock-identifiability/summary.json",
+      "sha256": "e4505953caa7d408f9edbbb6aaf2bbb9b7783d53601543c708f7b0b9519470eb",
+      "bytes": 11648,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "audit",
+      "study_id": "dna-hct116-reanalysis-20261023",
+      "artifact": "integrated-audit.json",
+      "sha256": "d7ef36a481f6fae881082c8222850de5f8a833e764d5082e6c7c9f39e9eed46f",
+      "bytes": 3219,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "nanopore",
+      "study_id": "dna-hct116-reanalysis-20261023",
+      "artifact": "nanopore/summary.json",
+      "sha256": "1973e563f270989af414cf5b61e2b68863dd757fa109583b533dd1dc6907aeb5",
+      "bytes": 3972,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "location",
+      "study_id": "dna-hct116-denominator-recovery-20261023",
+      "artifact": "recovery-assessment.json",
+      "sha256": "41698f9f9ab91d56e05e716e0862f526498d34176a70549c0760af5289c76107",
+      "bytes": 3018,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "fcs_headers",
+      "study_id": "dna-hct116-denominator-recovery-20261023",
+      "artifact": "fcs-search/header-audit-summary.json",
+      "sha256": "2865fc0d4ed42753274d08df445473b162447f71b02eaad226a6e14e8e161d2a",
+      "bytes": 3350,
+      "availability": "Retained study artifact; not included in this public supplement."
+    },
+    {
+      "id": "window_scan",
+      "study_id": "dna-hct116-denominator-recovery-20261023",
+      "artifact": "nanopore-search/cached-scan-summary.json",
+      "sha256": "ba4cfe665bf2baca3b3754c8a9a2d1d3b4592402dae202260ed436bbb59d8618",
+      "bytes": 652,
+      "availability": "Retained study artifact; not included in this public supplement."
+    }
+  ],
+  "definitions": {
+    "genome_model": "One hypothetical circular genome of 6.4 billion base pairs; fixed candidate licenses and constant fork speed unless explicitly rescaled.",
+    "base_fork_speed_bp_per_min": 1500,
+    "comparison_deadline_min": 480,
+    "deadline_status": "An illustrative whole-genome comparison criterion, not a measured completion time for the HCT116 samples.",
+    "completion": "Every modeled base has been replicated; not an average fraction or a detection-limited empirical endpoint.",
+    "effective_resource_unit": "Capacity to support one fork. It is not a measured number of protein molecules or an intact replisome reused unchanged.",
+    "initiation_intensity": "Actual new initiations divided by the integral of unreplicated DNA length over the observation interval. Units: initiations per unreplicated Mb per minute.",
+    "independence": "The 200 paired layouts are synthetic configurations, not independent biological cells. Reused layouts, conditions and event records must not be counted as additional biological replicates."
+  },
+  "opening_comparison": {
+    "genome_bp": 6400000000,
+    "fork_speed_bp_per_min": 1500,
+    "single_bidirectional_origin_years": 4.056075240195706,
+    "equally_spaced_40000_origins_min": 53.333333333333336,
+    "random_40000_origins_expected_h": 9.932322575951577,
+    "comparison_deadline_h": 8,
+    "deadline_provenance": "Comparison criterion; not measured HCT116 completion time",
+    "single_origin_formula": "L/(2v); two forks from one bidirectional origin, without parallelism across multiple origins.",
+    "equally_spaced_formula": "L/(2vN) for N=40000 origins fired simultaneously.",
+    "random_origin_formula": "E[max gap]=(L/N)*H_N, where H_N is the Nth harmonic number; E[T]=E[max gap]/(2v) for simultaneous independent uniform origin positions on a circle.",
+    "analytic_expected_random_completion_min": 595.9393545570946,
+    "saved_random_layout_mean_completion_min": 586.2937819689975,
+    "saved_random_layout_median_completion_min": 582.5519804329872,
+    "saved_random_layout_complete_by480": {
+      "count": 2,
+      "n": 200
+    },
+    "critical_distinction": "Exactly equally spaced origins are a separate analytic construction from one origin placed uniformly at random within each equal segment. The latter saved simulation has median completion about 1.77 hours, not 53 minutes.",
+    "corrected_inference": "Completion time alone cannot reject simultaneous initiation when origin spacing is unspecified."
+  },
+  "terminal_gap_example": {
+    "model_id": "hard_gate_k16000_d30",
+    "licensed_candidates": 400000,
+    "capacity_units": 16000,
+    "return_delay_min": 30,
+    "initiation_law": "hard_gate: per-candidate hazard 0.001/min when at least two free units remain, otherwise zero.",
+    "deadline_min": 480,
+    "mean_replicated_percent_at_deadline": 99.97949452045958,
+    "rounded_mean_replicated_percent": 99.98,
+    "completed_by_deadline": {
+      "count": 0,
+      "n": 200
+    },
+    "mean_remaining_bp_at_deadline": 1312350.6905866144,
+    "mean_largest_remaining_gap_bp_at_deadline": 228991.86010797418,
+    "completion_median_min": 551.0032980818539,
+    "interpretation": "99.98% is the mean replicated fraction over 200 synthetic configurations. Zero of 200 means none had completed the whole model genome by 480 minutes. It is not an experimental completion rate."
+  },
+  "geometry_control": {
+    "n_layouts": 200,
+    "licensed_candidates": 400000,
+    "maximum_coverable_candidate_free_gap_bp": 1440000,
+    "maximum_initial_candidate_free_gap_bp_across_layouts": 286728.3693289757,
+    "geometrically_impossible_layouts": 0,
+    "paired_unlimited_failures": 0,
+    "comparison_40000_candidate_geometrically_impossible_layouts": 198,
+    "interpretation": "The 400000-candidate resource model has no layout that is impossible by the ideal geometry-only bound; its paired unlimited control completed all 200 layouts. The 40000-candidate model is a different candidate inventory. Intervals between origins that actually fired cannot be treated as intervals that originally contained no candidates."
+  },
+  "recycling_contrast": {
+    "common_conditions": {
+      "licensed_candidates": 400000,
+      "capacity_units": 24000,
+      "initiation_law": "free_fraction: per-candidate hazard=lambda0*free/K, subject to two units being available.",
+      "lambda0_per_min": 1,
+      "initial_loading_time_scale_min": 30,
+      "fork_speed_bp_per_min": 1500,
+      "n_paired_layouts": 200,
+      "parameter_status": "Effective initiation and initial supply parameters are model assumptions, not measured HCT116 binding or supply rates."
+    },
+    "conditions": [
+      {
+        "model": "binding_1_load_30_wait_0",
+        "delay_min": 0,
+        "n": 200,
+        "success_at480": 200,
+        "completion_median_min": 255.94400819897487,
+        "completion_q95_min": 270.2128598996139
+      },
+      {
+        "model": "binding_1_load_30_wait_480",
+        "delay_min": 480,
+        "n": 200,
+        "success_at480": 0,
+        "completion_median_min": 637.1191528042696,
+        "completion_q95_min": 648.5569450052999
+      }
+    ],
+    "interpretation": "Changing only the effective return delay from zero to 480 minutes changed deadline completion from 200/200 to 0/200 in this model. A 480-minute delay blocks reuse before the deadline but does not permanently remove recycling after the deadline.",
+    "joint_shape_and_completion_audit": {
+      "n_conditions": 12,
+      "n_layouts_per_condition": 200,
+      "n_model_trials": 2400,
+      "joint_pass_count": 0,
+      "criterion": "Descriptive hump on the prespecified range with mean unreplicated DNA-time exposure at least 1% of the original exposure, together with at least 95% observed completion by 480 minutes.",
+      "limit": "Zero of 12 conditions passed this joint descriptive rule. Some successful conditions have a clear descent outside the 1% support range. This is not proof that no hump exists and is not an empirical goodness-of-fit test."
+    }
+  },
+  "clock_scaling_control": {
+    "n_synthetic_layouts": 1,
+    "n_replays": 2,
+    "event_records_compared": 112973,
+    "conditions": [
+      {
+        "scale": 1,
+        "v_bp_min": 1500.0,
+        "lambda0_min": 1.0,
+        "loading_tau_min": 30,
+        "completion_min": 263.64013975623465,
+        "completed_by480": true,
+        "actual_fired": 50486
+      },
+      {
+        "scale": 2,
+        "v_bp_min": 750.0,
+        "lambda0_min": 0.5,
+        "loading_tau_min": 60,
+        "completion_min": 527.2802795124693,
+        "completed_by480": false,
+        "actual_fired": 50486
+      }
+    ],
+    "completion_h": [
+      4.394002329270577,
+      8.788004658541155
+    ],
+    "max_scaled_event_time_error_min": 0.0,
+    "normalization": "Plot time as t/T and initiation intensity as I(t)*T. The latter has units Mb^-1, not dimensionless units.",
+    "transformation": "t_prime=2*t; v_prime=v/2; lambda_prime=lambda/2; loading_tau_prime=2*loading_tau; return_delay_prime=2*return_delay (zero here). I_prime(2*t)=I(t)/2.",
+    "interpretation": "An uncalibrated relative-time/relative-amplitude curve cannot identify physical completion time. A matched absolute clock or speed measurement would break this symmetry. This does not prove nonidentifiability once such measurements are supplied.",
+    "limit": "One configuration with two time scales, not 112973 independent experiments and not a fitted human replication curve."
+  },
+  "public_data_audit": {
+    "dataset": "HCT116, GSE320256, Figshare article 29242556",
+    "primary_public_urls": [
+      "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE320256",
+      "https://doi.org/10.1038/s41467-026-73333-4"
+    ],
+    "nanopore_sample_count": 12,
+    "published_ratio_values_reproduced": 24,
+    "origin_calls": 362,
+    "termination_calls": 270,
+    "filtered_fork_rows": 3544,
+    "filtered_read_ids_summed_after_within_sample_deduplication": 3540,
+    "all_origin_read_sets_disjoint_from_filtered_fork_read_sets": true,
+    "all_termination_read_sets_disjoint_from_filtered_fork_read_sets": true,
+    "same_aliquot_FCS_matches_confirmed": 0,
+    "FCS_header_records_audited": 973,
+    "WSP_files_audited": 1051,
+    "absolute_I_by_S_phase_age_identified": false,
+    "functional_factor_recovery_delay_identified": false,
+    "whole_genome_deadline_validated": false,
+    "limits": [
+      "The published event-to-filtered-fork ratios are legitimate published observables; disjoint read sets do not by themselves invalidate those ratios. They are not new initiations divided by unreplicated DNA-time.",
+      "An origin call can represent initiation before the labeling window. It is not necessarily a newly initiated origin during that window.",
+      "All sequenced bases, all callable bases and unreplicated S-phase DNA-time are different denominators.",
+      "Instrument acquisition time and DNA content are not an independently calibrated clock from S-phase entry.",
+      "The inspected public records did not establish same-aliquot FCS-to-Nanopore mapping. No claim is made that such records do not exist elsewhere.",
+      "A calibrated asynchronous exposure-weighted mean might be estimable with additional records and detection corrections; that does not identify late-S I(t) without S-phase age information.",
+      "This audit neither estimates a functional factor return-time distribution nor validates eight-hour completion in matched HCT116 conditions."
+    ]
+  },
+  "closeout": {
+    "decision_date": "2026-10-23",
+    "investigation_closed": true,
+    "author_inquiry_sent": false,
+    "bulk_cold_storage_restoration_performed": false,
+    "additional_curve_fit_started_for_synthesis": false,
+    "reason": "Further recovery of read-level records without an S-phase age axis would not resolve the original question about late-stage initiation and whole-genome deadline completion.",
+    "biological_novelty_established": false,
+    "contribution": "Correction of an intuitive explanation, explicit model-conditional results, a bounded public-data denominator audit, and a record of research scope drift and the decision to stop.",
+    "agent_case_study_limit": "This is one documented research trajectory. It does not establish a general causal claim about autonomous research agents or novelty relative to all prior agent case studies."
+  },
+  "claim_boundaries": [
+    "No central per-origin progress controller is required in the computational construction. Biological molecular communication and cell-cycle regulation are not excluded.",
+    "Recycling can support later initiation and completion under specified initiation, supply and candidate-placement assumptions. Reuse alone has not been validated as the explanation for matched HCT116 I(t) and deadline completion.",
+    "Mitotic DNA synthesis is not simulated here. Its existence does not guarantee repair of all residual gaps or establish S-phase completion by eight hours.",
+    "The work does not claim a new biological mechanism. Existing biological studies and the synthetic results have distinct evidentiary roles."
+  ]
+}

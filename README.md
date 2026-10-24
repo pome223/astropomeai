@@ -8,6 +8,8 @@ The collection covers MissionOS governance, manipulation, stacking, quadruped de
 
 Edit an article in `content/articles/`. Each JSON source contains its metadata, abstract, section HTML, and references. Biology evidence summaries are reviewed, portable supplements under `content/evidence/`.
 
+Keep `date` as the original publication date. Set `updated` (ISO `YYYY-MM-DD`) for a substantive revision; the generator displays both dates and updates structured metadata and that article's sitemap entry.
+
 ```sh
 python3 scripts/build.py
 python3 scripts/check.py

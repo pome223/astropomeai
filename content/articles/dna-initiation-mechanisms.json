@@ -39,8 +39,8 @@
     },
     {
       "id": "discussion",
-      "title": "6. What the evidence supports next",
-      "html": "<p>Published human-cell perturbations support investigating component reuse: Fan et al. connected impaired disassembly with reduced soluble components and initiation. However, such evidence does not map an effective pool directly to molecule counts or assign this model's binding and return rates. The public frog and yeast tables likewise cannot validate a human capacity boundary. No parameter-matched empirical fit or independent human validation is claimed here. <a class=\"citation\" href=\"#s5\">[5]</a></p>\n <p>The saved ablation verifier recorded 372,025 passing checks; the separate statistics audit recorded 1,545. These support event accounting, aggregate calculations, uncertainty calculations, and the fixed descriptor. They do not turn synthetic parameter choices into biological measurements. No new simulations were executed for this article.</p>\n <p>This non-peer-reviewed record publishes a compact evidence summary with source hashes, selected results, and links to the original public experimental tables. Complete local raw runs are not included. The next discriminating study would pair an absolute initiation time course with candidate positions, available functional factors, and a reuse perturbation in the same cellular system. Agreement across those observables would carry more mechanistic information than matching a peak alone. <a class=\"citation\" href=\"#s1\">[1]</a></p>"
+      "title": "6. Interpretation and study closeout",
+      "html": "<p>Published human-cell perturbations support investigating component reuse: Fan et al. connected impaired disassembly with reduced soluble components and initiation. However, such evidence does not map an effective pool directly to molecule counts or assign this model's binding and return rates. The public frog and yeast tables likewise cannot validate a human capacity boundary. No parameter-matched empirical fit or independent human validation is claimed here. <a class=\"citation\" href=\"#s5\">[5]</a></p>\n <p>The saved ablation verifier recorded 372,025 passing checks; the separate statistics audit recorded 1,545. These support event accounting, aggregate calculations, uncertainty calculations, and the fixed descriptor. They do not turn synthetic parameter choices into biological measurements. No new simulations were executed for this article.</p>\n <p>This non-peer-reviewed record publishes a compact evidence summary with source hashes, selected results, and links to the original public experimental tables. Complete local raw runs are not included. A future discriminating study would need to pair an absolute initiation time course with candidate positions, available functional factors, and a reuse perturbation in the same cellular system. Agreement across those observables would carry more mechanistic information than matching a peak alone. <a class=\"citation\" href=\"#s1\">[1]</a></p>\n<p><strong>Update, 24 October 2026:</strong> The subsequent HCT116 public-data audit did not establish the matched S-phase clock, unreplicated-DNA exposure, or functional recovery time needed for that validation. The investigation has closed; no author inquiry or cold-storage restoration was initiated. The requirements above describe what a future validation would need, not an ongoing experiment. See <a href=\"/research/dna-replication-completion/#closeout\">the full investigation and closeout</a>.</p>"
     }
   ],
   "sources": [
@@ -77,5 +77,6 @@
   ],
   "domain": "Computational biology",
   "kind": "Computational research article",
-  "date": "2026-10-22"
+  "date": "2026-10-22",
+  "updated": "2026-10-24"
 }
