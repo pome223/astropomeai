@@ -1,0 +1,127 @@
+{
+  "schema": "astropome.development_story_publication.v1",
+  "published": "2026-10-28",
+  "title": "Building MissionOS: AI Mission Control, Tested from the Physics Up",
+  "source_manuscript": {
+    "name": "medium-en.md",
+    "revision": "v6",
+    "source_revision_date": "2026-10-27",
+    "sha256": "42c745714d064ceb224492456ae1b692877d2fd27beba19907b0e85a168e6637",
+    "bytes": 19888,
+    "sections": 9,
+    "images": 5,
+    "videos": 2
+  },
+  "scope": "Full author development narrative adapted for Astropome AI. This publication does not change or publish the Medium/note drafts.",
+  "editorial_changes": [
+    {
+      "before": "Jev released thirteen payloads and retained thirteen; that mass continued into return planning.",
+      "after": "The mission released thirteen payloads and retained thirteen under Jev’s checked decisions; that mass continued into return planning.",
+      "reason": "Preserve the distinction between AI judgment and physical execution."
+    },
+    {
+      "reason": "Adapt Markdown layout to site navigation, responsive inline figures and YouTube players; preserve narrative, captions, dates, links and numbers."
+    }
+  ],
+  "public_source_commit": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+  "figures": [
+    {
+      "path": "/assets/media/building-missionos-flow.png",
+      "sha256": "7cb64e8295e3d16b2ad2c4ba4568e0c3088addfce8e0e5a42ae71c98045b3a2c",
+      "bytes": 188079,
+      "source_kind": "author_editorial_schematic",
+      "source_url": "/content/evidence/building-missionos-publication.json"
+    },
+    {
+      "path": "/assets/media/building-missionos-m3-poster.jpg",
+      "sha256": "1dcaa2cb6cb955e718854603b141568d20f54ee559f5353974b21f9d6281520b",
+      "bytes": 216436,
+      "source_kind": "unchanged_public_repository_asset",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-ai-mission-m3-20261012/mission-poster.jpg"
+    },
+    {
+      "path": "/assets/media/building-missionos-thrust-matrix.png",
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+      "bytes": 130449,
+      "source_kind": "author_figure_from_saved_scalar_evidence",
+      "source_url": "/content/evidence/building-missionos-publication.json"
+    },
+    {
+      "path": "/assets/media/building-missionos-recovery-poster.jpg",
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67",
+      "bytes": 141577,
+      "source_kind": "unchanged_public_repository_asset",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg"
+    },
+    {
+      "path": "/assets/figures/starship-mission-simulation-qualification-census.png",
+      "sha256": "64672438930fac6b804b71b8477acb3cbea10076c196a270c77251a27190358c",
+      "bytes": 111223,
+      "source_kind": "unchanged_public_repository_asset",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-state-return-qualification/qualification-census.png"
+    }
+  ],
+  "videos": [
+    {
+      "youtube_id": "9udkr9AbCUE",
+      "url": "https://www.youtube.com/watch?v=9udkr9AbCUE",
+      "channel": "AstroPomeAI",
+      "duration_s": 112.021,
+      "recording_date": "2026-10-12",
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-m3-completion.md"
+    },
+    {
+      "youtube_id": "c0LhVXtGzL4",
+      "url": "https://www.youtube.com/watch?v=c0LhVXtGzL4",
+      "channel": "AstroPomeAI",
+      "duration_s": 120.021,
+      "recording_date": "2026-10-14",
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-booster-recovery-decision.md"
+    }
+  ],
+  "historical_thrust_study": {
+    "source_identifier": "2ced69d9",
+    "source_kind": "retained_historical_study_identifier_not_a_public_revision_citation",
+    "assumed_rows": [
+      1,
+      0.8,
+      0.6
+    ],
+    "actual_columns": [
+      1,
+      0.8,
+      0.6
+    ],
+    "contact_speed_m_s": [
+      [
+        4.608255,
+        9.165753,
+        29.805763
+      ],
+      [
+        18.932889,
+        3.481417,
+        11.733618
+      ],
+      [
+        26.400974,
+        21.05442,
+        3.259772
+      ]
+    ],
+    "scope": "Nine physics-only continuations from one saved state; finite samples, not a continuous operating envelope."
+  },
+  "boundaries": [
+    "The October 12 and 14 videos are not footage of the October 23 integrated flight.",
+    "The October 22 timing failure remains separate from the newly registered October 23 mission.",
+    "Scope approval in the experiments was supplied by an authenticated test-operator script, not a human review.",
+    "Earlier 39-case qualification and later exact-point saved-record checks do not qualify every changed source or public checkout.",
+    "Historical static trim findings concern the old aerodynamic model and do not validate real-vehicle fidelity.",
+    "No launch-derived supported tower catch is established."
+  ],
+  "publication_work": {
+    "new_flights": 0,
+    "new_model_calls": 0,
+    "new_qualification_runs": 0
+  }
+}

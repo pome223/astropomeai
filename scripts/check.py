@@ -10,10 +10,11 @@ from urllib.parse import unquote, urlsplit
 from urllib.request import urlopen
 
 ROOT=Path(__file__).resolve().parents[1]
+MEDIA_MARKER=re.compile(r'<!--\s*media:([^\s<>]+)\s*-->')
 class Document(HTMLParser):
     def __init__(self,text):
         super().__init__(convert_charrefs=True)
-        self.ids=[]; self.links=[]; self.h1=0; self.lang=None; self.title=False; self.canonical=False; self.missing_alt=[]; self.videos=[]
+        self.ids=[]; self.links=[]; self.h1=0; self.lang=None; self.title=False; self.canonical=False; self.missing_alt=[]; self.videos=[]; self.iframes=[]; self.media_markers=[]
         self.feed(text)
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
@@ -24,11 +25,21 @@ class Document(HTMLParser):
         if tag=='link' and a.get('rel')=='canonical':self.canonical=True
         if tag=='img' and 'alt' not in a:self.missing_alt.append(a.get('src'))
         if tag=='video':self.videos.append(a)
+        if tag=='iframe':self.iframes.append(a)
         for attr in ('href','src','poster'):
             if attr in a:self.links.append(a[attr])
+    def handle_comment(self,data):
+        if data.strip().startswith('media:'):self.media_markers.append(data)
 
 def check(base=None):
-    failures=[]; docs={}; local=set(); external=set(); citations=0; videos=0
+    failures=[]; docs={}; local=set(); external=set(); citations=0; videos=0; youtube_embeds=0; required_media=set()
+    def require_local_media(value, article):
+        if not isinstance(value,str) or not value.startswith('/') or value.startswith('//') or urlsplit(value).query or urlsplit(value).fragment:
+            failures.append(f'{article}: media requires a local absolute path: {value}')
+            return
+        target=ROOT/value.lstrip('/')
+        if not target.is_file():failures.append(f'{article}: missing media {value}')
+        required_media.add(value)
     paths=[ROOT/'index.html',*sorted((ROOT/'research').glob('*/index.html'))]
     article_paths=sorted((ROOT/'content/articles').glob('*.json'))
     assert len(article_paths)>=11,'Expected full research collection'
@@ -37,10 +48,21 @@ def check(base=None):
         if not (d.lang=='en' and d.h1==1 and d.title and d.canonical):failures.append(f'{p.relative_to(ROOT)}: missing document metadata or unique h1')
         if len(d.ids)!=len(set(d.ids)):failures.append(f'{p.relative_to(ROOT)}: duplicate IDs')
         if d.missing_alt:failures.append(f'{p.relative_to(ROOT)}: images without alt')
+        if d.media_markers:failures.append(f'{p.relative_to(ROOT)}: unresolved inline media markers')
         for video in d.videos:
             videos+=1
             if 'controls' not in video or 'playsinline' not in video or video.get('preload')!='none' or 'autoplay' in video or not video.get('poster') or not video.get('aria-label'):
                 failures.append(f'{p.relative_to(ROOT)}: video controls, loading, poster, or label contract')
+        for frame in d.iframes:
+            match=re.fullmatch(r'https://www\.youtube-nocookie\.com/embed/([A-Za-z0-9_-]{11})',frame.get('src',''))
+            if not match:
+                failures.append(f'{p.relative_to(ROOT)}: unexpected iframe or invalid YouTube embed URL')
+                continue
+            youtube_embeds+=1
+            if frame.get('loading')!='lazy' or not frame.get('title') or frame.get('referrerpolicy')!='strict-origin-when-cross-origin' or 'allowfullscreen' not in frame or 'autoplay' in frame.get('allow',''):
+                failures.append(f'{p.relative_to(ROOT)}: YouTube loading, label, referrer, fullscreen, or autoplay contract')
+            if 'https://www.youtube.com/watch?v='+match.group(1) not in d.links:
+                failures.append(f'{p.relative_to(ROOT)}: missing YouTube fallback link')
         if any(x in content for x in ('/Users/','/home/','missionos-internal','localhost:','127.0.0.1:','file://')):failures.append(f'{p.relative_to(ROOT)}: private/local reference')
         for link in d.links:
             u=urlsplit(link)
@@ -67,17 +89,65 @@ def check(base=None):
         raw=p.read_text()
         if re.search(r'/Users/|/home/|missionos-internal|localhost:|127\.0\.0\.1:|file://',raw):failures.append(f'{p.name}: local/private data')
         if re.search(r'<script|\son\w+\s*=|javascript:',text,re.I):failures.append(f'{p.name}: executable article content')
+        if re.search(r'<iframe\b',text,re.I):failures.append(f'{p.name}: iframe must use validated media metadata')
+        media_items=a.get('media',[])
+        media_by_id={item['id']:item for item in media_items}
+        if len(media_by_id)!=len(media_items):failures.append(f'{p.name}: duplicate media IDs')
+        markers=[(section['id'], media_id) for section in a['sections'] for media_id in MEDIA_MARKER.findall(section['html'])]
+        if len(re.findall(r'<!--\s*media:.*?-->',text,re.S))!=len(markers):failures.append(f'{p.name}: malformed inline media marker')
+        for section_id,media_id in markers:
+            item=media_by_id.get(media_id)
+            if not item or item.get('inline') is not True or item.get('after_section')!=section_id:
+                failures.append(f'{p.name}: invalid inline media marker {section_id}/{media_id}')
+        expected_embeds=[]
+        source_ids={source['id'] for source in a['sources']}
+        section_ids={section['id'] for section in a['sections']}
+        rendered=docs.get(ROOT/'research'/a['slug']/'index.html')
+        if not rendered:failures.append(f'{p.name}: generated article missing')
+        for item in media_items:
+            label=f'{p.name}: {item["id"]}'
+            kind=item.get('type')
+            if kind not in ('image','video','youtube'):
+                failures.append(f'{label}: unsupported media type')
+                continue
+            if item.get('after_section') not in section_ids|{'lead'} or item.get('source_ref') not in source_ids or not item.get('source_url'):
+                failures.append(f'{label}: invalid placement or source reference')
+            if 'inline' in item and not isinstance(item['inline'],bool):failures.append(f'{label}: inline must be boolean')
+            if item.get('inline') is True and markers.count((item.get('after_section'),item['id']))!=1:
+                failures.append(f'{label}: expected exactly one inline marker in after_section')
+            if rendered and rendered.ids.count(item['id'])!=1:failures.append(f'{label}: media must render exactly once')
+            if any(not isinstance(item.get(size),int) or item[size]<=0 for size in ('width','height')):
+                failures.append(f'{label}: invalid media dimensions')
+            if kind=='youtube':
+                youtube_id=item.get('youtube_id','')
+                if not re.fullmatch(r'[A-Za-z0-9_-]{11}',youtube_id) or item.get('src')!='https://www.youtube.com/watch?v='+youtube_id:
+                    failures.append(f'{label}: invalid YouTube ID or watch URL')
+                else:expected_embeds.append('https://www.youtube-nocookie.com/embed/'+youtube_id)
+            else:require_local_media(item.get('src'),label)
+            if kind in ('video','youtube'):
+                require_local_media(item.get('poster'),label)
+                if not isinstance(item.get('duration_seconds'),(int,float)) or item['duration_seconds']<=0:
+                    failures.append(f'{label}: invalid video duration')
+        if rendered and sorted(frame.get('src','') for frame in rendered.iframes)!=sorted(expected_embeds):
+            failures.append(f'{p.name}: rendered YouTube embeds do not match article media')
+        if a.get('cover'):
+            require_local_media(a['cover'].get('src'),p.name)
+            if not a['cover'].get('alt'):failures.append(f'{p.name}: cover requires alt text')
     for p in (ROOT/'content/evidence').glob('*.json'):
         json.loads(p.read_text())
         if re.search(r'/Users/|/home/|missionos-internal|localhost:|127\.0\.0\.1:|file://',p.read_text()):failures.append(f'{p.name}: local/private data')
     media_manifest=ROOT/'assets/media/provenance.json'
-    verified_media=0
+    verified_media=0; manifest_paths=set()
     if media_manifest.exists():
         for media in json.loads(media_manifest.read_text())['files']:
+            if media['path'] in manifest_paths:failures.append(f'{media["path"]}: duplicate media provenance')
+            manifest_paths.add(media['path'])
             target=ROOT/media['path'].lstrip('/')
             if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest()!=media['sha256']:
                 failures.append(f'{media["path"]}: media provenance mismatch')
             else:verified_media+=1
+    for path in sorted(required_media-manifest_paths):
+        failures.append(f'{path}: media provenance entry missing')
     http_count=0
     if base:
         routes=set(local)|{'/','/assets/site.css','/assets/library.js','/assets/favicon.svg','/sitemap.xml','/robots.txt'}
@@ -91,7 +161,7 @@ def check(base=None):
                     if route.endswith('.json'):json.loads(body)
                 http_count+=1
             except Exception as ex:failures.append(f'HTTP {route}: {ex}')
-    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'verified_media_files':verified_media,'http_routes_checked':http_count,'failures':failures}
+    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'youtube_embeds':youtube_embeds,'verified_media_files':verified_media,'http_routes_checked':http_count,'failures':failures}
     print(json.dumps(report,indent=2))
     return bool(failures)
 

@@ -423,6 +423,50 @@
       "width": 1600,
       "height": 900,
       "codec": "png"
+    },
+    {
+      "path": "/assets/media/building-missionos-flow.png",
+      "source_url": "/content/evidence/building-missionos-publication.json",
+      "source_kind": "author_editorial_schematic",
+      "source_manuscript_sha256": "42c745714d064ceb224492456ae1b692877d2fd27beba19907b0e85a168e6637",
+      "sha256": "7cb64e8295e3d16b2ad2c4ba4568e0c3088addfce8e0e5a42ae71c98045b3a2c",
+      "bytes": 188079,
+      "width": 1440,
+      "height": 1000,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/building-missionos-m3-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-ai-mission-m3-20261012/mission-poster.jpg",
+      "source_kind": "unchanged_public_repository_asset",
+      "source_manuscript_sha256": "42c745714d064ceb224492456ae1b692877d2fd27beba19907b0e85a168e6637",
+      "sha256": "1dcaa2cb6cb955e718854603b141568d20f54ee559f5353974b21f9d6281520b",
+      "bytes": 216436,
+      "width": 1280,
+      "height": 720,
+      "codec": "mjpeg"
+    },
+    {
+      "path": "/assets/media/building-missionos-thrust-matrix.png",
+      "source_url": "/content/evidence/building-missionos-publication.json",
+      "source_kind": "author_figure_from_saved_scalar_evidence",
+      "source_manuscript_sha256": "42c745714d064ceb224492456ae1b692877d2fd27beba19907b0e85a168e6637",
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+      "bytes": 130449,
+      "width": 1280,
+      "height": 1080,
+      "codec": "png"
+    },
+    {
+      "path": "/assets/media/building-missionos-recovery-poster.jpg",
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "source_kind": "unchanged_public_repository_asset",
+      "source_manuscript_sha256": "42c745714d064ceb224492456ae1b692877d2fd27beba19907b0e85a168e6637",
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67",
+      "bytes": 141577,
+      "width": 1280,
+      "height": 720,
+      "codec": "mjpeg"
     }
   ]
 }

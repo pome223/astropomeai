@@ -36,10 +36,14 @@ The generator uses only the Python standard library. Commit the generated `index
 
 ## Videos and figures
 
-Five articles include 13 inline MP4 recordings and 15 still figures in total. A structured `media` array places recordings and galleries alongside the relevant article sections. All recordings are source-verified H.264 copies with posters, native playback controls, inline mobile playback, and `preload="none"`. There is no autoplay. Selecting a gallery figure opens a keyboard-accessible enlargement; without JavaScript, the link opens the full-size image. The homepage features three recorded experiments.
+Six articles include 13 inline MP4 recordings, two AstroPomeAI YouTube embeds, and 20 still figures in total. A structured `media` array places recordings and galleries alongside the relevant article sections. All recordings are source-verified H.264 copies with posters, native playback controls, inline mobile playback, and `preload="none"`. There is no autoplay. Selecting a gallery figure opens a keyboard-accessible enlargement; without JavaScript, the link opens the full-size image. The homepage features three recorded experiments.
 
 Media files and their hashes are listed in `assets/media/provenance.json`; source attribution is retained alongside them. Videos have scenario-specific captions that distinguish recorded simulation, generated prediction, playback compression, and separate research cohorts.
 
 The existing Medium and note links remain in the site navigation/footer. Original background image assets are retained in the repository.
 
 The 24 October Starship update publishes a reviewed saved-record video and a portable status supplement. It preserves the 22 October mission timing failure and distinguishes the separate 23 October certificate preflight stop.
+
+## Development stories
+
+`building-missionos` republishes the full English Medium manuscript as a development story, with its five figures and two dated AstroPomeAI videos. `abstract_label` changes the introduction heading, blank lines preserve introduction paragraphs, and `cover`/`card_label` control its library card. Media with `inline: true` replaces one `<!-- media:ID -->` marker in its named section. YouTube media use a validated `youtube_id`, a canonical watch URL, and a local poster; no lead video is required.
