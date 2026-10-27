@@ -9,7 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://astropomeai.com'
 MISSION_SHA = '7f0128491ac1e998c05580b50707ee8cab7543c6'
-ORDER = ['mission-assurance', 'world-model-stacking', 'robot-manipulation-repair', 'quadruped-delivery', 'urban-drone-recovery', 'temporal-landing-decisions', 'maritime-mission-assurance', 'starship-mission-simulation', 'dna-observation-design', 'dna-replication-completion', 'dna-initiation-mechanisms']
+ORDER = ['building-missionos', 'mission-assurance', 'world-model-stacking', 'robot-manipulation-repair', 'quadruped-delivery', 'urban-drone-recovery', 'temporal-landing-decisions', 'maritime-mission-assurance', 'starship-mission-simulation', 'dna-observation-design', 'dna-replication-completion', 'dna-initiation-mechanisms']
+MEDIA_MARKER = re.compile(r'<!--\s*media:([^\s<>]+)\s*-->')
 e = html.escape
 
 def display_date(value):
@@ -43,6 +44,13 @@ def media_figure(item):
         label = f'Recorded video · {minutes}:{seconds:02d}'
         visual = f'<video controls playsinline preload="none" poster="{e(item["poster"])}" width="{item["width"]}" height="{item["height"]}" aria-label="{e(item["title"])}" aria-describedby="{caption_id}"><source src="{e(item["src"])}" type="video/mp4"><p><a href="{e(item["src"])}">Open this video</a>.</p></video>'
         link_label = 'Open video'
+    elif item['type'] == 'youtube':
+        assert re.fullmatch(r'[A-Za-z0-9_-]{11}', item['youtube_id']), item['id']
+        assert item['src'] == 'https://www.youtube.com/watch?v=' + item['youtube_id'], item['id']
+        minutes, seconds = divmod(round(item['duration_seconds']), 60)
+        label = f'YouTube video · {minutes}:{seconds:02d}'
+        visual = f'<div class="youtube-frame" style="aspect-ratio:{item["width"]}/{item["height"]}"><img class="youtube-poster" src="{e(item["poster"])}" alt="" aria-hidden="true" loading="lazy" width="{item["width"]}" height="{item["height"]}"><iframe src="https://www.youtube-nocookie.com/embed/{item["youtube_id"]}" width="{item["width"]}" height="{item["height"]}" loading="lazy" title="{e(item["title"])}" aria-describedby="{caption_id}" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>'
+        link_label = 'Watch on YouTube'
     else:
         label = 'Figure · Select to enlarge'
         visual = f'<a href="{e(item["src"])}" class="zoom-link" data-zoom aria-label="Enlarge: {e(item["title"])}"><img src="{e(item["src"])}" alt="{e(item["alt"])}" loading="lazy" decoding="async" width="{item["width"]}" height="{item["height"]}"><span class="zoom-hint" aria-hidden="true">↗</span></a>'
@@ -50,8 +58,16 @@ def media_figure(item):
     return f'<figure class="media-item media-item--{item["type"]}" id="{e(item["id"])}"><div class="media-label">{label}</div>{visual}<figcaption id="{caption_id}"><strong>{e(item["title"])}</strong><p>{e(item["caption"])} {source}</p><div class="media-links"><a href="{e(item["src"])}">{link_label} ↗</a><a href="{e(item["source_url"])}">Original source ↗</a></div></figcaption></figure>'
 
 def media_at(article, section):
-    items = [m for m in article.get('media', []) if m['after_section'] == section]
+    items = [m for m in article.get('media', []) if m['after_section'] == section and not m.get('inline')]
     return '<div class="media-gallery">' + ''.join(media_figure(m) for m in items) + '</div>' if items else ''
+
+def inline_media(article, section):
+    items = {m['id']: m for m in article.get('media', [])}
+    def replace(match):
+        item = items[match.group(1)]
+        assert item.get('inline') is True and item['after_section'] == section['id'], item['id']
+        return '<div class="media-inline">' + media_figure(item) + '</div>'
+    return MEDIA_MARKER.sub(replace, section['html'])
 
 def featured_films(articles):
     features = []
@@ -69,10 +85,12 @@ def render_home(articles):
         search = e(' '.join([a['title'], a['subtitle'], a['summary'], a['domain'], *a['keywords']]).lower(), quote=True)
         lead = next((m for m in a.get('media', []) if m['after_section'] == 'lead'), None)
         cover = f'<a class="card-cover" href="/research/{a["slug"]}/#{lead["id"]}" aria-label="Watch {e(a["title"])}"><img src="{e(lead["poster"])}" alt="" loading="lazy"><span>▶ Video &amp; figures</span></a>' if lead else ''
-        cards.append(f'''<article class="research-card" data-domain="{e(a['domain'], quote=True)}" data-search="{search}">{cover}<div class="card-top"><span class="card-domain">{e(a['domain'])}</span><span class="card-number">{i:02d}</span></div><h3><a href="/research/{a['slug']}/">{e(a['title'])}</a></h3><p>{e(a['summary'])}</p><div class="card-footer"><span>{max(1,round(words(a)/200))} min read · Research article</span><a href="/research/{a['slug']}/" aria-label="Read {e(a['title'], quote=True)}">Read article ↗</a></div></article>''')
+        if not lead and a.get('cover'):
+            cover = f'<a class="card-cover" href="/research/{a["slug"]}/" aria-label="Read {e(a["title"])}"><img src="{e(a["cover"]["src"])}" alt="{e(a["cover"]["alt"])}" loading="lazy"></a>'
+        cards.append(f'''<article class="research-card" data-domain="{e(a['domain'], quote=True)}" data-search="{search}">{cover}<div class="card-top"><span class="card-domain">{e(a['domain'])}</span><span class="card-number">{i:02d}</span></div><h3><a href="/research/{a['slug']}/">{e(a['title'])}</a></h3><p>{e(a['summary'])}</p><div class="card-footer"><span>{max(1,round(words(a)/200))} min read · {e(a.get('card_label', 'Research article'))}</span><a href="/research/{a['slug']}/" aria-label="Read {e(a['title'], quote=True)}">Read article ↗</a></div></article>''')
     domains = list(dict.fromkeys(a['domain'] for a in articles))
     filters = '<button type="button" data-filter="all" aria-pressed="true">All research</button>' + ''.join(f'<button type="button" data-filter="{e(d, quote=True)}" aria-pressed="false">{e(d)}</button>' for d in domains)
-    body = f'''<main id="main" class="wrap"><section class="hero" aria-labelledby="hero-title"><div><div class="eyebrow">Research at the boundaries of intelligence</div><h1 id="hero-title">How do complex<br> systems <em>coordinate?</em></h1><p>From AI that supervises a robot mission to the molecular machinery that copies a genome. Experiments, models, and the evidence behind what they can do.</p><div class="hero-links"><a href="#research">Explore the research ↓</a><a class="external" href="https://github.com/pome223/missionos">Explore MissionOS</a></div></div>{art()}</section><div class="ledger"><span><strong>{len(articles):02d}</strong> research articles</span><span><strong>{len(domains):02d}</strong> research areas</span><span>Methods · Results · Open questions</span><span class="edition">Edition 01 / 22 October 2026</span></div>{featured_films(articles)}<section class="research-section" id="research" aria-labelledby="research-title"><div class="section-head"><div><div class="eyebrow">The research library</div><h2 id="research-title">Studies &amp; experiments</h2></div><div class="search-box"><label for="research-search" class="search-label">Search by topic or keyword</label><input id="research-search" type="search" placeholder="Try world models or DNA…" autocomplete="off"></div></div><div class="filters" role="group" aria-label="Filter research by area">{filters}</div><p id="result-count" class="eyebrow" aria-live="polite">{len(articles)} articles</p><div class="research-grid">{''.join(cards)}</div><p id="empty-results" class="empty-results" hidden>No matching articles. Try another keyword or select All research.</p><noscript><p>All research articles are available below; filtering requires JavaScript.</p></noscript></section><section id="about" class="about-block" aria-labelledby="about-title"><div><div class="eyebrow">About this collection</div><h2 id="about-title">A result is only as useful<br> as its evidence.</h2></div><div><p>Astropome AI is an independent research project exploring governed AI, autonomous systems, and computational biology. These articles bring together the question, the method, the measured result, and the limits of each study.</p><p>The MissionOS articles are based on <a href="https://github.com/pome223/missionos/tree/{MISSION_SHA}">a pinned snapshot of the public main branch</a>. Dated updates may additionally include reviewed saved-record summaries and media, identified in each article. The biology articles introduce curated summaries of saved computational studies, with links to their published biological context and supplementary evidence.</p><p>These are technical research articles, not peer-reviewed publications. Simulator outcomes, synthetic data, and empirical observations are identified within each article. Negative results remain part of the record.</p></div></section></main>'''
+    body = f'''<main id="main" class="wrap"><section class="hero" aria-labelledby="hero-title"><div><div class="eyebrow">Research at the boundaries of intelligence</div><h1 id="hero-title">How do complex<br> systems <em>coordinate?</em></h1><p>From AI that supervises a robot mission to the molecular machinery that copies a genome. Experiments, models, and the evidence behind what they can do.</p><div class="hero-links"><a href="#research">Explore the research ↓</a><a class="external" href="https://github.com/pome223/missionos">Explore MissionOS</a></div></div>{art()}</section><div class="ledger"><span><strong>{len(articles):02d}</strong> research articles</span><span><strong>{len(domains):02d}</strong> research areas</span><span>Methods · Results · Open questions</span><span class="edition">Edition 01 / 22 October 2026</span></div>{featured_films(articles)}<section class="research-section" id="research" aria-labelledby="research-title"><div class="section-head"><div><div class="eyebrow">The research library</div><h2 id="research-title">Studies &amp; experiments</h2></div><div class="search-box"><label for="research-search" class="search-label">Search by topic or keyword</label><input id="research-search" type="search" placeholder="Try world models or DNA…" autocomplete="off"></div></div><div class="filters" role="group" aria-label="Filter research by area">{filters}</div><p id="result-count" class="eyebrow" aria-live="polite">{len(articles)} articles</p><div class="research-grid">{''.join(cards)}</div><p id="empty-results" class="empty-results" hidden>No matching articles. Try another keyword or select All research.</p><noscript><p>All research articles are available below; filtering requires JavaScript.</p></noscript></section><section id="about" class="about-block" aria-labelledby="about-title"><div><div class="eyebrow">About this collection</div><h2 id="about-title">A result is only as useful<br> as its evidence.</h2></div><div><p>Astropome AI is an independent research project exploring governed AI, autonomous systems, and computational biology. These articles bring together the question, the method, the measured result, and the limits of each study.</p><p>The original MissionOS collection is based on <a href="https://github.com/pome223/missionos/tree/{MISSION_SHA}">a pinned snapshot of the public main branch</a>. Dated updates may additionally include reviewed saved-record summaries and media, identified in each article. The biology articles introduce curated summaries of saved computational studies, with links to their published biological context and supplementary evidence.</p><p>These are technical research articles, not peer-reviewed publications. Simulator outcomes, synthetic data, and empirical observations are identified within each article. Negative results remain part of the record.</p></div></section></main>'''
     schema = {'@context':'https://schema.org','@type':'CollectionPage','name':'Astropome AI research library','url':BASE+'/', 'hasPart':[{'@type':'ScholarlyArticle','headline':a['title'],'url':BASE+'/research/'+a['slug']+'/'} for a in articles]}
     (ROOT/'index.html').write_text(document('Research in AI, autonomous systems & computational biology','Independent research on MissionOS, robot learning, autonomous missions, and DNA replication. Methods, measured results, limitations, and sources.','/',body,schema,True))
 
@@ -82,20 +100,23 @@ def render_article(a):
     toc = ''.join(f'<li><a href="#{e(s["id"], quote=True)}">{e(s["title"])}</a></li>' for s in a['sections'])
     parts = []
     for s in a['sections']:
-        content = re.sub(r'(<table\b.*?</table>)',r'<div class="table-scroll">\1</div>',s['html'],flags=re.S)
+        content = re.sub(r'(<table\b.*?</table>)',r'<div class="table-scroll">\1</div>',inline_media(a, s),flags=re.S)
         parts.append(f'<section id="{e(s["id"], quote=True)}"><h2>{e(s["title"])}</h2>{content}{media_at(a, s["id"])}</section>')
     references = ''.join(f'<li id="{e(s["id"], quote=True)}"><a href="{e(s["url"], quote=True)}">{e(s["title"])}</a><span class="ref-detail">{e(s.get("detail",""))}</span></li>' for s in a['sources'])
     biology = a['domain'] == 'Computational biology'
     note = 'Saved computational study records, newly curated for this collection. Public literature and supplementary evidence are linked below.' if biology else f'Based on public MissionOS main, frozen at {MISSION_SHA[:8]}. Original reports and their evidence boundaries are linked below.'
     if a.get('evidence_note'):
         note = e(a['evidence_note'])
-    lead_media = '<div class="lead-media">' + media_at(a, 'lead') + '</div>' if a.get('media') else ''
-    if a.get('media'):
-        first = next(m for m in a['media'] if m['after_section'] == 'lead')
+    lead_gallery = media_at(a, 'lead')
+    lead_media = '<div class="lead-media">' + lead_gallery + '</div>' if lead_gallery else ''
+    first = next((m for m in a.get('media', []) if m['after_section'] == 'lead' and not m.get('inline')), None)
+    if first:
         toc = f'<li><a href="#{first["id"]}">Watch the experiment</a></li>' + toc
+    abstract_label = e(a.get('abstract_label', 'Abstract'))
+    abstract_paragraphs = ''.join('<p>' + e(paragraph) + '</p>' for paragraph in re.split(r'\n\s*\n', a['abstract']))
     media_link = ' · <a href="/assets/media/provenance.json">Media provenance</a>' if a.get('media') else ''
     figure_link = ' · <a href="/assets/figures/provenance.json">Figure provenance</a>' if any('<figure>' in part['html'] for part in a['sections']) else ''
-    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← Research library</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">{published_date}</time>{updated_meta}<span>{max(1,round(words(a)/200))} min read</span><span class="status">Not peer reviewed</span></div></header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>Abstract</h2><p>{e(a['abstract'])}</p></div><div class="keywords"><strong>Keywords</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}<section class="references" id="references"><h2>References &amp; evidence</h2><ol>{references}</ol></section><div class="article-end">Published as part of the Astropome AI research collection. <a href="/content/articles/{a['slug']}.json">Article source</a>{figure_link}{media_link} · <a href="/#research">Browse all research ↗</a></div></div><aside class="article-sidebar" aria-label="Article navigation"><p class="eyebrow">In this article</p><ol class="toc"><li><a href="#abstract">Abstract</a></li>{toc}<li><a href="#references">References &amp; evidence</a></li></ol><div class="source-note"><strong>About the evidence</strong><p>{note}</p><p>Use your browser’s Print command to save a reading copy as PDF.</p><a href="/content/articles/{a['slug']}.json">View article source ↗</a></div></aside></div></article></main>'''
+    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← Research library</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">{published_date}</time>{updated_meta}<span>{max(1,round(words(a)/200))} min read</span><span class="status">Not peer reviewed</span></div></header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>{abstract_label}</h2>{abstract_paragraphs}</div><div class="keywords"><strong>Keywords</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}<section class="references" id="references"><h2>References &amp; evidence</h2><ol>{references}</ol></section><div class="article-end">Published as part of the Astropome AI research collection. <a href="/content/articles/{a['slug']}.json">Article source</a>{figure_link}{media_link} · <a href="/#research">Browse all research ↗</a></div></div><aside class="article-sidebar" aria-label="Article navigation"><p class="eyebrow">In this article</p><ol class="toc"><li><a href="#abstract">{abstract_label}</a></li>{toc}<li><a href="#references">References &amp; evidence</a></li></ol><div class="source-note"><strong>About the evidence</strong><p>{note}</p><p>Use your browser’s Print command to save a reading copy as PDF.</p><a href="/content/articles/{a['slug']}.json">View article source ↗</a></div></aside></div></article></main>'''
     path = '/research/'+a['slug']+'/'
     schema = {'@context':'https://schema.org','@type':'ScholarlyArticle','headline':a['title'],'description':a['summary'],'abstract':a['abstract'],'datePublished':a['date'],'inLanguage':'en','author':{'@type':'Organization','name':'Astropome AI'},'publisher':{'@type':'Organization','name':'Astropome AI'},'url':BASE+path,'keywords':a['keywords'],'citation':[BASE+s['url'] if s['url'].startswith('/') else s['url'] for s in a['sources']]}
     if a.get('updated'):
@@ -117,11 +138,29 @@ def main():
         assert required <= a.keys(), (a.get('slug'), required-a.keys())
         assert re.fullmatch('[a-z0-9-]+',a['slug'])
         ids=[s['id'] for s in a['sections']]+[s['id'] for s in a['sources']]+['abstract','references']+[m['id'] for m in a.get('media', [])]
+        markers = [(section['id'], media_id) for section in a['sections'] for media_id in MEDIA_MARKER.findall(section['html'])]
+        inline_items = {m['id']: m for m in a.get('media', []) if m.get('inline') is True}
+        for section_id, media_id in markers:
+            assert media_id in inline_items and inline_items[media_id]['after_section'] == section_id, (a['slug'], section_id, media_id)
+        for media_id, item in inline_items.items():
+            assert markers.count((item['after_section'], media_id)) == 1, (a['slug'], media_id, 'expected one inline marker')
+        if a.get('cover'):
+            assert a['cover']['src'].startswith('/') and not a['cover']['src'].startswith('//')
+            assert (ROOT/a['cover']['src'].lstrip('/')).is_file() and a['cover']['alt']
         for m in a.get('media', []):
-            assert m['type'] in ('image','video') and m['after_section'] in ['lead']+[s['id'] for s in a['sections']]
+            assert m['type'] in ('image','video','youtube') and m['after_section'] in ['lead']+[s['id'] for s in a['sections']]
             assert m['source_ref'] in [r['id'] for r in a['sources']]
-            assert (ROOT/m['src'].lstrip('/')).is_file()
-            if m['type']=='video': assert m['duration_seconds']>0 and (ROOT/m['poster'].lstrip('/')).is_file()
+            assert isinstance(m['width'], int) and m['width'] > 0 and isinstance(m['height'], int) and m['height'] > 0
+            if 'inline' in m: assert isinstance(m['inline'], bool)
+            if m['type'] == 'youtube':
+                assert re.fullmatch(r'[A-Za-z0-9_-]{11}', m['youtube_id']), m['id']
+                assert m['src'] == 'https://www.youtube.com/watch?v=' + m['youtube_id'], m['id']
+            else:
+                assert m['src'].startswith('/') and not m['src'].startswith('//')
+                assert (ROOT/m['src'].lstrip('/')).is_file()
+            if m['type'] in ('video','youtube'):
+                assert m['duration_seconds'] > 0 and m['poster'].startswith('/') and not m['poster'].startswith('//')
+                assert (ROOT/m['poster'].lstrip('/')).is_file()
         assert len(ids)==len(set(ids)),a['slug']
         render_article(a)
     render_home(articles)
