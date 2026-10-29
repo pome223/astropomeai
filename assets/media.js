@@ -8,12 +8,13 @@
   const links = [...document.querySelectorAll('[data-zoom]')];
   if (!links.length || !window.HTMLDialogElement) return;
   const dialog = document.createElement('dialog');
+  const japanese = document.documentElement.lang === 'ja';
   dialog.className = 'image-dialog';
-  dialog.setAttribute('aria-label', 'Enlarged research figure');
+  dialog.setAttribute('aria-label', japanese ? '図の拡大表示' : 'Enlarged research figure');
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'image-dialog-close';
-  close.textContent = 'Close ×';
+  close.textContent = japanese ? '閉じる ×' : 'Close ×';
   const image = document.createElement('img');
   const caption = document.createElement('p');
   caption.id = 'enlarged-figure-caption';

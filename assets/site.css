@@ -11,3 +11,17 @@
 .article-body blockquote.research-takeaway{border-left-width:4px;background:var(--wash);padding:22px 24px;color:var(--ink);font-size:24px;line-height:1.5}.article-body blockquote.research-takeaway p{margin:0}
 
 .article-body .completion-comparison th:nth-child(2),.article-body .completion-comparison td:nth-child(2){min-width:90px;overflow-wrap:normal}
+
+/* Japanese manuscripts retain comfortable line spacing and scrollable comparison tables. */
+html[lang="ja"]{line-break:strict}
+html[lang="ja"] .article-header h1{font-family:var(--sans);font-size:clamp(28px,3.3vw,43px);line-height:1.5;letter-spacing:.01em}
+html[lang="ja"] .article-body{font-family:var(--sans);font-size:17px;line-height:1.95}
+html[lang="ja"] .article-body section h2{font-family:var(--sans);font-size:27px;line-height:1.6;letter-spacing:0}
+html[lang="ja"] .article-body h3{line-height:1.8}
+html[lang="ja"] .article-body table{min-width:640px;font-size:13px;line-height:1.85}
+html[lang="ja"] .article-body .media-item figcaption{font-size:13px;line-height:1.9}
+html[lang="ja"] .article-sidebar .toc a{font-size:12px;line-height:1.8}
+.article-downloads{display:flex;flex-wrap:wrap;gap:10px 20px;margin:24px 0 0;font:13px/1.8 var(--sans)}
+.article-downloads a{color:var(--accent)}
+@media(max-width:700px){html[lang="ja"] .article-body{font-size:16px}html[lang="ja"] .article-body section h2{font-size:24px}}
+@media print{html[lang="ja"] .article-header h1{font-size:22pt}html[lang="ja"] .article-body{font-size:10.5pt}html[lang="ja"] .article-body section h2{font-size:15pt}html[lang="ja"] .article-body table{min-width:0;font-size:8pt}.article-downloads{display:none}}

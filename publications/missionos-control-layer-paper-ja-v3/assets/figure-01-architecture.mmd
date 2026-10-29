@@ -1,0 +1,25 @@
+flowchart TB
+    H["人間<br/>目的・優先順位・許容範囲"]
+    A["管制AI Agent<br/>観測の解釈・比較・再計画"]
+    P["具体的な提案<br/>行動・条件・根拠"]
+    G{"Rules / Gateway<br/>承認範囲と実行条件を検査"}
+    E["Executor<br/>機体・ロボットの制御系"]
+    O["実行後の観測<br/>位置・状態・受領・ログ"]
+    V["Verifier<br/>達成条件と保全条件を照合"]
+    H -->|"目的と制約"| A
+    A --> P
+    P -->|"承認または変更の判断"| H
+    H -->|"記録された承認範囲"| G
+    P -->|"候補行動"| G
+    G -->|"条件を満たす操作だけ"| E
+    G -->|"不一致・期限切れは差し戻し"| H
+    E --> O
+    O --> V
+    O -->|"新しい判断材料"| A
+    V -->|"確認済みの結果と未達条件"| A
+    classDef human fill:#fff4dd,stroke:#9a6d14,color:#252525;
+    classDef cognition fill:#e9f2ff,stroke:#2a6099,color:#172d43;
+    classDef evidence fill:#e9f6ef,stroke:#2b7651,color:#163e29;
+    class H human;
+    class A,P cognition;
+    class O,V evidence;
