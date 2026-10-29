@@ -1,0 +1,126 @@
+{
+  "schema": "astropome.manuscript_publication.v1",
+  "published": "2026-10-29",
+  "revision": "2026-10-29-english-public-report-license-update",
+  "language": "en",
+  "title": "MissionOS: A Mission-Control Layer Connecting AI Agents and Physical AI to Human Judgment",
+  "source_manuscript": {
+    "filename": "docs/reports/missionos-control-layer-upstream.md",
+    "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer-upstream.md",
+    "sha256": "c48a2a020530bd955f627118b21c0b5f07ee725b9b7c5c51b1aa6095377bbe18",
+    "bytes": 57871,
+    "git_blob": "4c7982b7aff2348778128ce76b10ebf050619c30",
+    "url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/reports/missionos-control-layer.md",
+    "unchanged": true,
+    "repository_path": "docs/reports/missionos-control-layer.md",
+    "note": "Byte-unchanged public English source snapshot. The package filename differs from the upstream repository filename; its relative figure and provenance links retain the same directory layout."
+  },
+  "original_zip": {
+    "path": "/publications/missionos-control-layer-paper-en-20261029.zip",
+    "sha256": "66a571b1ade32402a773f1a7f31a43697a5ad38a37f6ebfca23df4c504db53a3",
+    "bytes": 2154594,
+    "unchanged": false,
+    "note": "New portable publication package containing the updated English Markdown, a byte-unchanged upstream source snapshot, eight byte-unchanged figures, upstream provenance, and a package README; no upstream original ZIP was supplied."
+  },
+  "figures": 8,
+  "tables": 5,
+  "references": 20,
+  "public_source_commit": "f204d91c7649afd68a97a38b5bd730b117eaa855",
+  "underlying_study_source_commit": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+  "upstream_provenance": {
+    "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/provenance.json",
+    "url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/provenance.json",
+    "git_blob": "6a1f570d846f425c3b4188771824f2cc6bc66961",
+    "unchanged": true,
+    "scope_note": "This unchanged upstream provenance describes the original public report and figures. Its report_sha256 identifies source_manuscript, not the updated publication_manuscript."
+  },
+  "editorial_changes": [
+    "The English narrative from the pinned public source is retained, with one translated license paragraph added to Appendix A from the author-approved Japanese revision identified in license_update.",
+    "Site navigation, language links, article labels, citation layout, table wrappers, figure controls, downloads, and a publication-copy link in Appendix A were added.",
+    "The two Mermaid blocks are displayed using the unchanged upstream English PNG reading copies; the editable Mermaid remains in both the updated Markdown and the byte-unchanged upstream snapshot.",
+    "All eight figure files are byte-identical to the hashes in the upstream English provenance record. Repository-relative paths are preserved for both Markdown files.",
+    "All eight captions and all twenty references retain their full wording and links, including PLATEAU attribution and the CC BY 4.0 license."
+  ],
+  "new_simulation_runs": 0,
+  "new_experiment_model_calls": 0,
+  "files": [
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/README.md",
+      "bytes": 1514,
+      "sha256": "ef18381af87631085137989346806378f9363872f3f5f07f41ac55e44f8c6cd6"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "bytes": 47421,
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-01-architecture.png",
+      "bytes": 78201,
+      "sha256": "54e81922209782cba72ce4694c9397122eb643156b3efd4fefe727db0bf0d710"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-05-cognitive-bridge.png",
+      "bytes": 62467,
+      "sha256": "a894228f5f3b9c226aba5539953b3730df189e4dbdded6a72a9cfbad11fa62a1"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/provenance.json",
+      "bytes": 18698,
+      "sha256": "e23f43eba4a3f55002dfa7eb50710fface57c0050df7f6281dcd408772c0feea"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/starship-thrust-matrix.png",
+      "bytes": 130449,
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-cargo-native.png",
+      "bytes": 103154,
+      "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-wam-rejection.png",
+      "bytes": 150129,
+      "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "bytes": 141577,
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/examples/assets/missionos-two-obstacle-recovery-map.png",
+      "bytes": 1450720,
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer-upstream.md",
+      "bytes": 57871,
+      "sha256": "c48a2a020530bd955f627118b21c0b5f07ee725b9b7c5c51b1aa6095377bbe18"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer.md",
+      "bytes": 58736,
+      "sha256": "23224a01534fbfd59db6eae8393859e01566f4613823880e65638ea20b1f9bce"
+    }
+  ],
+  "publication_manuscript": {
+    "filename": "docs/reports/missionos-control-layer.md",
+    "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer.md",
+    "sha256": "23224a01534fbfd59db6eae8393859e01566f4613823880e65638ea20b1f9bce",
+    "bytes": 58736,
+    "unchanged": false,
+    "source_sha256": "c48a2a020530bd955f627118b21c0b5f07ee725b9b7c5c51b1aa6095377bbe18",
+    "changes": "One translated license paragraph added at the end of Appendix A, before the Markdown link-reference definitions. Removing that paragraph and its following blank line reproduces the unchanged public source byte for byte."
+  },
+  "license_update": {
+    "source_language": "ja",
+    "source_manuscript_path": "/publications/missionos-control-layer-paper-ja-20261029-update/missionos-control-layer-paper-ja.md",
+    "source_manuscript_sha256": "194eab34a65c716a5d2cad162ca1b51f42f89cee8c34cb107266850acdf8298d",
+    "source_paragraph_markdown": "**ライセンス。** 本文と、本稿で作成した図（図1・図8）は、CC BY 4.0で提供する。図に含まれる第三者のデータは、それぞれの条件に従う。図2の背景地図はOpenStreetMapのデータに基づくもので、本稿のライセンスの対象外とし、OpenStreetMapの条件に従う。図3・図4の3D都市モデルは、横浜市・Project PLATEAUのCC BY 4.0の条件に従う。図4(b)と図3(b)の予測画像は、ANWM（重みはApache 2.0で公開）が本研究の実行中に生成したものである。図5のGo2のロボットモデルは、公開パッケージ（rl_sar_zooのgo2_description、Apache 2.0と表示）を用いた。製品名・モデル名は、使用した対象を指すために記載したもので、各権利者との提携や承認を示すものではない。",
+    "translation_language": "en",
+    "translated_paragraph_markdown": "**License.** The text and the figures created for this report (Figures 1 and 8) are provided under CC BY 4.0. Third-party data included in the figures are subject to their respective terms. The basemap in Figure 2 is based on OpenStreetMap data, is excluded from this report's license, and is subject to OpenStreetMap's terms. The 3D city model in Figures 3 and 4 is subject to the CC BY 4.0 terms of City of Yokohama / Project PLATEAU. The predicted images in Figures 4(b) and 3(b) were generated by ANWM (whose weights are released under Apache 2.0) during the execution of this research. For the Go2 robot model in Figure 5, the project used a public package (go2_description from rl_sar_zoo, labeled Apache 2.0). Product and model names are given to identify the items used and do not indicate affiliation with or endorsement by the respective rights holders.",
+    "scope": "Faithful translation of the author-approved addition. No additional license research or changes to the eight figure files were performed for this publication update."
+  }
+}

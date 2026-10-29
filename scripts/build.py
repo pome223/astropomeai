@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Render the research library using only Python's standard library."""
 import html
+from html.parser import HTMLParser
 import json
 import re
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://astropomeai.com'
 MISSION_SHA = '7f0128491ac1e998c05580b50707ee8cab7543c6'
-ORDER = ['missionos-control-layer-ja', 'building-missionos', 'mission-assurance', 'world-model-stacking', 'robot-manipulation-repair', 'quadruped-delivery', 'urban-drone-recovery', 'temporal-landing-decisions', 'maritime-mission-assurance', 'starship-mission-simulation', 'dna-observation-design', 'dna-replication-completion', 'dna-initiation-mechanisms']
+ORDER = ['missionos-control-layer', 'missionos-control-layer-ja', 'building-missionos', 'mission-assurance', 'world-model-stacking', 'robot-manipulation-repair', 'quadruped-delivery', 'urban-drone-recovery', 'temporal-landing-decisions', 'maritime-mission-assurance', 'starship-mission-simulation', 'dna-observation-design', 'dna-replication-completion', 'dna-initiation-mechanisms']
 MEDIA_MARKER = re.compile(r'<!--\s*media:([^\s<>]+)\s*-->')
 JAPANESE_CHAR = re.compile(r'[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff々〆]')
 JA_LABELS = {
@@ -32,11 +34,76 @@ JA_LABELS = {
     'Research': '研究記事', 'About': 'このサイトについて', 'Code': 'コード',
     'Independent research, open questions.': '独立研究と、未解決の問い。',
     'External links': '外部リンク', 'Website source': 'サイトのソース',
+    'Other languages': '他の言語',
 }
 e = html.escape
 
 def ui(language, label):
     return JA_LABELS.get(label, label) if language == 'ja' else label
+
+class CaptionHTML(HTMLParser):
+    """Allow prose and citation links without executable elements or attributes."""
+    tags = {'p', 'a', 'em', 'strong', 'code', 'span', 'br', 'cite', 'small', 'sup', 'sub'}
+    def __init__(self, value):
+        super().__init__(convert_charrefs=True)
+        self.safe = True
+        self.feed(value)
+        self.close()
+    def handle_starttag(self, tag, attrs):
+        if tag not in self.tags:
+            self.safe = False
+        for name, value in attrs:
+            allowed = {'class', 'title', 'lang'} | ({'href', 'hreflang', 'rel', 'target'} if tag == 'a' else set())
+            if name not in allowed:
+                self.safe = False
+            if name == 'href':
+                compact = ''.join(c for c in (value or '') if ord(c) > 32)
+                if urlsplit(compact).scheme not in ('', 'http', 'https') or compact.startswith('//'):
+                    self.safe = False
+    def handle_endtag(self, tag):
+        if tag not in self.tags:
+            self.safe = False
+    def handle_decl(self, decl):
+        self.safe = False
+    def handle_pi(self, data):
+        self.safe = False
+
+def caption_html_is_safe(value):
+    if not isinstance(value, str) or not value.strip():
+        return False
+    try:
+        return CaptionHTML(value).safe
+    except ValueError:
+        return False
+
+def translation_errors(article, articles_by_path):
+    errors = []
+    language = article.get('language', 'en')
+    own_url = '/research/' + article['slug'] + '/'
+    translations = article.get('translations', [])
+    if not isinstance(translations, list):
+        return ['translations must be a list']
+    seen = set()
+    for item in translations:
+        if not isinstance(item, dict):
+            errors.append('translation must be an object')
+            continue
+        lang, url = item.get('language'), item.get('url', '')
+        if not isinstance(lang, str):
+            errors.append('translation language must be a string')
+            continue
+        if lang not in ('en', 'ja') or lang == language or lang in seen:
+            errors.append('translation language must be a unique different supported language')
+        seen.add(lang)
+        if not isinstance(item.get('label'), str) or not item['label'].strip() or not isinstance(url, str) or not re.fullmatch(r'/research/[a-z0-9-]+/', url):
+            errors.append('translation requires a label and local canonical article URL')
+            continue
+        peer = articles_by_path.get(url)
+        if not peer or peer.get('language', 'en') != lang:
+            errors.append('translation peer does not exist in the declared language')
+        elif not isinstance(peer.get('translations'), list) or not any(isinstance(other, dict) and other.get('language') == language and other.get('url') == own_url for other in peer['translations']):
+            errors.append('translation peer must link back to this article')
+    return errors
 
 def display_date(value, language='en'):
     day = date.fromisoformat(value)
@@ -45,11 +112,11 @@ def display_date(value, language='en'):
     return f'{day.day} {day.strftime("%B %Y")}'
 
 def words(article):
-    return len(re.sub('<[^>]+>', ' ', article['abstract'] + ' '.join(s['html'] for s in article['sections']) + ' '.join(m['caption'] for m in article.get('media', []))).split())
+    return len(re.sub('<[^>]+>', ' ', article['abstract'] + ' '.join(s['html'] for s in article['sections']) + ' '.join(m.get('caption_html', m.get('caption', '')) for m in article.get('media', []))).split())
 
 def reading_time(article):
     if article.get('language', 'en') == 'ja':
-        text = article['abstract'] + ' '.join(s['html'] for s in article['sections']) + ' '.join(m['caption'] for m in article.get('media', []))
+        text = article['abstract'] + ' '.join(s['html'] for s in article['sections']) + ' '.join(m.get('caption_html', m.get('caption', '')) for m in article.get('media', []))
         count = len(JAPANESE_CHAR.findall(html.unescape(re.sub('<[^>]+>', ' ', text))))
         return f'約{max(1, round(count / 500))}分で読めます'
     return f'{max(1, round(words(article) / 200))} min read'
@@ -60,8 +127,9 @@ def header(language='en'):
 def footer(language='en'):
     return f'''<footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Astropome AI · {ui(language, 'Independent research, open questions.')}</span><nav class="footer-links" aria-label="{ui(language, 'External links')}"><a class="external" href="https://github.com/pome223/missionos">MissionOS</a><a class="external" href="https://github.com/pome223/astropomeai">{ui(language, 'Website source')}</a><a class="external" href="https://medium.com/@astropomeai">Medium</a><a class="external" href="https://note.com/astropomeai">note</a></nav></div></footer>'''
 
-def document(title, description, path, body, schema=None, library=False, media=False, language='en'):
+def document(title, description, path, body, schema=None, library=False, media=False, language='en', translations=None):
     metadata = '' if not schema else '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False).replace('<', '\\u003c') + '</script>'
+    metadata += ''.join(f'<link rel="alternate" hreflang="{e(item["language"])}" href="{BASE}{e(item["url"])}">' for item in translations or [])
     if media:
         metadata += '<script src="/assets/media.js" defer></script>'
     return f'''<!doctype html>
@@ -74,6 +142,11 @@ def media_figure(item, language='en'):
     t = lambda label: ui(language, label)
     caption_id = 'caption-' + item['id']
     source = f'<a class="citation" href="#{e(item["source_ref"])}">[{e(item["source_ref"].removeprefix("s"))}]</a>'
+    if 'caption_html' in item:
+        assert caption_html_is_safe(item['caption_html']), (item['id'], 'unsafe caption HTML')
+        caption = item['caption_html']
+    else:
+        caption = f'<p>{e(item["caption"])} {source}</p>'
     if item['type'] == 'video':
         minutes, seconds = divmod(round(item['duration_seconds']), 60)
         label = f'{t("Recorded video")} · {minutes}:{seconds:02d}'
@@ -90,7 +163,7 @@ def media_figure(item, language='en'):
         label = t('Figure · Select to enlarge')
         visual = f'<a href="{e(item["src"])}" class="zoom-link" data-zoom aria-label="{t("Enlarge:")} {e(item["title"])}"><img src="{e(item["src"])}" alt="{e(item["alt"])}" loading="lazy" decoding="async" width="{item["width"]}" height="{item["height"]}"><span class="zoom-hint" aria-hidden="true">↗</span></a>'
         link_label = t('Full-size image')
-    return f'<figure class="media-item media-item--{item["type"]}" id="{e(item["id"])}"><div class="media-label">{label}</div>{visual}<figcaption id="{caption_id}"><strong>{e(item["title"])}</strong><p>{e(item["caption"])} {source}</p><div class="media-links"><a href="{e(item["src"])}">{link_label} ↗</a><a href="{e(item["source_url"])}">{t("Original source")} ↗</a></div></figcaption></figure>'
+    return f'<figure class="media-item media-item--{item["type"]}" id="{e(item["id"])}"><div class="media-label">{label}</div>{visual}<figcaption id="{caption_id}"><strong>{e(item["title"])}</strong>{caption}<div class="media-links"><a href="{e(item["src"])}">{link_label} ↗</a><a href="{e(item["source_url"])}">{t("Original source")} ↗</a></div></figcaption></figure>'
 
 def media_at(article, section):
     items = [m for m in article.get('media', []) if m['after_section'] == section and not m.get('inline')]
@@ -103,6 +176,14 @@ def inline_media(article, section):
         assert item.get('inline') is True and item['after_section'] == section['id'], item['id']
         return '<div class="media-inline">' + media_figure(item, article.get('language', 'en')) + '</div>'
     return MEDIA_MARKER.sub(replace, section['html'])
+
+def reference_item(source):
+    if 'reference_html' in source:
+        assert caption_html_is_safe(source['reference_html']), (source['id'], 'unsafe reference HTML')
+        content = source['reference_html']
+    else:
+        content = f'<a href="{e(source["url"], quote=True)}">{e(source["title"])}</a><span class="ref-detail">{e(source.get("detail",""))}</span>'
+    return f'<li id="{e(source["id"], quote=True)}">{content}</li>'
 
 def featured_films(articles):
     features = []
@@ -138,7 +219,7 @@ def render_article(a):
     references_before = a.get('references_before')
     reference_toc = f'<li><a href="#references">{references_label}</a></li>'
     toc = ''.join((reference_toc if s['id'] == references_before else '') + f'<li><a href="#{e(s["id"], quote=True)}">{e(s["title"])}</a></li>' for s in a['sections'])
-    references = ''.join(f'<li id="{e(s["id"], quote=True)}"><a href="{e(s["url"], quote=True)}">{e(s["title"])}</a><span class="ref-detail">{e(s.get("detail",""))}</span></li>' for s in a['sources'])
+    references = ''.join(reference_item(source) for source in a['sources'])
     reference_section = f'<section class="references" id="references"><h2>{references_label}</h2><ol>{references}</ol></section>'
     parts = []
     for s in a['sections']:
@@ -167,14 +248,17 @@ def render_article(a):
     downloads = ''.join(f'<a href="{e(item["url"], quote=True)}">{e(item["label"])}</a>' for item in a.get('downloads', []))
     if downloads:
         downloads = '<div class="article-downloads">' + downloads + '</div>'
-    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← {t('Research library')}</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">{published_date}</time>{updated_meta}<span>{reading_time(a)}</span><span class="status">{status_label}</span></div>{downloads}</header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>{abstract_label}</h2>{abstract_paragraphs}</div><div class="keywords"><strong>{t('Keywords')}</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}{references_at_end}<div class="article-end">{t('Published as part of the Astropome AI research collection.')} <a href="/content/articles/{a['slug']}.json">{t('Article source')}</a>{figure_link}{media_link} · <a href="/#research">{t('Browse all research')} ↗</a></div></div><aside class="article-sidebar" aria-label="{t('Article navigation')}"><p class="eyebrow">{t('In this article')}</p><ol class="toc"><li><a href="#abstract">{abstract_label}</a></li>{toc}{reference_toc_at_end}</ol><div class="source-note"><strong>{t('About the evidence')}</strong><p>{note}</p><p>{t('Use your browser’s Print command to save a reading copy as PDF.')}</p><a href="/content/articles/{a['slug']}.json">{t('View article source')} ↗</a></div></aside></div></article></main>'''
+    language_links = ''.join(f'<a href="{e(item["url"], quote=True)}" lang="{e(item["language"])}" hreflang="{e(item["language"])}">{e(item["label"])}</a>' for item in a.get('translations', []))
+    if language_links:
+        language_links = f'<nav class="article-languages" aria-label="{t("Other languages")}">' + language_links + '</nav>'
+    body = f'''<main id="main" class="wrap"><div class="breadcrumb"><a href="/#research">← {t('Research library')}</a> <span aria-hidden="true"> / </span> {e(a['domain'])}</div><article><header class="article-header"><div class="eyebrow">{e(a['domain'])} / {e(a['kind'])}</div><h1>{e(a['title'])}</h1><p class="article-subtitle">{e(a['subtitle'])}</p><div class="article-meta"><span>Astropome AI</span><time datetime="{a['date']}">{published_date}</time>{updated_meta}<span>{reading_time(a)}</span><span class="status">{status_label}</span></div>{language_links}{downloads}</header>{lead_media}<div class="article-grid"><div class="article-body"><div class="abstract" id="abstract"><h2>{abstract_label}</h2>{abstract_paragraphs}</div><div class="keywords"><strong>{t('Keywords')}</strong> / {e(' · '.join(a['keywords']))}</div>{''.join(parts)}{references_at_end}<div class="article-end">{t('Published as part of the Astropome AI research collection.')} <a href="/content/articles/{a['slug']}.json">{t('Article source')}</a>{figure_link}{media_link} · <a href="/#research">{t('Browse all research')} ↗</a></div></div><aside class="article-sidebar" aria-label="{t('Article navigation')}"><p class="eyebrow">{t('In this article')}</p><ol class="toc"><li><a href="#abstract">{abstract_label}</a></li>{toc}{reference_toc_at_end}</ol><div class="source-note"><strong>{t('About the evidence')}</strong><p>{note}</p><p>{t('Use your browser’s Print command to save a reading copy as PDF.')}</p><a href="/content/articles/{a['slug']}.json">{t('View article source')} ↗</a></div></aside></div></article></main>'''
     path = '/research/'+a['slug']+'/'
     schema = {'@context':'https://schema.org','@type':'ScholarlyArticle','headline':a['title'],'description':a['summary'],'abstract':a['abstract'],'datePublished':a['date'],'inLanguage':language,'author':{'@type':'Organization','name':'Astropome AI'},'publisher':{'@type':'Organization','name':'Astropome AI'},'url':BASE+path,'keywords':a['keywords'],'citation':[BASE+s['url'] if s['url'].startswith('/') else s['url'] for s in a['sources']]}
     if a.get('updated'):
         schema['dateModified'] = a['updated']
     destination=ROOT/path.strip('/')
     destination.mkdir(parents=True,exist_ok=True)
-    (destination/'index.html').write_text(document(a['title'],a['summary'],path,body,schema,media=bool(a.get('media')),language=language))
+    (destination/'index.html').write_text(document(a['title'],a['summary'],path,body,schema,media=bool(a.get('media')),language=language,translations=a.get('translations')))
 
 def main():
     articles=[json.loads(p.read_text()) for p in (ROOT/'content/articles').glob('*.json')]
@@ -184,11 +268,14 @@ def main():
     slugs=[a['slug'] for a in articles]
     if len(slugs)!=len(set(slugs)):
         raise SystemExit('Duplicate article slug')
+    articles_by_path = {'/research/' + a['slug'] + '/': a for a in articles}
     for a in articles:
         required={'slug','title','subtitle','domain','kind','date','summary','abstract','keywords','sections','sources'}
         assert required <= a.keys(), (a.get('slug'), required-a.keys())
         assert re.fullmatch('[a-z0-9-]+',a['slug'])
         assert a.get('language', 'en') in ('en', 'ja'), a['slug']
+        errors = translation_errors(a, articles_by_path)
+        assert not errors, (a['slug'], errors)
         if a.get('references_before'):
             assert a['references_before'] in [s['id'] for s in a['sections']], a['slug']
         for item in a.get('downloads', []):

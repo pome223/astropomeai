@@ -507,6 +507,134 @@
       "source_url": "/content/evidence/control-layer-paper-publication.json",
       "source_kind": "unchanged_author_supplied_v3_figure",
       "note": "図5. RQ3に関わる情報提示の設計仮説。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-01-architecture.png",
+      "sha256": "ccebc7cb42c2af45ac2a92bf3101c5d0b91dce458a9408a56dc6de4fd0f8b218",
+      "bytes": 88268,
+      "source_url": "/content/evidence/control-layer-paper-ja-update-publication.json",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図1. MissionOSにおける権限と情報の流れ。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/px4-two-obstacle-recovery.png",
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f",
+      "bytes": 1450720,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/README.md",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図2. PX4 SITLで観測された二つの障害物への対応。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/yokohama-cargo-native.png",
+      "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7",
+      "bytes": 103154,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-cargo-flight/REPORT-ja.md",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図3. 実VLA・WAMを用いた横浜の貨物配送。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/yokohama-wam-rejection.png",
+      "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7",
+      "bytes": 150129,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-native-flight/REPORT-ja.md",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図4. WAMの予測が実観測と整合せず、移動前に停止した試行。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/go2-agent-delivery.jpg",
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+      "bytes": 47421,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/go2-agent-delivery-20260925/report-en.md",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図5. Go2配送試験のシミュレーション時刻15秒における判断待ちの場面。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/starship-booster-recovery-20261014.jpg",
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67",
+      "bytes": 141577,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-booster-recovery-decision-20261014/README.md",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図6. 2026年10月14日のブースター回収判断の記録（再生映像の23秒時点）。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/starship-thrust-matrix.png",
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+      "bytes": 130449,
+      "source_url": "https://astropomeai.com/content/evidence/building-missionos-publication.json",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図7. 同一の保存初期状態から継続した、AIを使用しない九点の物理計算。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-05-cognitive-bridge.png",
+      "sha256": "7cc44a9a3dadb190b4e7aace9fe36373ea8090ed0b7864d3097d1abf0458b6c5",
+      "bytes": 58891,
+      "source_url": "/content/evidence/control-layer-paper-ja-update-publication.json",
+      "source_kind": "unchanged_author_supplied_updated_figure",
+      "note": "図8. RQ3に関わる情報提示の設計仮説。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-01-architecture.png",
+      "sha256": "54e81922209782cba72ce4694c9397122eb643156b3efd4fefe727db0bf0d710",
+      "bytes": 78201,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/figure-01-architecture.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 1. Authority and information flow in MissionOS."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/examples/assets/missionos-two-obstacle-recovery-map.png",
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f",
+      "bytes": 1450720,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/examples/assets/missionos-two-obstacle-recovery-map.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 2. Observed responses to two obstacles in PX4 SITL."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-cargo-native.png",
+      "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7",
+      "bytes": 103154,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/yokohama-cargo-native.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 3. Yokohama cargo delivery using actual VLA and WAM inference."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-wam-rejection.png",
+      "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7",
+      "bytes": 150129,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/yokohama-wam-rejection.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 4. A trial stopped before movement because the WAM prediction was inconsistent with the actual observation."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+      "bytes": 47421,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 5. Waiting for a judgment at simulation time 15 seconds in the Go2 delivery trial."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67",
+      "bytes": 141577,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 6. The Booster recovery judgment recorded on 14 October 2026, shown at 23 seconds in the replay."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/starship-thrust-matrix.png",
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+      "bytes": 130449,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/starship-thrust-matrix.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 7. Nine physics-only continuations from the same saved initial state, without AI."
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-05-cognitive-bridge.png",
+      "sha256": "a894228f5f3b9c226aba5539953b3730df189e4dbdded6a72a9cfbad11fa62a1",
+      "bytes": 62467,
+      "source_url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/figure-05-cognitive-bridge.png",
+      "source_kind": "unchanged_public_upstream_figure",
+      "note": "Figure 8. The information-presentation design hypothesis associated with RQ3."
     }
   ]
 }

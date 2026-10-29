@@ -23,5 +23,8 @@ html[lang="ja"] .article-body .media-item figcaption{font-size:13px;line-height:
 html[lang="ja"] .article-sidebar .toc a{font-size:12px;line-height:1.8}
 .article-downloads{display:flex;flex-wrap:wrap;gap:10px 20px;margin:24px 0 0;font:13px/1.8 var(--sans)}
 .article-downloads a{color:var(--accent)}
+.article-languages{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 0;font:13px/1.8 var(--sans)}
+.article-languages a{display:inline-block;padding:5px 14px;border:1px solid var(--line);border-radius:3px;text-decoration:none;background:var(--white)}
+.article-languages a:hover{border-color:var(--accent)}
 @media(max-width:700px){html[lang="ja"] .article-body{font-size:16px}html[lang="ja"] .article-body section h2{font-size:24px}}
 @media print{html[lang="ja"] .article-header h1{font-size:22pt}html[lang="ja"] .article-body{font-size:10.5pt}html[lang="ja"] .article-body section h2{font-size:15pt}html[lang="ja"] .article-body table{min-width:0;font-size:8pt}.article-downloads{display:none}}

@@ -1,0 +1,19 @@
+flowchart TB
+    I["多様な観測<br/>メトリクス・ログ・画像・時系列"]
+    C["管制AIによる整理<br/>事実・推定・不確実性を区別"]
+    Q["足りない情報の特定"]
+    T["追加観測の提案<br/>許可された取得経路を利用"]
+    B["判断に必要な説明<br/>選択肢・将来の影響・根拠"]
+    H["人間の意思決定<br/>承認・修正・停止・保留"]
+    G["承認記録とRulesの検査"]
+    I --> C
+    C --> Q
+    Q -->|"判断材料が不足"| T
+    T -->|"新しい観測"| I
+    C --> B
+    B --> H
+    H --> G
+    classDef information fill:#e9f2ff,stroke:#2a6099,color:#172d43;
+    classDef human fill:#fff4dd,stroke:#9a6d14,color:#252525;
+    class I,C,Q,T,B information;
+    class H human;

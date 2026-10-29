@@ -1,0 +1,873 @@
+# MissionOS
+
+<p align="center">
+  <img src="docs/assets/missionos-icon.png" alt="MissionOS icon" width="180">
+</p>
+
+**Give the AI a control tower, not a joystick.**
+
+MissionOS is a control plane for AI-driven robots. Its working loop turns a
+chat request into a displayed plan, records explicit operator approval, executes
+through a bounded adapter, and checks later observations. VLA/LLM agents propose
+actions; humans and deterministic rules keep execution authority.
+
+```text
+        AI / VLA
+           │  proposes (no authority)
+           ▼
+     Mission Contract
+           │
+           ▼
+     Human Approval          ← the only thing that creates execution authority
+           │
+           ▼
+     Bounded Dispatch        ← deterministic rules constrain what may run
+           │
+           ▼
+   Robot / policy adapter   ← executor applies actions
+           │
+           ▼
+        Verifier             ← non-model evidence decides
+     ├── continue
+     ├── repair
+     └── stop
+```
+
+Every stage leaves its own record: what was proposed, what was approved, what
+was sent, what was ACKed, and what was actually observed. Because those are
+separate facts, they cannot be collapsed into a single "the agent did it." An
+ACK is not success. Observed progress is not mission completion.
+
+**Core principle:**
+> LLM judges. Human approves. Rules constrain. Executor acts. Verifier checks.
+> Repair loops.
+
+## What MissionOS Can Supervise
+
+MissionOS assigns missions, monitors progress, handles exceptions, and checks
+outcomes through robot-specific execution adapters. The following paths have
+recorded **simulator evidence**; they are not physical-robot deployments.
+
+| Robot or task | Mission-level supervision | Recorded example |
+| --- | --- | --- |
+| **Drones — PX4 / Gazebo** | Approved routes, obstacle recovery, delivery checks, and return | [Yokohama map-selected delivery](#yokohama-choose-a-delivery-destination-on-the-3d-map) |
+| **Wheeled robots — TurtleBot3 / Nav2** | Room delivery, approved navigation, and observed route tracking | [House delivery](#what-has-actually-run) |
+| **Robot dogs — Unitree Go2 / MuJoCo** | Indoor delivery, waiting or replanning around blockage, simulated receipt, and return | [Go2 images and videos](#unitree-go2-indoor-delivery-and-return) |
+| **Block stacking — SmolVLA with ExtraTrees or neural ACWM** | Forecast evidence, continue-or-stop judgments, bounded execution, and tower verification | [Stacking animation and results](#block-stacking-predict-execute-and-stop) |
+| **Robot-arm repair — GR00T, Cosmos Policy, VLA-0 / LIBERO Panda** | Bounded repair attempts and checks of target and preserved conditions | [Measured repair limits](#where-the-manipulation-repair-frontier-currently-is) |
+| **Spacecraft development — Starship-inspired 6DOF simulator** | Once-approved scope, live AI return replanning, checked fallback and measured contact | [Launch, 26-payload release, supervision and return videos](#starship-inspired-six-degree-of-freedom-mission-simulation) |
+
+### Unitree Go2: indoor delivery and return
+
+In a human-approved delivery to Meeting Room A, **two actual DeepSeek judgments
+(`wait` → `reroute`) passed Rules checks**. Navigation resumed, and the verifier
+confirmed simulated receipt, return to reception, and a five-second terminal hold.
+
+![Unitree Go2 in the MuJoCo office simulation, with the robot, blocked passage, mission status, and route map visible](docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg)
+
+<details>
+<summary>Play video: Agent-directed waiting, replanning, delivery, and return</summary>
+
+https://github.com/user-attachments/assets/75c35e50-9a9d-4b73-9849-31459c473841
+
+</details>
+
+**[Watch the Go2 delivery video](https://github.com/user-attachments/assets/75c35e50-9a9d-4b73-9849-31459c473841)** ·
+[Watch: yielding to a moving obstacle](https://github.com/user-attachments/assets/b76b62e3-ab74-4889-ad87-4fcade744232) ·
+[Repository MP4 copies](docs/assets/go2-agent-delivery-20260925/media) ·
+[Results and verification](docs/assets/go2-agent-delivery-20260925/report-en.md) ·
+[Run the opt-in example](docs/examples/go2-indoor-delivery.md)
+
+*Recorded MuJoCo physics at approximately 3× playback speed. The separate
+moving-obstacle video uses local yielding with zero LLM judgments. Both runs use
+simulator geometry and a learned walking policy; physical delivery, camera-based
+navigation, and WAM-assisted navigation are outside these results.*
+
+### Block stacking: predict, execute, and stop
+
+**MissionOS connected prediction, actual DeepSeek judgments, bounded human
+preapproval, Rules, SmolVLA execution, and measured verification.** The later
+governed runs banked **8 + 8 blocks with ExtraTrees** and **9 + 4 with neural
+ACWM**, each on two known cases. These demonstrate the integrated execution path;
+the larger stopping-strategy comparisons are reported separately below.
+
+![Saved-action block-stacking simulator replay: continuing to ten collapses for zero points, WAM stopping banks eight, and a post-hoc nine-block stopping counterfactual banks nine](docs/assets/block-stacking-20260918/centered-game-replay.gif)
+
+<details>
+<summary>Play video: the same stacking start, three stopping choices</summary>
+
+https://github.com/user-attachments/assets/84d5a72f-932e-4791-a8c0-9a06d9e8c47b
+
+</details>
+
+**[Watch the stacking replay](https://github.com/user-attachments/assets/84d5a72f-932e-4791-a8c0-9a06d9e8c47b)** ·
+[Repository MP4 copy](docs/assets/block-stacking-20260918/centered-game-replay.mp4) ·
+[Still image](docs/assets/block-stacking-20260918/centered-game-replay-poster.png) ·
+[Replay evidence](docs/agents/block-stacking-wam-technical-report-20260918.md#66-video-the-same-start-three-termination-choices) ·
+[ExtraTrees governed run](docs/agents/stacking-mission-e2e.md) ·
+[Neural ACWM governed run](docs/assets/acwm-governed-stacking-20260921/REPORT.md)
+
+*The animation is an earlier saved-action simulator replay at 4× speed, not
+footage of the later DeepSeek-governed runs. It shows both the benefit and the
+cost of stopping: the ninth placement was safe, so banking eight was conservative.
+Completed panels freeze. The simulator stages the grasp; this is stacking and
+release evidence, not autonomous picking or physical robot execution.*
+
+### Starship-inspired six-degree-of-freedom mission simulation
+
+**2026-10-25 status:** the selected public port includes the integrated mission,
+image/deployment accounting, seeded symptom diagnosis and exact-point return
+qualification tools. The historical integrated flight used Jev 10/10 and DeepSeek
+1/1 valid responses and reached Ship model contact at 3.459 m/s. **This public
+checkout has not flown or been qualified by those historical records.** The
+normal permission adapter's four-record verification stopped before execution
+on its storage gate; ordinary launch readiness remains fail-closed. See
+[the integrated result, failures and current limits](docs/examples/starship-final-mission.md).
+
+The players below retain their original earlier mission dates and evidence.
+
+
+**Live AI judgments, approved bounds, 6DOF execution and later observations run together in MissionOS.**
+For booster recovery, DeepSeek received the current observation and catch-development
+history, selected splashdown and passed the independent execution check. A later
+observation confirmed the selection. Only ocean return is currently executable;
+the same flight's separate Ship sequence released 26 payloads.
+
+**Play the recorded 2026-10-14 mission — 120 seconds, tower, ocean, AI judgment and metrics.**
+
+https://github.com/user-attachments/assets/00a07f6d-93a3-407b-9f38-b6d017bd1c72
+
+*Generic rigid-body payloads: unfolding, communications and orbit raising are
+not modeled. The tower cutaway illustrates an option; no catch was executed.*
+
+Follow the judgment in the video; these are simulation times from the same saved flight:
+
+| Mission time | What to watch |
+| --- | --- |
+| T+135.6 s | MissionOS gives DeepSeek the current Booster observation and reviewed catch history. |
+| T+137.0 s | DeepSeek selects splashdown; the independent execution check accepts it without fallback. |
+| T+137.1 s | A separate later observation confirms the selected recovery objective. |
+| T+619.655 s | The recorded Booster reaches nominal sea contact at 1.847 m/s CG speed, with 11.42 t propellant. |
+
+[Open video](https://github.com/user-attachments/assets/00a07f6d-93a3-407b-9f38-b6d017bd1c72) ·
+[Interactive replay](docs/assets/starship-booster-recovery-decision-20261014/index.html) ·
+[Decision, observed results and limits](docs/examples/starship-booster-recovery-decision.md)
+
+The video synchronizes actual observations, DeepSeek's returned explanation,
+checked action and later motion. Booster CG contact speed was 1.847 m/s; Ship
+contact-point speed was 4.608 m/s. A separate Ship comparison response was
+rejected, so that flight's overall comparison gate remains incomplete. It is
+recovery-judgment evidence, not a new completed M3 campaign or demonstrated catch.
+
+The engineering contribution is the traceable connection from model judgment to
+approved execution and observed outcome while simulation time continues during
+inference. It provides a reference implementation for mission supervision;
+application to hardware requires its own sensors, execution model and validation.
+[Engineering value, prior work and evidence boundaries](docs/examples/starship-booster-recovery-decision.md#engineering-value-and-prior-work).
+
+**Seeded fault notifications trigger real MissionOS monitoring and inhibition decisions.**
+The opt-in [fault-notification experiment](docs/examples/starship-trouble-engine.md)
+injects engine, RCS, payload-mechanism and tower failures into the actual 6DOF
+plant. Jev receives idealized current component-health flags, can sample the
+same diagnostic again or inhibit pending releases, and can route time-rich
+requests to DeepSeek. The seed and future fault schedule stay private. Checked
+actions and later observations are recorded.
+
+This trial demonstrates response to supplied fault notifications, **not independent
+fault diagnosis or corrective recovery planning**. The automatic interlock also
+prevents release after missing separation; an AI-caused mission-outcome change
+has not been measured. The fault-control grant cannot change Booster trajectories,
+and this separate CLI is not the existing M3 Gateway replanning path. Probabilities
+are engineering test settings, not historical accident rates.
+
+<details>
+<summary>Earlier completed M3 flight: scoped inflight approval and next-orbit return</summary>
+
+**Live AI supervision now runs from launch and payload deployment through return.**
+In the recorded M3 flight below, Jev monitors the mission and DeepSeek responds
+to a recovery-area closure by selecting a next-orbit return and requesting the
+needed approval extension. The approved plan is executed and checked through
+model surface contact, with 26 payloads released.
+
+**Play the complete mission — 1 min 52 sec, with AI decisions and metrics.**
+
+https://github.com/user-attachments/assets/bf786241-ec25-49ae-8a3e-8d6edfde1c12
+
+*Generic rigid-body payloads: array deployment, communications and orbit raising
+are not modeled. Saved simulation replay with illustrative geometry and ocean.*
+
+[Open video](https://github.com/user-attachments/assets/bf786241-ec25-49ae-8a3e-8d6edfde1c12) ·
+[Animated preview](docs/assets/starship-ai-mission-m3-20261012/mission-preview.gif) ·
+[Interactive replay](docs/assets/starship-ai-mission-m3-20261012/index.html) ·
+[What ran and how it was verified](docs/examples/starship-ai-mission.md)
+
+The video shows the observations, returned decision summary, cited numbers,
+selected operation, approval/Rules result and later telemetry on one simulation
+clock. The inflight approval comes from a candidate-bound test-operator script;
+it is not a recorded human review. The same flight reaches Ship contact at
+4.613 m/s and nominal booster water entry at 1.884 m/s. Booster disturbance
+robustness remains unresolved, as documented in the
+[retained ±1 t diagnostic](docs/examples/starship-recovery-sensitivity.md).
+
+
+</details>
+
+<details>
+<summary>Earlier M1 and initialized return demonstrations</summary>
+
+The earlier [M1 record](docs/examples/starship-m1-operations.md) connected a
+recovery-area update, waiting for fresh status and a later orbital return within
+a once-approved scope. Normal operation preserved its original result and a
+persistent decision-service outage used a checked fallback.
+
+The [MissionOS flight-control contract](docs/agents/starship-mission-control-contract.md)
+sets the goal: the operator approves delegated bounds, and MissionOS owns
+mission decisions within them. The [Ship return census](docs/examples/starship-state-return.md)
+covers 0–26 retained inventories and selected fuel perturbations. Return admission
+is restricted to recorded coast trajectories with explicit matching tolerances;
+the complete mission-control acceptance gate remains open.
+
+An optional [offshore splashdown mission](docs/examples/starship-splashdown.md)
+now connects the same launch and 26-payload release flight to a separately
+approved booster water-entry goal when tower capture is unqualified. One
+scripted Gateway run met its model entry limits at 1.88 m/s with 11.42 t fuel
+remaining. Waves, buoyancy, structural survival and real clearance are unverified;
+this is not new live AI inference or recovered-hardware evidence.
+The descent target was selected using this same deterministic trajectory after
+an insufficient-reserve probe. Two ±1 t separation-fuel probes then failed:
+the −1 t case impacted at 165 m/s with 81.6 t unspent. Saved commands show that
+the terminal alignment gate kept the engines off; a powered-alignment candidate
+worsened all three initialized fuel cases and was rejected.
+Robust recovery remains unqualified.
+
+An opt-in [mission decision envelope](docs/examples/starship-mission-decisions.md)
+now connects normal deployment monitoring, mechanism diagnostics, terminal
+return selection and booster diversion. The operator approves the scope once;
+MissionOS decides within it, independent checks constrain execution, and later
+observations verify effects. The current scope includes one bounded reassessment
+during a hold; a fixture exercises hold → reassess → resume. The evaluation at
+`6185ef92` recorded 19 actual Jev inferences, including mechanism diagnostics and
+deployment changes. Its return choices retained the initial return plan, or
+inhibited an infeasible return; they did not demonstrate an AI-induced return-policy
+improvement. The current fixed comparator also uses the improved Ship guidance.
+Fuel shortage remains unresolved after a bounded observation window. A terminal
+qualification violation is recorded and the final flight outcome is preserved.
+[Results and boundaries](docs/examples/starship-mission-decisions.md)
+remain separate from the existing videos below, which document the earlier
+fixture implementation.
+
+**Chat → review the plan → `/approve` once → `/run` in a separate simulator
+process → verify the saved outputs. This operator workflow runs in the public
+fixture.**
+
+The saved numerical-flight preview covers **launch → stage separation →
+orbital conditions → 26 payload releases**, ending with the release count at
+26. The complete MP4 also retains the Ship return attempt. Its mission
+scale references SpaceX's [Flight 14 / Starlink V3 deployment](https://www.spacex.com/launches/starship-flight-14).
+The released satellites have their own recorded positions and attitudes, and
+the 3D replay reads their recorded separation states.
+
+The simulator jointly integrates position, attitude, angular rate, fuel and
+finite engine/gimbal/control-surface states. The replay reads those recorded
+states on a common clock. Choose `Starship sixdof_launch` in chat or **Launch +
+26 payload releases** in the operator console for the full numerical scenario;
+`Starship sixdof_gimbal_step` is the shorter 30-second setup check.
+
+*Animated previews from the saved clips; complete MP4s are linked below.*
+
+| Launch and 26 payload releases | Missing-release supervision | Return attempt |
+| --- | --- | --- |
+| ![Saved numerical launch, separation and 26-payload release replay, not physical spacecraft footage](docs/assets/starship-mission-20261006/nominal-flight.gif) | ![Saved deployment-supervision replay showing observation, bounded skip operation, and later sequencer evidence](docs/assets/starship-mission-20261006/deployment-supervision.gif) | ![Saved 60-second booster return development ending without catch handoff and below fuel reserve](docs/assets/starship-mission-20261006/return-negative.gif) |
+
+*Generic rigid-body payloads; satellite unfolding, communications and orbit
+raising are not implemented.*
+
+**MissionOS at the release boundary:** this historical `sixdof_launch` fixture
+passed displayed plan → explicit test-operator approval → separate simulator
+process → worker receipt and saved-output verification
+([record provenance](docs/assets/starship-mission-20261006/manifest.json)).
+The plan binds the fixed mission and payload configuration to source/profile hashes;
+deterministic release gates check bound orbit, perigee, dynamic pressure and
+angular rate before each separation. No LLM chooses the individual releases,
+and test approval does not authenticate human identity.
+
+<details>
+<summary>Complete video: numerical launch, 26 payload releases, and Ship return</summary>
+
+[Open or download the complete recorded MP4](docs/assets/starship-mission-20261006/nominal-flight.mp4)
+
+</details>
+
+<details>
+<summary>Complete video: deployment supervision and later observed effect</summary>
+
+[Open or download the complete recorded MP4](docs/assets/starship-mission-20261006/deployment-supervision.mp4)
+
+</details>
+
+<details>
+<summary>Complete video: negative return development, no catch handoff</summary>
+
+[Open or download the complete recorded MP4](docs/assets/starship-mission-20261006/return-negative.mp4)
+
+</details>
+
+[Nominal-flight MP4](docs/assets/starship-mission-20261006/nominal-flight.mp4) ·
+[Supervision MP4](docs/assets/starship-mission-20261006/deployment-supervision.mp4) ·
+[Negative-return MP4](docs/assets/starship-mission-20261006/return-negative.mp4) ·
+[Offline replay and media provenance](docs/assets/starship-mission-20261006/index.html) ·
+[Public fixture and claim boundaries](docs/examples/starship-mission-showcase.md)
+
+*These are saved numerical simulator replays. Starlink V3 is the mission
+reference; the satellite bodies and display geometry use declared assumptions.
+The catch experiment is a separate return-development record.*
+
+<details>
+<summary>What the records establish, and what remains unfinished</summary>
+
+The nominal record reaches its configured orbital conditions and releases all
+26 finite payload bodies. Low-speed Ship hull contact remains a recorded return
+outcome rather than verified landing.
+
+The anomaly record shows a fault routing service (Jev) selecting a fixed skip
+procedure, Rules checks, and two later observations confirming the sequencer
+change. The conditional reasoning model (DeepSeek) was not called. Zero
+payloads separated in this fault case; its interlock already prevented release,
+so the skip does not establish an AI advantage over Rules.
+
+The 60-second return-development record reached no catch handoff and ended
+below its support fuel reserve. Launch-derived catch, fresh-launch robustness,
+qualified capture/divert with later effects, and the complete operator catch
+workflow remain unfinished. The initialized near-tower support fixture is a
+separate experiment. These records do not establish SpaceX engineering fidelity,
+physical execution, satellite service or model advantage.
+
+The [public quickstart](docs/examples/starship-mission-showcase.md#try-the-bounded-public-fixture)
+starts with a deterministic planner and the short gimbal test to check the
+operator workflow. That test is separate from the historical full-flight video.
+The dedicated Starship launcher defaults its planner/model backend to off;
+`--fixture-planner` explicitly selects the keyless deterministic example.
+Generic MissionOS chat below retains its separate DeepSeek default. Flight
+simulator processes omit provider keys from their environment. The separately
+opted-in live Jev shadow observer receives its own Typesafe key; it is a
+provider observer, not a flight simulator. These same-user processes do not
+provide OS credential isolation. The public smoke uses a test operator and
+does not authenticate human identity.
+
+</details>
+
+</details>
+
+## Yokohama: choose a delivery destination on the 3D map
+
+Select a safe destination before departure, inspect the route and constraints,
+and approve the bound goal, route and scene. Moving the marker invalidates the
+approval. Destination changes during flight are rejected.
+
+One CPU PX4/Gazebo simulator delivery reached a destination 10 m east of the
+original pad, verified cargo receipt, returned to the ship and landed/disarmed.
+All four applicable verifiers passed. Jev made one real bounded `continue`
+decision; the city VLA/WAM models were CPU fixtures. `continue` adds no extra
+waiting: independent Rules still decide whether entry is safe. This is simulator
+evidence, not physical delivery or a demonstration of native city-model quality.
+
+https://github.com/user-attachments/assets/2230d559-6cf9-4b80-b559-25ffa761ec21
+
+*Saved simulation camera images, played at 12× speed; inset cameras are from the
+same run. Frames are held between recorded samples. This is not a screen
+recording of the GUI or a new flight.*
+
+3D scene: **Yokohama City / Project PLATEAU**, **CC BY 4.0**. MissionOS modified
+coordinates, meshes, display materials and collision proxies, and added the
+demonstration route. [Source, license and attribution](docs/examples/yokohama-urban-scene/ATTRIBUTION.md).
+
+Playback recovery: [open the video afresh on GitHub](https://github.com/user-attachments/assets/2230d559-6cf9-4b80-b559-25ffa761ec21).
+
+If playback reports “Request has expired”, reopen this GitHub link or reload the
+README. GitHub redirects to short-lived storage URLs; share the GitHub link
+rather than the temporary redirect. A repository copy is available below.
+
+[Video preview](docs/examples/yokohama-map-delivery/preview.png) ·
+[Repository MP4 copy](docs/examples/yokohama-map-delivery/camera-timelapse.mp4)
+
+[Result and video limits](docs/examples/yokohama-map-delivery/REPORT.md) ·
+[GUI and authority contract](docs/agents/yokohama-map-goal.md)
+
+This Yokohama demo defaults to fixtures and makes no external API calls. Live
+Jev execution for this Yokohama demo is disabled in this distribution; its
+private test grant is consumed and is not included. This does not disable the
+separate opt-in Starship provider paths. A future live Yokohama run needs a
+separately reviewed authorization.
+
+## What Has Actually Run
+
+The same contract and authority mechanism has been exercised over several bounded
+simulator paths, plus governed ExtraTrees- and neural ACWM-assisted stacking
+loops. All results below are simulator evidence.
+
+| Stack | Exercised | Observed |
+| ----- | --------- | -------- |
+| **PX4 / Gazebo SITL** | Outbound mission with two collision obstacles at ~50% and ~75% route progress | Two separate LLM proposals and two separate human approvals; second centerline rejoin observed; saved outbound and return telemetry |
+| **TurtleBot3 / ROS2 Nav2** | Chat request to deliver to a named room in `turtlebot3_house` | Three real doorways traversed from front yard to bedroom dropoff; AMCL-corrected observed trail against the approved plan |
+| **Unitree Go2 / MuJoCo** | Human-approved indoor delivery with a temporary passage closure | Two DeepSeek judgments (`wait` → `reroute`) passed Rules checks; simulated receipt, return, and a five-second terminal hold were verified. [Report and videos](docs/assets/go2-agent-delivery-20260925/report-en.md) |
+| **GR00T N1.7 / LIBERO Panda** | Natural asymmetric partial failures continued **without resetting the world**, under a new contract, human approval, and one dispatch per loop | Native single-attempt cohort: target repair 0/5 loops; each execution's Contract-bound preserve predicates maintained 16/16 across 6 original-world attempts + 10 diagnostic clones |
+| **Cosmos Policy / LIBERO Panda** | Seed-aligned 3 cm diagnostic fixture with a 3/3 stable scripted control and 128-action policy ceiling | No target contact, about 1 nm target motion, and `[true, false, true]` after 128 actions |
+| **VLA-0 / LIBERO Panda** | The same 3 cm snapshot, instruction, action ceiling, and scripted control | Target engagement 3/3; terminal conjunction 2/3; both successful traces lost the repaired predicate on the fifth stationary hold step, so 20-step stable completion was 0/2 replays |
+| **SmolVLA / ExtraTrees / DeepSeek stacking** | ExtraTrees forecasts through Mission Assurance, bounded human preapproval, Rules, ticketed execution, and measured verification | Final two-case DeepSeek run banked 8 + 8 points; 18 LLM judgments, 208 SmolVLA inference chunks, and 5,112 motor steps |
+| **SmolVLA / neural ACWM / DeepSeek stacking** | Online future-video forecasts through Assurance, bounded preapproval, Rules, ticketed execution, and measured verification | Two known cases banked 9 + 4 points; 15 actual DeepSeek judgments, 169 SmolVLA inference chunks, and 4,260 motor steps. [Integration report](docs/assets/acwm-governed-stacking-20260921/REPORT.md) |
+| **Starship-inspired 6DOF simulator / MissionOS** | Live Jev/DeepSeek supervision from ascent and deployment to orbital replanning, independently checked execution and later observations | Four M3 roles completed. The recorded approval-extension flight released 26 payloads, requested candidate-bound test-operator approval, and reached Ship contact at 4.613 m/s. Numeric citations were checked; booster disturbance robustness remains unresolved. [Whole-flight video and evidence](docs/examples/starship-ai-mission.md) |
+
+| PX4 drone · two separately approved obstacle recoveries | TurtleBot3 · house delivery to a named room |
+| -------------------------------------------------------- | --------------------------------------------- |
+| ![PX4 SITL map showing saved outbound telemetry, two operator-approved Recovery bypasses beside two collision obstacles, the second route rejoin, dropoff, and saved return telemetry](docs/examples/assets/missionos-two-obstacle-recovery-map.png) | ![TurtleBot3 chat delivery to the bedroom in turtlebot3_house, planned route and observed trail on the evidence map](docs/agents/evidence/pr7-turtlebot3-chat-e2e-map-task_d9ecedc8e7d5.png) |
+
+Both views are read-only evidence displays — radar screens, not cockpits. On
+the left, solid blue/cyan lines are saved telemetry, orange lines are the
+separately observed approved Recovery maneuvers, and the two red
+`18 x 18 x 20 m` footprints are collision obstacles. On the right, the
+approved plan is orange and the AMCL-corrected observed trail is blue. The PX4
+image is a sanitized, display-only summary derived from a reviewed SITL run;
+raw task identifiers and runtime artifacts are intentionally not published.
+
+An outdoor MAVLink drone, an indoor Nav2 ground robot, a Go2 robot dog, and
+manipulation policies are different stacks, but the tower is the same: vehicles
+and policies plug in as adapters while the control plane — proposal, approval,
+dispatch, evidence — stays fixed.
+
+### ExtraTrees-assisted stacking: prediction through execution
+
+**MissionOS executed a block-stacking mission using ExtraTrees forecasts and actual
+DeepSeek judgments, with bounded human preapproval, Rules checks, ticketed
+execution, and measured verification.**
+
+> VLA proposes motor actions. ExtraTrees predicts. LLM Assurance judges. Humans
+> pre-authorize bounded execution. Rules constrain. Executor acts. Verifier checks.
+
+The stacking predictor uses **ExtraTrees: ensembles of randomized decision
+trees for supervised classification and regression**, fitted on simulator data.
+It was not obtained by fine-tuning a pretrained WAM. SmolVLA was separately
+fine-tuned to produce actions. The predictor takes exact object state, known
+physical properties, engineered geometric features, and a registered operation,
+then predicts collapse-risk scores and future object state. Historical reports
+and plots call it “WAM”; the later evaluation models are ExtraTrees ensembles.
+Mission-specific adapters supply the model and outcome
+meaning; the common Prediction contract binds forecasts to their observations,
+model, policy, environment, and operation. Assurance receives these forecasts as
+model-inferred evidence. Human preapproval sets the execution bounds, and Rules
+check each operation before the Executor acts.
+
+The game allows up to ten blocks: stop to bank the stable count, or score zero
+if the tower collapses. In the final **40-game evaluation**, every strategy used
+the same 14.2-second terminal stability check:
+
+| Stopping strategy | Total score / 400 |
+| --- | ---: |
+| VLA, always continue | 30 |
+| Current-state rule | 198 |
+| **ExtraTrees-based stopping** | **279** |
+| Validation-selected width rule | 280 |
+
+ExtraTrees-based stopping improved on current-state stopping and unconditional
+continuation. It reached nearly the same observed score as the strong width
+rule; superiority over that rule remains unestablished. Fifteen one-point gains
+were offset by two eight-point losses, with 23 ties.
+
+The subsequent **MissionOS E2E demonstration** connected the actual DeepSeek API
+to this execution path. Its final run banked **8 + 8 points** on two known cases,
+after a prompt correction clarified risk semantics and proxy score comparisons.
+ExtraTrees with deterministic stopping scored 17 on the same pair. This demonstrates the
+integrated control path; the forty-game comparison above measures the separate
+WAM stopping strategy. Stale observations, state-revision mismatches, and approval
+mismatches were also rejected before motion.
+
+The demonstration uses exact simulator state and known physical properties.
+It exercises the shared interface with one mission-specific ExtraTrees predictor; hardware use
+and additional missions require their own validation.
+
+Read the [illustrated technical report](docs/agents/missionos-wam-system-technical-report-20260919.md)
+for graphs, all three evaluation cohorts, and failure analysis; the
+[E2E execution record](docs/agents/stacking-mission-e2e.md)
+documents the governed E2E runs and their verification evidence.
+
+A separate follow-up uses the actual neural ACWM VideoDiT rather than the
+ExtraTrees predictor. It forecasts one complete 14.2-second placement from the
+pre-action state. On 16 unused cases, fine-tuning improved mean block-mask IoU
+from 0.439 to 0.669; a visual readout detected all four held-out collapses while
+conservatively rejecting three safe placements. The
+[ACWM pre-action technical report](docs/agents/acwm-preaction-stacking-forecast-20260920.md)
+includes side-by-side videos, a one-block-at-a-time replay, and a frozen
+same-cohort forty-game comparison. ACWM scores 233, versus 279 for the final
+ExtraTrees predictor, 280 for width-specific fixed stopping, 198 for the
+current-state rule, and 30 for VLA continuation. This follow-up is
+offline replay evidence using saved VLA action plans, not a live MissionOS run.
+
+### Online ACWM stacking
+
+The [online follow-up](docs/agents/acwm-online-stacking-20260921.md) replaces saved
+future action tapes with the current image/state, placement target and registered
+macro. On **40 fresh seeds × five independently executed methods**, online ACWM
+scored **201/400**. Its forecasts passed through MissionOS Prediction
+Core before actual SmolVLA actions were generated and executed. All game endings
+used the same 14.2-second stability check. The report includes per-game results,
+plots, inference-order evidence and the remaining 14.2/28.4-second predictor-horizon
+difference. This is an online simulator benchmark with a fixed lab stopping
+policy; the earlier governed DeepSeek execution record remains separate.
+
+The [terminal-hold follow-up](docs/assets/acwm-stop-forecast-20260922/REPORT.md)
+extends the neural forecast to both placing-and-waiting and stopping-and-waiting.
+It records a final bounded fine-tuning attempt, per-case prediction errors, and
+an experimental two-option Assurance contract. This closes the current
+model-improvement study; the online game totals above remain unchanged.
+
+### Where the manipulation Repair frontier currently is
+
+The GR00T row is the open edge. The governed Repair path executes end to end:
+a natural partial failure is continued in the same world under a new Mission
+Contract, a recorded human approval, and a single bounded dispatch, with the
+verifier checking both the target predicate and the predicates that must not
+break. A post-observation-amended native single-attempt cohort completed at
+**0/5 loops**: none of five natural asymmetric partial failures improved its
+target predicate. Across that cohort and the earlier original-world plus
+diagnostic-clone record, each execution's own Contract-bound preserve
+predicates were maintained **16/16**.
+
+What that separates is worth stating plainly: the governed Repair control
+path has been exercised end to end; the model's own same-world repair
+capability has not been established. The `0/5` is a bounded negative
+measurement, not a general Repair rate, and the `16/16` is not a real-world
+safety claim. See the
+[native single-attempt cohort record](docs/agents/groot-lerobot-native-single-attempt-cohort.md)
+and [GR00T Repair claim boundary](docs/agents/groot-lerobot-semantic-repair-checkpoint-gate.md)
+for the full evidence limits. The originally planned max-two-attempt protocol
+remains unmeasured.
+
+The aligned Cosmos/VLA-0 result adds a sharper behavioral observation at the
+mid-episode Repair boundary. A seed-aligned 3 cm fixture was visibly different
+in both policy cameras and was recovered by a privileged scripted controller
+in 3/3 runs: contact after action 32, predicate success after action 33, then
+20 stable steps.
+
+Cosmos Policy did not contact or move the target meaningfully within 128
+actions. VLA-0 repeatedly engaged the target: three of three policy trials made
+contact and moved it, and two entered `[true, true, true]`. But a terminal bit
+was not enough. Fixed-action replays of both successful VLA-0 traces reproduced
+the conjunction and then lost the repaired predicate on the fifth stationary
+hold step. A third fresh trial moved the target by as much as 14.06 cm but
+finished at `[true, false, true]` without entering the hold gate.
+
+The bounded conclusion is therefore that corrective targeting was
+executor-dependent on this fixture, while **stable Repair was not established
+for either learned executor**. This remains one scripted diagnostic clone, not
+a natural-failure or general recovery rate. See the
+[manipulation Repair progress report](docs/concepts/vla-repair-progress.md) for
+the older 22.7 cm history, the aligned comparison, and exact evidence limits.
+
+For continuity with that earlier publication: its oracle recovered the 22.7 cm
+fixture in 517/520 actions, while the separate VLA-0 run showed no sustained or
+meaningful target-directed approach and no gripper-target contact. That
+historical result uses a different fixture and does not override the aligned
+3 cm findings above. Its retained classification is
+`bounded_recoverable_fixture_repair_not_observed`.
+
+## What Happens in a Run
+
+1. You ask MissionOS for a mission or a recovery decision.
+2. The LLM — the controller in the tower — proposes a route or a bounded
+   recovery action. At this point it has no authority at all.
+3. A human operator approves or rejects the proposal. A rejection is recorded
+   and grants nothing. An approval is recorded and is the only thing that
+   creates execution authority. A bounded preapproval can cover a specified
+   set of operations; Rules still check each operation against those bounds.
+4. MissionOS sends only approved actions through the execution boundary.
+5. MissionOS records proposal, approval, command send, ACK, observed progress,
+   and completion as separate facts.
+6. If the evidence shows a problem — an obstacle, a stall — the LLM proposes
+   the next recovery action. It still cannot approve or execute by itself.
+
+The loop runs the same way in nominal and off-nominal conditions. Recovery is
+not an escape hatch from governance; it goes through the same tower.
+
+Putting an AI agent into the physical world is not a question of making the
+model smarter. It is a question of which authority you hand it. An air traffic
+controller never flies the aircraft: they propose, record, and wait for
+confirmation. That separation of authority — not pilot skill alone — is what
+lets aviation scale safely. MissionOS applies the same structure to LLM
+agents.
+
+## What Is Not Claimed
+
+| Stack | Still not claimed |
+| ----- | ----------------- |
+| PX4 / Gazebo SITL | Physical flight, payload delivery, and delivery completion |
+| TurtleBot3 / ROS2 Nav2 | Physical robot execution, real actuator/E-stop validation, and delivery completion |
+| Unitree Go2 / MuJoCo | Physical delivery, camera-based perception, WAM-assisted navigation, and a matched performance improvement over simple rules |
+| SmolVLA stacking / ExtraTrees or neural ACWM | Autonomous picking, physical robot execution, and general superiority over strong stopping rules; the known-case governed runs are integration evidence |
+| GR00T N1.7 / LIBERO Panda | General Repair rate, a difference from diagnostic clone re-entry, the unmeasured max-two-attempt protocol, independent controller ACK, real Panda execution, and physical safety |
+| Cosmos Policy / LIBERO Panda | General Repair rate, semantic grounding across tasks, same-world Repair, independent controller ACK, real Panda execution, and physical safety |
+| VLA-0 / LIBERO Panda | Stable Repair on the admitted fixture, a general nominal or Repair rate, a natural policy-failure result, same-world Repair, independent controller ACK, real Panda execution, and physical safety |
+| Starship-inspired spacecraft simulator | SpaceX vehicle validation, physical flight, Starlink service, launch-derived tower-catch completion, fault/wind/latency robustness, or LLM/Jev superiority over deterministic Rules |
+
+Start here for each path: the [Chat Quickstart](#chat-quickstart) and the
+[obstacle recovery run](docs/examples/missionos-chat-obstacle-recovery.md) for
+PX4; the [TurtleBot3 Simulator Quickstart](#turtlebot3-simulator-quickstart)
+and the [TurtleBot3 bridge contract](docs/agents/ros2-nav2-turtlebot3-sim.md)
+for Nav2; the [v0.2.0 release boundary](docs/releases/v0.2.0.md) and the
+[parent-mission concept](docs/concepts/parent-mission-control.md) for GR00T.
+For the latest manipulation result, start with the
+[manipulation Repair progress report](docs/concepts/vla-repair-progress.md).
+
+TurtleBot3 is used as the indoor baseline because it is the current
+reproducible ROS2/Nav2 simulator path, not because MissionOS prefers older
+hardware. TurtleBot4 support exists as an opt-in profile, but its current
+Create3/Gazebo stack has not yet produced the same repeatable odometry-backed
+motion evidence. See [Simulator Baseline](docs/concepts/simulator-baseline.md)
+for the migration boundary.
+
+## Disclaimer
+
+MissionOS is reference software for AI-assisted mission-control research and
+simulation. It is not a certified autopilot, flight controller, safety system,
+legal compliance system, or substitute for a qualified human operator.
+
+Do not use MissionOS to operate drones, robots, vehicles, or other physical
+systems unless you have independent safety controls, appropriate supervision,
+applicable permissions, and a test environment designed for that use.
+Simulation and hardware-related paths are opt-in surfaces and must be treated
+as experimental.
+
+MissionOS separates AI proposals, human approval, constrained dispatch,
+runtime observations, verifier evidence, and completion claims. A proposal,
+approval, ACK, simulator observation, or map display is not proof of safe
+physical execution or delivery completion.
+
+Recovery delegation (the opt-in reflex/deliberation recovery split,
+perception claims, shadow measurement, and action promotion described in
+`docs/concepts/recovery-delegation.md`) is experimental. It widens what the
+LLM may propose during a fault; it does not widen what may execute without
+a recorded human approval, with one narrowly-scoped exception documented in
+`docs/agents/recovery-delegation-authority.md`.
+## Current Status
+
+MissionOS is an early public snapshot. The public path documented here is:
+
+```
+MISSIONOS_GATEWAY_BACKEND=production missionos --timeout 240 chat --autostart
+```
+
+Use it with an explicit LLM backend. Local Gemma may need the longer timeout;
+hosted Gemini usually responds faster. Other runtime and simulator paths exist
+in the repository, but they are not presented as public quickstarts in this
+snapshot unless separately verified.
+
+Because the tower records every stage separately, the project's own progress
+reporting follows the same discipline. MissionOS does not claim:
+
+- unchecked LLM control
+- physical execution
+- real hardware flight
+- delivery completion
+- observed progress without evidence
+- general-purpose destination planning
+
+### Agent Orchestration
+
+The public Gateway now coordinates Chief, specialist, and safety-review
+judgments through a Google ADK v2 workflow by default. This is proposal
+orchestration only: workflow completion does not create human approval,
+dispatch authority, executor invocation, observed progress, mission
+completion, or physical-execution evidence. Those remain separate MissionOS
+facts under the authority split described in
+[MissionOS Agent Roles](docs/concepts/agent-roles.md).
+
+Operators can set `MISSIONOS_ADK_V2_GRAPH_ROLLBACK=1` to select the previous
+sequential proposal pipeline during an incident. The exact primary, rollback,
+HITL/resume, dispatch-idempotency, guarded-execution, and Recovery contracts
+are maintained in [the agent documentation](docs/agents/README.md).
+
+### Runtime Progress
+
+This table combines the v0.2.0 stable-gate baseline with later evidence-linked
+manipulation progress through 2026-08-25. It keeps fixture status, reviewed
+live evidence, and implementation binding as separate dimensions. Simulator
+evidence does not imply physical execution, and ACK is not success.
+
+| Track                                  | Progress                                                                                                                                                                                                 | Currently blocked by                                                                                                                                                                              |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PX4 / Gazebo SITL                      | v0.1.0 stable evidence records this backend as `verified_feasible` through `missionos-core`, with explicit human approval, dispatch-time revalidation, and the same task visible in `chat` / `job-status` / `operate` / `watch` / `map`. Recovery proposals and operator-approved bounded actions remain evidence-scoped simulator behavior. | Real hardware flight, delivery completion, and physical execution are unproven. The next boundary is a separately safety-cased bench, HITL, or field adapter; simulator evidence remains `physical_execution_invoked=false`. |
+| TurtleBot3 (TB3) / ROS2 Nav2           | v0.1.0 stable evidence records this backend as `verified_feasible` through the same Core contract, with Docker/Gazebo/Nav2, `turtlebot3_house`, source-backed dispatch revalidation, and operator-surface parity. | Physical TB3 execution has not run. It still needs real actuator, E-stop, and floor-environment validation before `physical_execution_invoked=true`. |
+| TurtleBot4 (TB4) / ROS2 Nav2           | Opt-in profile, task artifact shape, bridge contract, documentation, and safe blocked-by-default behavior are in place.                                                                                  | The Create3/Gazebo stack currently does not produce meaningful `/odom` motion. The controller, diffdrive, dock, or startup layer below MissionOS must move before Nav2 completion can be claimed. |
+| Nova Carter / NVIDIA Isaac Sim         | Opt-in `nova-carter` CLI/runtime profile, `execution_target=isaac_ros_nav2_nova_carter_sim`, live-proof scaffold, and manifest gates that reject ACK-only success are in place.                          | No live Isaac Sim evidence yet. It needs an RTX/GPU host with Isaac Sim, Isaac ROS, Nova Carter/Nav2, an operator-provided bridge command, and map/watch artifacts.                               |
+| Nvblox / Isaac ROS perception evidence | The v1 perception-evidence contract, env/bridge payload ingestion, required gate, tests, and docs are in place. Nvblox evidence is explicitly not approval, dispatch, or obstacle-avoidance completion by itself. | No live Nvblox data yet. It needs depth/pose -> reconstruction -> Nav2 costmap evidence paired with trajectory/verifier clearance evidence.                                                       |
+| Parent Mission / three executors        | PX4, Nav2, and GR00T/LIBERO concrete predicate packages fit one parent contract without backend branches in `missionos-core`. A reviewed manual run records all three bounded simulator stages under one parent identity. | Three satisfied stages are not projected into parent mission completion, shared-world identity, delivery completion, or physical execution. |
+| GR00T N1.7 / LIBERO Panda VLA           | One reviewed bounded episode records policy responses, simulator step inputs and returns, exact official predicate observations, and content-bound lineage. Chat, approval, run, status, `operate`, `watch`, `map`, and one-shot post-episode repair have reviewed simulator evidence. | The public CI replays fixtures and checks evidence compatibility; it does not start an NVIDIA GPU. Independent controller ACK, instruction delivery into the policy, in-episode external stop, physical Panda execution, and real-world safety remain unverified. |
+| Cosmos Policy / LIBERO Panda VLA         | On the admitted seed-aligned 3 cm fixture, a scripted control achieved 3/3 stable success while Cosmos made no target contact and retained `[true, false, true]` after 128 actions. | This is one checkpoint, task, fixture, and seed in a diagnostic clone. It is not a general Repair rate or same-world Repair evidence. |
+| VLA-0 / LIBERO Panda VLA                | On the same fixture, VLA-0 engaged the target 3/3 and entered `[true, true, true]` in 2/3 policy trials. Both digest-bound successful traces reproduced the conjunction but lost it on the fifth stationary hold step. | Target-directed corrective motion is established for this bounded fixture; 20-step stable completion, a general Repair rate, same-world Repair, controller ACK, physical execution, and safety remain unverified. |
+
+## Chat Quickstart
+
+Install the repository and CLI packages (requires Python 3.11+):
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e . \
+  -e packages/missionos-core \
+  -e packages/missionos-gateway \
+  -e packages/missionos-cli
+missionos --help
+```
+
+Configure LLM credentials before running the intended MissionOS experience.
+DeepSeek V4 is the primary hosted path and the default when the backend is
+unset. Gemini remains supported; Ollama/Gemma is a local no-spend path that can
+be slower and may need longer timeouts.
+
+```
+cp .env.example .env
+# Primary hosted DeepSeek path through ADK LiteLLM:
+# MISSIONOS_LLM_BACKEND=deepseek
+# DEEPSEEK_API_KEY=...
+# MISSIONOS_DEEPSEEK_MODEL=deepseek-v4-flash
+#
+# Or hosted Gemini:
+# MISSIONOS_LLM_BACKEND=gemini
+# GOOGLE_API_KEY=...
+#
+# Or use local Ollama/Gemma:
+# MISSIONOS_LLM_BACKEND=ollama
+# MISSIONOS_OLLAMA_MODEL=gemma4:26b
+```
+
+Then start chat:
+
+```
+MISSIONOS_GATEWAY_BACKEND=production missionos --timeout 240 chat --autostart
+```
+
+See [MissionOS Chat: Tokyo Station to Akihabara](docs/examples/missionos-chat-tokyo-akihabara.md)
+for an actual LLM-backed chat run. In that run, MissionOS proposed a bounded
+mission and asked for human approval; it did not approve, dispatch, observe
+progress, or claim completion.
+
+See [MissionOS Chat: Obstacle Recovery Run](docs/examples/missionos-chat-obstacle-recovery.md)
+for an actual obstacle-context live SITL run with human-approved recovery
+dispatches, `missionos watch`, `missionos operate`, and a map screenshot. That
+run reached terminal completion through recovery/return evidence, but it still
+does not claim delivery completion or physical execution.
+
+## TurtleBot3 Simulator Quickstart
+
+TurtleBot3 is the current indoor ROS2/Nav2 simulator baseline. It uses Docker
+to start a local TurtleBot3/Gazebo/Nav2 Gateway, then enters the same
+MissionOS chat loop as the PX4 path:
+
+```
+# First run: build the simulator image, start the Gateway, and enter chat.
+MISSIONOS_LLM_BACKEND=gemini \
+missionos --timeout 300 chat \
+  --robot turtlebot3 \
+  --turtlebot3-build-image \
+  "TurtleBot3: run the indoor delivery route in the simulated house."
+```
+
+The TurtleBot3 path remains simulator-only:
+
+```
+completion_scope=sim_action
+physical_execution_invoked=false
+mission_delivery_completion_claimed=false
+```
+
+Use `--turtlebot3-smoke` for the non-interactive Docker smoke instead of the
+operator chat loop. See [ROS2/Nav2 TurtleBot3 Simulator Bridge](docs/agents/ros2-nav2-turtlebot3-sim.md)
+for the full runtime contract and troubleshooting notes.
+
+## Why MissionOS Exists
+
+Most current AI agent work stops at "the agent did something." In a chat
+window, that is survivable. In the physical world, it is not.
+
+When the pilot, the controller, and the inspector are the same entity,
+"mission accomplished" means whatever that entity says it means. Aviation
+solved this a century ago by splitting the roles: the pilot flies, the tower
+directs, the recorder records, and no single party's word is the whole truth.
+
+MissionOS applies that split to AI agents. Planning, recovery, rules,
+execution, and verification are separate roles with separate records. When a
+mission stalls, an LLM can propose a recovery — but the proposal is not
+approval, approval is not execution, and execution is not success. Each
+boundary is a recorded fact, not a narrative.
+
+The gap between "the agent did something" and "we can explain what actually
+happened" is where physical AI either matures or collapses under ambiguity.
+MissionOS is being built to close that gap — not by making the agent promise
+to be honest, but by making the tower's records the only currency of truth.
+
+Physical agents need mission control, not a chatbot with a joystick.
+
+## Repository Layout
+
+```
+packages/
+  missionos-cli/       Operator CLI
+  missionos-gateway/   HTTP and WebSocket Gateway
+  missionos-core/      Shared schemas and claim semantics
+  missionos-sitl/      Simulator adapters
+src/                   Copied MissionOS backend and runtime modules
+scripts/               Runtime smoke scripts and maintenance utilities
+simulators/            Simulator helper code and plugins
+config/                Runtime configuration templates
+docs/
+  concepts/            Human-readable explanations
+  examples/            Scenario writeups
+  agents/              Detailed contracts for AI agents and maintainers
+tests/
+  contract/            Schema and contract tests
+  e2e/                 Runtime boundary tests
+```
+
+## Documentation Guide
+
+Start with the concepts if you want the reasoning. Jump to the packages if you
+want to run something.
+
+**Concepts**
+
+- [docs/concepts/what-happens-in-a-run.md](docs/concepts/what-happens-in-a-run.md) — the clearest single flow
+- [docs/concepts/README.md](docs/concepts/README.md)
+- [Mission Assurance](docs/concepts/mission-assurance.md) — shared mission judgment for PX4 and TurtleBot3
+- [docs/concepts/boundaries.md](docs/concepts/boundaries.md)
+
+**Packages**
+
+- [packages/missionos-cli/README.md](packages/missionos-cli/README.md)
+- [packages/missionos-gateway/README.md](packages/missionos-gateway/README.md)
+- [packages/missionos-core/README.md](packages/missionos-core/README.md)
+- [packages/missionos-sitl/README.md](packages/missionos-sitl/README.md)
+
+**For agents and maintainers**
+
+- [docs/agents/README.md](docs/agents/README.md)
+- [docs/agents/contracts.md](docs/agents/contracts.md)
+- [docs/agents/claim-semantics.md](docs/agents/claim-semantics.md)
+- [docs/agents/artifact-taxonomy.md](docs/agents/artifact-taxonomy.md)
+- [docs/agents/e2e-verification.md](docs/agents/e2e-verification.md)
+- [docs/agents/cli-parity-release-gate.md](docs/agents/cli-parity-release-gate.md)
+- [docs/agents/publication-rules.md](docs/agents/publication-rules.md)
+- [docs/agents/legacy-codename-rename-plan.md](docs/agents/legacy-codename-rename-plan.md)
+
+## Documentation Layers
+
+Human-facing docs (`docs/concepts/`, `docs/examples/`) should be short and
+readable. Agent-facing docs (`docs/agents/`) should be precise enough for
+automated agents to modify the code without breaking core boundaries.
+
+## Initial Development
+
+The repository also carries simulator/runtime modules and maintenance scripts.
+Anything that starts simulation or hardware-adjacent execution must remain
+opt-in and evidence-bounded.
+
+## License
+
+MissionOS is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE).

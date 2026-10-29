@@ -1,0 +1,56 @@
+[
+  {
+    "path": "sources/building-missionos.json",
+    "url": "https://astropomeai.com/content/articles/building-missionos.json",
+    "sha256": "030d0fc1eec792a8a5ba90d2083d196f6ee47a8843a331e633e8bd920ed21858",
+    "bytes": 32239
+  },
+  {
+    "path": "assets/px4-two-obstacle-recovery.png",
+    "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/assets/missionos-two-obstacle-recovery-map.png",
+    "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f",
+    "bytes": 1450720
+  },
+  {
+    "path": "assets/go2-agent-delivery.jpg",
+    "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+    "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+    "bytes": 47421
+  },
+  {
+    "path": "assets/starship-thrust-matrix.png",
+    "url": "https://astropomeai.com/assets/media/building-missionos-thrust-matrix.png",
+    "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+    "bytes": 130449
+  },
+  {
+    "path": "sources/building-missionos-publication.json",
+    "url": "https://astropomeai.com/content/evidence/building-missionos-publication.json",
+    "sha256": "c54157067c8a5dace9314648565b2c2759a7049fcc8ec89257a0039d00d8a56b",
+    "bytes": 5331
+  },
+  {
+    "path": "sources/starship-mission-simulation.json",
+    "url": "https://astropomeai.com/content/articles/starship-mission-simulation.json",
+    "sha256": "94db595adc0c91dcbcc910a174e03d3ca723a4e80d43fe962bfe77f770beb53d",
+    "bytes": 24213
+  },
+  {
+    "path": "sources/starship-october-record-update.json",
+    "url": "https://astropomeai.com/content/evidence/starship-october-record-update.json",
+    "sha256": "0daf6d0cb0061d6b3aa8daeab56e76ed93c7b05917ec58e9065761a02916e4c7",
+    "bytes": 4926
+  },
+  {
+    "path": "sources/starship-qualification-preflight-stop-20261023.json",
+    "url": "https://astropomeai.com/content/evidence/starship-qualification-preflight-stop-20261023.json",
+    "sha256": "533afa238b3a91f6dd3f08b085d20ec637c8f5f8b0e774f833ef8258c7a3adf1",
+    "bytes": 1164
+  },
+  {
+    "path": "assets/starship-booster-recovery-20261014.jpg",
+    "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+    "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67",
+    "bytes": 141577
+  }
+]
