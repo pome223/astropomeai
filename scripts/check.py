@@ -2,6 +2,7 @@
 """Check generated documents, references, and optional real HTTP delivery."""
 import argparse
 import hashlib
+import html
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -11,6 +12,11 @@ from urllib.request import urlopen
 
 ROOT=Path(__file__).resolve().parents[1]
 MEDIA_MARKER=re.compile(r'<!--\s*media:([^\s<>]+)\s*-->')
+JAPANESE_CHAR=re.compile(r'[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff々〆]')
+
+def japanese_length(text):
+    return len(JAPANESE_CHAR.findall(html.unescape(re.sub('<[^>]*>',' ',text))))
+
 class Document(HTMLParser):
     def __init__(self,text):
         super().__init__(convert_charrefs=True)
@@ -43,9 +49,21 @@ def check(base=None):
     paths=[ROOT/'index.html',*sorted((ROOT/'research').glob('*/index.html'))]
     article_paths=sorted((ROOT/'content/articles').glob('*.json'))
     assert len(article_paths)>=11,'Expected full research collection'
+    expected_languages={}
+    for p in article_paths:
+        article=json.loads(p.read_text())
+        expected_languages[ROOT/'research'/article['slug']/'index.html']=article.get('language','en')
     for p in paths:
         content=p.read_text(); d=Document(content); docs[p]=d
-        if not (d.lang=='en' and d.h1==1 and d.title and d.canonical):failures.append(f'{p.relative_to(ROOT)}: missing document metadata or unique h1')
+        expected_language=expected_languages.get(p,'en')
+        if not (d.lang==expected_language and d.h1==1 and d.title and d.canonical):failures.append(f'{p.relative_to(ROOT)}: missing document metadata, matching language, or unique h1')
+        if p in expected_languages:
+            schemas=re.findall(r'<script type="application/ld\+json">(.*?)</script>',content,re.S)
+            try:
+                if len(schemas)!=1 or json.loads(schemas[0]).get('inLanguage')!=expected_language:
+                    failures.append(f'{p.relative_to(ROOT)}: JSON-LD language does not match article')
+            except (json.JSONDecodeError,AttributeError):
+                failures.append(f'{p.relative_to(ROOT)}: invalid article JSON-LD')
         if len(d.ids)!=len(set(d.ids)):failures.append(f'{p.relative_to(ROOT)}: duplicate IDs')
         if d.missing_alt:failures.append(f'{p.relative_to(ROOT)}: images without alt')
         if d.media_markers:failures.append(f'{p.relative_to(ROOT)}: unresolved inline media markers')
@@ -80,12 +98,16 @@ def check(base=None):
             local.add('/'+str(target.relative_to(ROOT)))
     for p in article_paths:
         a=json.loads(p.read_text())
-        if len(a['abstract'].split())<65:failures.append(f'{p.name}: abstract too short')
+        language=a.get('language','en')
+        if language not in ('en','ja'):failures.append(f'{p.name}: unsupported language')
+        abstract_short=japanese_length(a['abstract'])<160 if language=='ja' else len(a['abstract'].split())<65
+        if abstract_short:failures.append(f'{p.name}: abstract too short')
         if len(a['sections'])<5 or len(a['sources'])<2:failures.append(f'{p.name}: insufficient paper structure')
         text=' '.join(s['html'] for s in a['sections'])
         citations+=len(re.findall('class="citation"',text))+len(a.get('media',[]))
         if 'class="citation"' not in text:failures.append(f'{p.name}: no evidence citations')
-        if len(re.sub('<[^>]*>',' ',text).split())<600:failures.append(f'{p.name}: substantive body missing')
+        body_short=japanese_length(text)<1500 if language=='ja' else len(re.sub('<[^>]*>',' ',text).split())<600
+        if body_short:failures.append(f'{p.name}: substantive body missing')
         raw=p.read_text()
         if re.search(r'/Users/|/home/|missionos-internal|localhost:|127\.0\.0\.1:|file://',raw):failures.append(f'{p.name}: local/private data')
         if re.search(r'<script|\son\w+\s*=|javascript:',text,re.I):failures.append(f'{p.name}: executable article content')
@@ -104,6 +126,17 @@ def check(base=None):
         section_ids={section['id'] for section in a['sections']}
         rendered=docs.get(ROOT/'research'/a['slug']/'index.html')
         if not rendered:failures.append(f'{p.name}: generated article missing')
+        if a.get('references_before'):
+            before=a['references_before']
+            if before not in section_ids:
+                failures.append(f'{p.name}: invalid references_before section')
+            elif rendered and ('references' not in rendered.ids or before not in rendered.ids or rendered.ids.index('references')>rendered.ids.index(before)):
+                failures.append(f'{p.name}: references rendered after requested section')
+        for download in a.get('downloads',[]):
+            url=download.get('url','')
+            if not download.get('label') or not url.startswith('/') or url.startswith('//') or not (ROOT/url.lstrip('/')).is_file():
+                failures.append(f'{p.name}: invalid or missing download')
+            if rendered and url not in rendered.links:failures.append(f'{p.name}: missing rendered download {url}')
         for item in media_items:
             label=f'{p.name}: {item["id"]}'
             kind=item.get('type')
@@ -148,6 +181,36 @@ def check(base=None):
             else:verified_media+=1
     for path in sorted(required_media-manifest_paths):
         failures.append(f'{path}: media provenance entry missing')
+    publication_manifest=ROOT/'content/evidence/control-layer-paper-publication.json'
+    verified_publication_files=0
+    if publication_manifest.exists():
+        publication=json.loads(publication_manifest.read_text())
+        publication_paths=set()
+        publication_root=(ROOT/'publications').resolve()
+        entries=publication.get('files')
+        if not isinstance(entries,list) or not entries or not isinstance(publication.get('original_zip'),dict):
+            failures.append(f'{publication_manifest.name}: missing publication files or original ZIP metadata')
+        else:
+            for entry in entries+[publication['original_zip']]:
+                path=entry.get('path','') if isinstance(entry,dict) else ''
+                if not isinstance(path,str) or not path.startswith('/publications/') or urlsplit(path).query or urlsplit(path).fragment:
+                    failures.append(f'{publication_manifest.name}: invalid publication path {path}')
+                    continue
+                target=ROOT/path.lstrip('/')
+                if not target.resolve().is_relative_to(publication_root) or path in publication_paths:
+                    failures.append(f'{path}: escaped or duplicate publication path')
+                    continue
+                publication_paths.add(path)
+                if not isinstance(entry.get('bytes'),int) or entry['bytes']<0 or not isinstance(entry.get('sha256'),str) or not re.fullmatch(r'[0-9a-f]{64}',entry['sha256']):
+                    failures.append(f'{path}: invalid publication integrity metadata')
+                    continue
+                if not target.is_file():
+                    failures.append(f'{path}: publication file missing')
+                    continue
+                payload=target.read_bytes()
+                if len(payload)!=entry['bytes'] or hashlib.sha256(payload).hexdigest()!=entry['sha256']:
+                    failures.append(f'{path}: publication size or SHA-256 mismatch')
+                else:verified_publication_files+=1
     http_count=0
     if base:
         routes=set(local)|{'/','/assets/site.css','/assets/library.js','/assets/favicon.svg','/sitemap.xml','/robots.txt'}
@@ -161,7 +224,7 @@ def check(base=None):
                     if route.endswith('.json'):json.loads(body)
                 http_count+=1
             except Exception as ex:failures.append(f'HTTP {route}: {ex}')
-    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'youtube_embeds':youtube_embeds,'verified_media_files':verified_media,'http_routes_checked':http_count,'failures':failures}
+    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'youtube_embeds':youtube_embeds,'verified_media_files':verified_media,'verified_publication_files':verified_publication_files,'http_routes_checked':http_count,'failures':failures}
     print(json.dumps(report,indent=2))
     return bool(failures)
 

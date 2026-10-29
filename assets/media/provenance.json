@@ -467,6 +467,46 @@
       "width": 1280,
       "height": 720,
       "codec": "mjpeg"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-v3/assets/figure-01-architecture.png",
+      "sha256": "ccebc7cb42c2af45ac2a92bf3101c5d0b91dce458a9408a56dc6de4fd0f8b218",
+      "bytes": 88268,
+      "source_url": "/content/evidence/control-layer-paper-publication.json",
+      "source_kind": "unchanged_author_supplied_v3_figure",
+      "note": "図1. MissionOSにおける権限と情報の流れ。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-v3/assets/px4-two-obstacle-recovery.png",
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f",
+      "bytes": 1450720,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/README.md",
+      "source_kind": "unchanged_author_supplied_v3_figure",
+      "note": "図2. PX4 SITLで観測された二つの障害物への対応。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-v3/assets/go2-agent-delivery.jpg",
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de",
+      "bytes": 47421,
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/go2-agent-delivery-20260925/report-en.md",
+      "source_kind": "unchanged_author_supplied_v3_figure",
+      "note": "図3. Go2配送試験のシミュレーション時刻15秒における判断待ちの場面。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-v3/assets/starship-thrust-matrix.png",
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779",
+      "bytes": 130449,
+      "source_url": "https://astropomeai.com/content/evidence/building-missionos-publication.json",
+      "source_kind": "unchanged_author_supplied_v3_figure",
+      "note": "図4. 同一の保存初期状態から継続した、AIを使用しない九点の物理計算。"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-v3/assets/figure-05-cognitive-bridge.png",
+      "sha256": "b98ef3710b3d80ac4f5e8bd1ca34b87272ee4ccd6d3fdddea83cbff041094331",
+      "bytes": 58875,
+      "source_url": "/content/evidence/control-layer-paper-publication.json",
+      "source_kind": "unchanged_author_supplied_v3_figure",
+      "note": "図5. RQ3に関わる情報提示の設計仮説。"
     }
   ]
 }

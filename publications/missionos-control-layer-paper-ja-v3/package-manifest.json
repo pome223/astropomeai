@@ -1,0 +1,182 @@
+{
+  "created_on": "2026-10-29",
+  "revision": "v3-own-research-and-findings",
+  "type": "Japanese academic-style retrospective manuscript",
+  "new_simulation_runs": 0,
+  "new_experiment_model_calls": 0,
+  "figures": 5,
+  "tables": 5,
+  "references": 11,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2883,
+      "sha256": "e99b26f15faa30ba7ac833dd7ba1ac8ddc221c7a5c8d8ac404301b9d989255ab"
+    },
+    {
+      "path": "assets/figure-01-architecture.mmd",
+      "bytes": 1074,
+      "sha256": "8619083f2998357927059ea099865d5473911725018e62361df4fb2d9cbdbfab"
+    },
+    {
+      "path": "assets/figure-01-architecture.png",
+      "bytes": 88268,
+      "sha256": "ccebc7cb42c2af45ac2a92bf3101c5d0b91dce458a9408a56dc6de4fd0f8b218"
+    },
+    {
+      "path": "assets/figure-01-architecture.svg",
+      "bytes": 16662,
+      "sha256": "bdaf328ee74ef09ca5e3fe8e048747a15320413e3f91343a4b6b615c58d9a74f"
+    },
+    {
+      "path": "assets/figure-05-cognitive-bridge.mmd",
+      "bytes": 767,
+      "sha256": "779dc35aa3ca9d4164fbf201e014d0cd0f5e2b50f73a712df494eab1796c3959"
+    },
+    {
+      "path": "assets/figure-05-cognitive-bridge.png",
+      "bytes": 58875,
+      "sha256": "b98ef3710b3d80ac4f5e8bd1ca34b87272ee4ccd6d3fdddea83cbff041094331"
+    },
+    {
+      "path": "assets/figure-05-cognitive-bridge.svg",
+      "bytes": 13691,
+      "sha256": "ee8f6dfafeb454f1c181c17f8e2f1a3f714922f9565576f7a91234c4d7b0f87b"
+    },
+    {
+      "path": "assets/go2-agent-delivery.jpg",
+      "bytes": 47421,
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de"
+    },
+    {
+      "path": "assets/px4-two-obstacle-recovery.png",
+      "bytes": 1450720,
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f"
+    },
+    {
+      "path": "assets/starship-thrust-matrix.png",
+      "bytes": 130449,
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779"
+    },
+    {
+      "path": "missionos-control-layer-paper-ja.md",
+      "bytes": 41965,
+      "sha256": "0ad82eae1fa7ab7eafea6cbfd853fde525e1a36661f2f4a812e12395ba4f1c84"
+    },
+    {
+      "path": "preview.html",
+      "bytes": 78239,
+      "sha256": "bb989a625386928e6ade0410b79346faa7ec67bbc959154f576fbe0948a6f830"
+    },
+    {
+      "path": "qa/desktop-cognitive-bridge.png",
+      "bytes": 344032,
+      "sha256": "206dcca7274d548ce4093cd18fc3b994e03ea97170b93fabaa820aaab5ad454a"
+    },
+    {
+      "path": "qa/desktop-opening.png",
+      "bytes": 265935,
+      "sha256": "05d67453ffebaa1a9f76968cde648267bd04a4b698835adbf75676d5f379e790"
+    },
+    {
+      "path": "qa/manuscript-checks.json",
+      "bytes": 430,
+      "sha256": "1e65843b1afd4a4d038dee8167bd2de801597460279635194736f74fca700a43"
+    },
+    {
+      "path": "qa/mobile-opening.png",
+      "bytes": 123086,
+      "sha256": "f9cbfe1c6f913ee6a4200f4405f07a988653272d54e4d5598a6540676fc71403"
+    },
+    {
+      "path": "qa/render-checks.json",
+      "bytes": 1553,
+      "sha256": "0bb6ceedaf887c93a965c63c225ddab46e612f52dd635e30965d58e750698221"
+    },
+    {
+      "path": "revisions/CHANGELOG.md",
+      "bytes": 998,
+      "sha256": "95f99e45c5216c351ddb97d5f5690cae0017afcf27920ebb5e1fc8757ed58353"
+    },
+    {
+      "path": "scripts/build_preview.cjs",
+      "bytes": 7806,
+      "sha256": "e35b4730357c46d421e4bb98effabe5fd9aed48550dc45feaf73cf420de45544"
+    },
+    {
+      "path": "scripts/check_manuscript.py",
+      "bytes": 4687,
+      "sha256": "d271a2f345e64bb89d6557e0d39b0a0273beeb550c965adcb6afa040e7f1b6d0"
+    },
+    {
+      "path": "sources/acwm.md",
+      "bytes": 10007,
+      "sha256": "ebebc3132eee1e5d8b9e4d49cd35877379f7eb1c74670310fa79078d74dc2755"
+    },
+    {
+      "path": "sources/agent-roles.md",
+      "bytes": 5183,
+      "sha256": "3747d7b4cfc344d045823e0f20144a711efbeeca0437ef8894e2dd20e6216611"
+    },
+    {
+      "path": "sources/building-missionos-publication.json",
+      "bytes": 5331,
+      "sha256": "c54157067c8a5dace9314648565b2c2759a7049fcc8ec89257a0039d00d8a56b"
+    },
+    {
+      "path": "sources/building-missionos.json",
+      "bytes": 32239,
+      "sha256": "030d0fc1eec792a8a5ba90d2083d196f6ee47a8843a331e633e8bd920ed21858"
+    },
+    {
+      "path": "sources/download-manifest.json",
+      "bytes": 1403,
+      "sha256": "3565272521c5fde8a128a99a568b3507aa94191470908ae2566143a7f2ffd4c8"
+    },
+    {
+      "path": "sources/go2-provenance.json",
+      "bytes": 2005,
+      "sha256": "21969405c816fe1dda883b87773f932513311810b70ae8eeb8218ecb73274810"
+    },
+    {
+      "path": "sources/go2.md",
+      "bytes": 23706,
+      "sha256": "51e225a999321c2ee3ed72fbe498c593b730b10843d6469802fc1d837ae269eb"
+    },
+    {
+      "path": "sources/overview.md",
+      "bytes": 54142,
+      "sha256": "f3ccf654951f34a0c6c39efa24de1d954bb270e36a875a896d3ba68a796d616b"
+    },
+    {
+      "path": "sources/parent-mission.md",
+      "bytes": 5191,
+      "sha256": "f9867c874099bf72f3e1964df081cc054073fd48986a9e8eec4303faa12be128"
+    },
+    {
+      "path": "sources/repository-sources.json",
+      "bytes": 3873,
+      "sha256": "1f474bddadf420a1054e3303a68c5158bd30211ec910e181e3dd4a8edcd62d50"
+    },
+    {
+      "path": "sources/stacking.md",
+      "bytes": 20636,
+      "sha256": "fb99f44c3fa74ff67cf7678a84c5f39f8023d51df73e27940869544b575dcd77"
+    },
+    {
+      "path": "sources/starship-final.md",
+      "bytes": 4974,
+      "sha256": "913c40d4ad1010e78ebf7dd06d506739c0a6e9921bbff74fc46971a4aed1f919"
+    },
+    {
+      "path": "sources/starship-sixdof.md",
+      "bytes": 1894,
+      "sha256": "cf3a15a19e6cb83efcbdb47dfa4770016eaa9bc83be2b678d69bd1167a29c08c"
+    },
+    {
+      "path": "sources/vla-repair.md",
+      "bytes": 17123,
+      "sha256": "26cf0e5841a59d5c4fbe627a8898038804fcc7194341881202ba56aaf1b0de05"
+    }
+  ]
+}
