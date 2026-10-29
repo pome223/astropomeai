@@ -1,31 +1,39 @@
 {
   "schema": "astropome.manuscript_publication.v1",
   "published": "2026-10-29",
-  "revision": "2026-10-29-yokohama-starship-update",
+  "revision": "2026-10-29-yokohama-starship-license-update",
   "language": "ja",
   "title": "MissionOS：AI AgentとフィジカルAIを人の判断へつなぐ管制レイヤー",
   "source_manuscript": {
     "filename": "missionos-control-layer-paper-ja.md",
-    "sha256": "56cef88f79c49865ecdd0ab4a09deb995634c2e1c0e01da78de440dd823bea5b",
-    "bytes": 56182
+    "sha256": "194eab34a65c716a5d2cad162ca1b51f42f89cee8c34cb107266850acdf8298d",
+    "bytes": 57036,
+    "unchanged": true
   },
   "original_zip": {
     "path": "/publications/missionos-control-layer-paper-ja-20261029-update.zip",
-    "sha256": "10378d529e603333d40da7f0248ece154735afcfb69a89d49e49424e39535ba3",
-    "bytes": 3016007,
-    "unchanged": true
+    "sha256": "b4f4583af84737ac6c43d93dfbe99e91937f6c7da066db9a3a2dbbdc0b3fa026",
+    "bytes": 2293279,
+    "unchanged": false,
+    "note": "New reader package with the author-approved licensing paragraph in Markdown and HTML; previous browser QA and build scripts excluded."
   },
   "figures": 8,
   "tables": 5,
   "references": 20,
   "public_source_commit": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
   "editorial_changes": [
-    "No narrative edits or translation. The updated Japanese manuscript dated 29 October 2026 is the source.",
-    "Site navigation, localized article labels, inline figure controls, citation layout and download links added. Rendered Mermaid diagrams use the unchanged supplied PNGs, with unchanged SVG links."
+    "No changes to the author-supplied Japanese narrative. The updated 29 October manuscript, including its licensing paragraph, is the source.",
+    "Site navigation, localized article labels, inline figure controls, citation layout and download links added. Rendered Mermaid diagrams use the unchanged supplied PNGs, with unchanged SVG links.",
+    "The downloadable HTML includes the same license paragraph. Figures and public source snapshots are unchanged; the ZIP and package manifest were regenerated, with earlier browser QA and build scripts excluded."
   ],
   "new_simulation_runs": 0,
   "new_experiment_model_calls": 0,
   "files": [
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/README.md",
+      "bytes": 1582,
+      "sha256": "f294a659a66604ea1b492b60ee0526760d16e060b00d06c9e4da91a3c7bf7359"
+    },
     {
       "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-01-architecture.mmd",
       "bytes": 1074,
@@ -88,13 +96,23 @@
     },
     {
       "path": "/publications/missionos-control-layer-paper-ja-20261029-update/missionos-control-layer-paper-ja.md",
-      "bytes": 56182,
-      "sha256": "56cef88f79c49865ecdd0ab4a09deb995634c2e1c0e01da78de440dd823bea5b"
+      "bytes": 57036,
+      "sha256": "194eab34a65c716a5d2cad162ca1b51f42f89cee8c34cb107266850acdf8298d"
     },
     {
       "path": "/publications/missionos-control-layer-paper-ja-20261029-update/package-manifest.json",
-      "bytes": 8226,
-      "sha256": "244d2434b73faf8cecd9e165175c61696e4b7150435544dc5aa6735170116fdf"
+      "bytes": 7433,
+      "sha256": "9976aa1d2adf50fee52d7c51895134941bf85ab2d316fa8ff0a1844423fb3b7c"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/preview.html",
+      "bytes": 95584,
+      "sha256": "e32ec6c852179056e5e954b0a7963db37901f68506648cce4abb96cfa577ebd1"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/revisions/CHANGELOG.md",
+      "bytes": 1687,
+      "sha256": "b38e1599998ac635db9aa76e7c5de55d1246f3de818f45af5702df86bc86f6b9"
     },
     {
       "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/acwm.md",
@@ -221,5 +239,11 @@
       "bytes": 9242,
       "sha256": "389e716a39f148c1e164b45e0ea82cf9a1fa7ac294b1dee959cc3ad91df402b2"
     }
-  ]
+  ],
+  "source_package_before_license_addition": {
+    "sha256": "10378d529e603333d40da7f0248ece154735afcfb69a89d49e49424e39535ba3",
+    "bytes": 3016007,
+    "note": "Author-supplied package before the approved license addition; not the current download."
+  },
+  "browser_rendering_checked": false
 }

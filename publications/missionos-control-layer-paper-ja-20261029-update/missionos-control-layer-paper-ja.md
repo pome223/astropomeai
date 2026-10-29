@@ -406,6 +406,8 @@ MissionOSの実装と本稿の執筆は、CodexとClaudeを主な開発・執筆
 
 図7のSHA-256は公開元の来歴資料と照合し、一致を確認した。図2の背景地図の帰属表示は原図内に保持している。図3・図4の3D都市モデルは横浜市・Project PLATEAUのデータ（[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)）を加工したもので、帰属を図注と出典13に記載した。地図データの利用条件は[OpenStreetMapの著作権・ライセンス案内](https://www.openstreetmap.org/copyright)を参照されたい。
 
+**ライセンス。** 本文と、本稿で作成した図（図1・図8）は、CC BY 4.0で提供する。図に含まれる第三者のデータは、それぞれの条件に従う。図2の背景地図はOpenStreetMapのデータに基づくもので、本稿のライセンスの対象外とし、OpenStreetMapの条件に従う。図3・図4の3D都市モデルは、横浜市・Project PLATEAUのCC BY 4.0の条件に従う。図4(b)と図3(b)の予測画像は、ANWM（重みはApache 2.0で公開）が本研究の実行中に生成したものである。図5のGo2のロボットモデルは、公開パッケージ（rl_sar_zooのgo2_description、Apache 2.0と表示）を用いた。製品名・モデル名は、使用した対象を指すために記載したもので、各権利者との提携や承認を示すものではない。
+
 [m-overview]: https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/README.md
 [m-roles]: https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/concepts/agent-roles.md
 [m-parent]: https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/concepts/parent-mission-control.md

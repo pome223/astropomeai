@@ -1,6 +1,6 @@
 {
   "created_on": "2026-10-29",
-  "revision": "2026-10-29-yokohama-starship-update",
+  "revision": "2026-10-29-yokohama-starship-license-update",
   "type": "Japanese technical report: design and development record",
   "new_simulation_runs": 0,
   "new_experiment_model_calls": 0,
@@ -10,8 +10,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 3112,
-      "sha256": "c1f2d8cce545ba44b99d9953a9f982fc667f56ef9f9f58f1365510b8b3fff4ef"
+      "bytes": 1582,
+      "sha256": "f294a659a66604ea1b492b60ee0526760d16e060b00d06c9e4da91a3c7bf7359"
     },
     {
       "path": "assets/figure-01-architecture.mmd",
@@ -75,53 +75,18 @@
     },
     {
       "path": "missionos-control-layer-paper-ja.md",
-      "bytes": 56182,
-      "sha256": "56cef88f79c49865ecdd0ab4a09deb995634c2e1c0e01da78de440dd823bea5b"
+      "bytes": 57036,
+      "sha256": "194eab34a65c716a5d2cad162ca1b51f42f89cee8c34cb107266850acdf8298d"
     },
     {
       "path": "preview.html",
-      "bytes": 94711,
-      "sha256": "45ea49cdbaa45dcfdcbf5043d0034bc69b0145118bc2ef9667c6b386d889bd8d"
-    },
-    {
-      "path": "qa/desktop-cognitive-bridge.png",
-      "bytes": 343737,
-      "sha256": "ce5233d99eed312f51d12e0b3aa31588bf0ffe941c6c822bb1e6a535afe75e07"
-    },
-    {
-      "path": "qa/desktop-opening.png",
-      "bytes": 269352,
-      "sha256": "f8f3f94c8f0080f3d3818f6e61c42c39d87da1ef357932a16882f436e4112e6f"
-    },
-    {
-      "path": "qa/manuscript-checks.json",
-      "bytes": 528,
-      "sha256": "d9de0a8886ad04f647652dc1f8e8574cefe7dfdd061c684f9a04c7e6bed4692e"
-    },
-    {
-      "path": "qa/mobile-opening.png",
-      "bytes": 123578,
-      "sha256": "2a05af22e680a26322ee9cee75616b3449956a9bdfc8211d84d1bbe3b2098d31"
-    },
-    {
-      "path": "qa/render-checks.json",
-      "bytes": 1553,
-      "sha256": "645e00b6377692bad35350070f743a556a56b9dff1f7209a6187d95e2b5746bc"
+      "bytes": 95584,
+      "sha256": "e32ec6c852179056e5e954b0a7963db37901f68506648cce4abb96cfa577ebd1"
     },
     {
       "path": "revisions/CHANGELOG.md",
       "bytes": 1687,
       "sha256": "b38e1599998ac635db9aa76e7c5de55d1246f3de818f45af5702df86bc86f6b9"
-    },
-    {
-      "path": "scripts/build_preview.cjs",
-      "bytes": 7806,
-      "sha256": "e35b4730357c46d421e4bb98effabe5fd9aed48550dc45feaf73cf420de45544"
-    },
-    {
-      "path": "scripts/check_manuscript.py",
-      "bytes": 5210,
-      "sha256": "71cd81170836c1638ef82adf904acb2fc863f66fef253c70b9485ebe9c7d7be8"
     },
     {
       "path": "sources/acwm.md",
@@ -248,5 +213,10 @@
       "bytes": 9242,
       "sha256": "389e716a39f148c1e164b45e0ea82cf9a1fa7ac294b1dee959cc3ad91df402b2"
     }
-  ]
+  ],
+  "packaging_note": "Updated reader package. Author-supplied license paragraph included; prior browser QA and build scripts excluded. All figures and source snapshots unchanged.",
+  "verification": {
+    "mode": "static content, links, archive readback and hash verification",
+    "browser_rendering_checked": false
+  }
 }
