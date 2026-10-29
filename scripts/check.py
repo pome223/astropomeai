@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
 from urllib.request import urlopen
+from build import BASE, caption_html_is_safe, translation_errors
 
 ROOT=Path(__file__).resolve().parents[1]
 MEDIA_MARKER=re.compile(r'<!--\s*media:([^\s<>]+)\s*-->')
@@ -21,6 +22,7 @@ class Document(HTMLParser):
     def __init__(self,text):
         super().__init__(convert_charrefs=True)
         self.ids=[]; self.links=[]; self.h1=0; self.lang=None; self.title=False; self.canonical=False; self.missing_alt=[]; self.videos=[]; self.iframes=[]; self.media_markers=[]
+        self.canonical_url=None; self.alternates=[]; self.language_links=[]
         self.feed(text)
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
@@ -28,7 +30,9 @@ class Document(HTMLParser):
         if tag=='html':self.lang=a.get('lang')
         if tag=='h1':self.h1+=1
         if tag=='title':self.title=True
-        if tag=='link' and a.get('rel')=='canonical':self.canonical=True
+        if tag=='link' and a.get('rel')=='canonical':self.canonical=True; self.canonical_url=a.get('href')
+        if tag=='link' and a.get('rel')=='alternate':self.alternates.append(a)
+        if tag=='a' and 'hreflang' in a:self.language_links.append(a)
         if tag=='img' and 'alt' not in a:self.missing_alt.append(a.get('src'))
         if tag=='video':self.videos.append(a)
         if tag=='iframe':self.iframes.append(a)
@@ -49,10 +53,12 @@ def check(base=None):
     paths=[ROOT/'index.html',*sorted((ROOT/'research').glob('*/index.html'))]
     article_paths=sorted((ROOT/'content/articles').glob('*.json'))
     assert len(article_paths)>=11,'Expected full research collection'
-    expected_languages={}
+    expected_languages={}; expected_citations={}; articles_by_path={}
     for p in article_paths:
         article=json.loads(p.read_text())
         expected_languages[ROOT/'research'/article['slug']/'index.html']=article.get('language','en')
+        expected_citations[ROOT/'research'/article['slug']/'index.html']=[BASE+source['url'] if source['url'].startswith('/') else source['url'] for source in article['sources']]
+        articles_by_path['/research/'+article['slug']+'/']=article
     for p in paths:
         content=p.read_text(); d=Document(content); docs[p]=d
         expected_language=expected_languages.get(p,'en')
@@ -62,6 +68,8 @@ def check(base=None):
             try:
                 if len(schemas)!=1 or json.loads(schemas[0]).get('inLanguage')!=expected_language:
                     failures.append(f'{p.relative_to(ROOT)}: JSON-LD language does not match article')
+                elif json.loads(schemas[0]).get('citation')!=expected_citations[p]:
+                    failures.append(f'{p.relative_to(ROOT)}: JSON-LD citations do not match canonical source URLs in order')
             except (json.JSONDecodeError,AttributeError):
                 failures.append(f'{p.relative_to(ROOT)}: invalid article JSON-LD')
         if len(d.ids)!=len(set(d.ids)):failures.append(f'{p.relative_to(ROOT)}: duplicate IDs')
@@ -104,7 +112,7 @@ def check(base=None):
         if abstract_short:failures.append(f'{p.name}: abstract too short')
         if len(a['sections'])<5 or len(a['sources'])<2:failures.append(f'{p.name}: insufficient paper structure')
         text=' '.join(s['html'] for s in a['sections'])
-        citations+=len(re.findall('class="citation"',text))+len(a.get('media',[]))
+        citations+=len(re.findall('class="citation"',text))+sum(len(re.findall('class="citation"',m['caption_html'])) if isinstance(m.get('caption_html'),str) else 1 for m in a.get('media',[]))
         if 'class="citation"' not in text:failures.append(f'{p.name}: no evidence citations')
         body_short=japanese_length(text)<1500 if language=='ja' else len(re.sub('<[^>]*>',' ',text).split())<600
         if body_short:failures.append(f'{p.name}: substantive body missing')
@@ -123,9 +131,24 @@ def check(base=None):
                 failures.append(f'{p.name}: invalid inline media marker {section_id}/{media_id}')
         expected_embeds=[]
         source_ids={source['id'] for source in a['sources']}
+        for source in a['sources']:
+            if 'reference_html' in source and not caption_html_is_safe(source['reference_html']):
+                failures.append(f'{p.name}: {source["id"]}: unsafe reference HTML')
         section_ids={section['id'] for section in a['sections']}
         rendered=docs.get(ROOT/'research'/a['slug']/'index.html')
         if not rendered:failures.append(f'{p.name}: generated article missing')
+        if rendered and rendered.canonical_url!=BASE+'/research/'+a['slug']+'/':
+            failures.append(f'{p.name}: canonical URL does not match article')
+        translation_problems=translation_errors(a,articles_by_path)
+        failures.extend(f'{p.name}: {problem}' for problem in translation_problems)
+        if rendered and not translation_problems:
+            translations=a.get('translations',[])
+            expected_alternates=sorted((item['language'],BASE+item['url']) for item in translations)
+            actual_alternates=sorted((item.get('hreflang',''),item.get('href','')) for item in rendered.alternates)
+            if actual_alternates!=expected_alternates:failures.append(f'{p.name}: alternate language tags do not match translations')
+            expected_links=sorted((item['language'],item['language'],item['url']) for item in translations)
+            actual_links=sorted((item.get('lang',''),item.get('hreflang',''),item.get('href','')) for item in rendered.language_links)
+            if actual_links!=expected_links:failures.append(f'{p.name}: language navigation does not match translations')
         if a.get('references_before'):
             before=a['references_before']
             if before not in section_ids:
@@ -139,6 +162,8 @@ def check(base=None):
             if rendered and url not in rendered.links:failures.append(f'{p.name}: missing rendered download {url}')
         for item in media_items:
             label=f'{p.name}: {item["id"]}'
+            if 'caption_html' in item and not caption_html_is_safe(item['caption_html']):
+                failures.append(f'{label}: unsafe caption HTML')
             kind=item.get('type')
             if kind not in ('image','video','youtube'):
                 failures.append(f'{label}: unsupported media type')
@@ -181,10 +206,12 @@ def check(base=None):
             else:verified_media+=1
     for path in sorted(required_media-manifest_paths):
         failures.append(f'{path}: media provenance entry missing')
-    publication_manifest=ROOT/'content/evidence/control-layer-paper-publication.json'
-    verified_publication_files=0
-    if publication_manifest.exists():
+    verified_publication_files=0; verified_publication_manifests=0
+    for publication_manifest in sorted((ROOT/'content/evidence').glob('*.json')):
         publication=json.loads(publication_manifest.read_text())
+        if not isinstance(publication,dict) or publication.get('schema')!='astropome.manuscript_publication.v1':
+            continue
+        verified_publication_manifests+=1
         publication_paths=set()
         publication_root=(ROOT/'publications').resolve()
         entries=publication.get('files')
@@ -224,7 +251,7 @@ def check(base=None):
                     if route.endswith('.json'):json.loads(body)
                 http_count+=1
             except Exception as ex:failures.append(f'HTTP {route}: {ex}')
-    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'youtube_embeds':youtube_embeds,'verified_media_files':verified_media,'verified_publication_files':verified_publication_files,'http_routes_checked':http_count,'failures':failures}
+    report={'pages':len(paths),'articles':len(article_paths),'local_targets':len(local),'external_urls':len(external),'inline_citations':citations,'videos':videos,'youtube_embeds':youtube_embeds,'verified_media_files':verified_media,'verified_publication_manifests':verified_publication_manifests,'verified_publication_files':verified_publication_files,'http_routes_checked':http_count,'failures':failures}
     print(json.dumps(report,indent=2))
     return bool(failures)
 

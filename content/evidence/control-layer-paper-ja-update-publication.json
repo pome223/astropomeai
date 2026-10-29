@@ -1,0 +1,225 @@
+{
+  "schema": "astropome.manuscript_publication.v1",
+  "published": "2026-10-29",
+  "revision": "2026-10-29-yokohama-starship-update",
+  "language": "ja",
+  "title": "MissionOS：AI AgentとフィジカルAIを人の判断へつなぐ管制レイヤー",
+  "source_manuscript": {
+    "filename": "missionos-control-layer-paper-ja.md",
+    "sha256": "56cef88f79c49865ecdd0ab4a09deb995634c2e1c0e01da78de440dd823bea5b",
+    "bytes": 56182
+  },
+  "original_zip": {
+    "path": "/publications/missionos-control-layer-paper-ja-20261029-update.zip",
+    "sha256": "10378d529e603333d40da7f0248ece154735afcfb69a89d49e49424e39535ba3",
+    "bytes": 3016007,
+    "unchanged": true
+  },
+  "figures": 8,
+  "tables": 5,
+  "references": 20,
+  "public_source_commit": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+  "editorial_changes": [
+    "No narrative edits or translation. The updated Japanese manuscript dated 29 October 2026 is the source.",
+    "Site navigation, localized article labels, inline figure controls, citation layout and download links added. Rendered Mermaid diagrams use the unchanged supplied PNGs, with unchanged SVG links."
+  ],
+  "new_simulation_runs": 0,
+  "new_experiment_model_calls": 0,
+  "files": [
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-01-architecture.mmd",
+      "bytes": 1074,
+      "sha256": "8619083f2998357927059ea099865d5473911725018e62361df4fb2d9cbdbfab"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-01-architecture.png",
+      "bytes": 88268,
+      "sha256": "ccebc7cb42c2af45ac2a92bf3101c5d0b91dce458a9408a56dc6de4fd0f8b218"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-01-architecture.svg",
+      "bytes": 16662,
+      "sha256": "a7dfc3ef36f4eb1c4b653bf10659e1eb2ffb11d778579f456f5533f193d15a31"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-05-cognitive-bridge.mmd",
+      "bytes": 767,
+      "sha256": "779dc35aa3ca9d4164fbf201e014d0cd0f5e2b50f73a712df494eab1796c3959"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-05-cognitive-bridge.png",
+      "bytes": 58891,
+      "sha256": "7cc44a9a3dadb190b4e7aace9fe36373ea8090ed0b7864d3097d1abf0458b6c5"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/figure-05-cognitive-bridge.svg",
+      "bytes": 13691,
+      "sha256": "a5c611dbde80f7ba1b350fecef41f61b4a5738b5bb2ac86bef6a1313ee38dbf5"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/go2-agent-delivery.jpg",
+      "bytes": 47421,
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/px4-two-obstacle-recovery.png",
+      "bytes": 1450720,
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/starship-booster-recovery-20261014.jpg",
+      "bytes": 141577,
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/starship-thrust-matrix.png",
+      "bytes": 130449,
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/yokohama-cargo-native.png",
+      "bytes": 103154,
+      "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/assets/yokohama-wam-rejection.png",
+      "bytes": 150129,
+      "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/missionos-control-layer-paper-ja.md",
+      "bytes": 56182,
+      "sha256": "56cef88f79c49865ecdd0ab4a09deb995634c2e1c0e01da78de440dd823bea5b"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/package-manifest.json",
+      "bytes": 8226,
+      "sha256": "244d2434b73faf8cecd9e165175c61696e4b7150435544dc5aa6735170116fdf"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/acwm.md",
+      "bytes": 10007,
+      "sha256": "ebebc3132eee1e5d8b9e4d49cd35877379f7eb1c74670310fa79078d74dc2755"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/agent-roles.md",
+      "bytes": 5183,
+      "sha256": "3747d7b4cfc344d045823e0f20144a711efbeeca0437ef8894e2dd20e6216611"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/building-missionos-publication.json",
+      "bytes": 5331,
+      "sha256": "c54157067c8a5dace9314648565b2c2759a7049fcc8ec89257a0039d00d8a56b"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/building-missionos.json",
+      "bytes": 32239,
+      "sha256": "030d0fc1eec792a8a5ba90d2083d196f6ee47a8843a331e633e8bd920ed21858"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/derived-figures.json",
+      "bytes": 6738,
+      "sha256": "9440a0aecffa82221dfe1f07586f918ef4f9325d8297f27a50973989400ae526"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/download-manifest.json",
+      "bytes": 2561,
+      "sha256": "40181515342fd3f871fe420d4d97197746c650a27932cc23ef65cc2daa6c7694"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/go2-provenance.json",
+      "bytes": 2005,
+      "sha256": "21969405c816fe1dda883b87773f932513311810b70ae8eeb8218ecb73274810"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/go2.md",
+      "bytes": 23706,
+      "sha256": "51e225a999321c2ee3ed72fbe498c593b730b10843d6469802fc1d837ae269eb"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/overview.md",
+      "bytes": 54142,
+      "sha256": "f3ccf654951f34a0c6c39efa24de1d954bb270e36a875a896d3ba68a796d616b"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/parent-mission.md",
+      "bytes": 5191,
+      "sha256": "f9867c874099bf72f3e1964df081cc054073fd48986a9e8eec4303faa12be128"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/repository-sources.json",
+      "bytes": 6908,
+      "sha256": "5d9416578273113aa3c42d5ffd6e7116011982bce3f46847185be77e2f1a4485"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/stacking.md",
+      "bytes": 20636,
+      "sha256": "fb99f44c3fa74ff67cf7678a84c5f39f8023d51df73e27940869544b575dcd77"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-booster-recovery.md",
+      "bytes": 1712,
+      "sha256": "115042bcd2e689667fcc77c0b88d487e6846c7fa1d8f60c30526faff73ffa65d"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-final.md",
+      "bytes": 4974,
+      "sha256": "913c40d4ad1010e78ebf7dd06d506739c0a6e9921bbff74fc46971a4aed1f919"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-mission-decisions.md",
+      "bytes": 6398,
+      "sha256": "36b147851b07d36511fe00976272385e8c8a22e071cc0153197606d0c0c9bc2c"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-mission-director.md",
+      "bytes": 23210,
+      "sha256": "994851ccc6a88ec3956300da9f02d46a589019cf45d6756ce56aa36c87f4ae61"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-mission-simulation.json",
+      "bytes": 24213,
+      "sha256": "94db595adc0c91dcbcc910a174e03d3ca723a4e80d43fe962bfe77f770beb53d"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-october-record-update.json",
+      "bytes": 4926,
+      "sha256": "0daf6d0cb0061d6b3aa8daeab56e76ed93c7b05917ec58e9065761a02916e4c7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-qualification-preflight-stop-20261023.json",
+      "bytes": 1164,
+      "sha256": "533afa238b3a91f6dd3f08b085d20ec637c8f5f8b0e774f833ef8258c7a3adf1"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-return-replanning.md",
+      "bytes": 8018,
+      "sha256": "cbe7446de9830dd4d5c59eae0b05ebfe4cc2a1b32a0b8921247bd60cb78c83fa"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/starship-sixdof.md",
+      "bytes": 1894,
+      "sha256": "cf3a15a19e6cb83efcbdb47dfa4770016eaa9bc83be2b678d69bd1167a29c08c"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/vla-repair.md",
+      "bytes": 17123,
+      "sha256": "26cf0e5841a59d5c4fbe627a8898038804fcc7194341881202ba56aaf1b0de05"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/yokohama-cargo-flight.md",
+      "bytes": 7706,
+      "sha256": "57b01c45cef802ca805dae557faec0facaa44730c9f1e92769f2564da7e00fe9"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/yokohama-map-delivery.md",
+      "bytes": 9065,
+      "sha256": "bb5ee689eb1a123140dfcea0a026f88fdce06ff1f3d30fbf05cf42016145401a"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-ja-20261029-update/sources/yokohama-native-flight.md",
+      "bytes": 9242,
+      "sha256": "389e716a39f148c1e164b45e0ea82cf9a1fa7ac294b1dee959cc3ad91df402b2"
+    }
+  ]
+}

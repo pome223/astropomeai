@@ -1,0 +1,111 @@
+{
+  "schema": "astropome.starship_record_update.v1",
+  "published": "2026-10-24",
+  "report_snapshot_date": "2026-10-23",
+  "scope": "Curated summary of reviewed saved records supplied for publication. The video mission and stopped qualification campaign are separate. This is not a new experiment or a complete raw-data reproduction package.",
+  "source_artifacts": [
+    {
+      "name": "tower-video-evidence.json",
+      "source_schema": "missionos.starship_saved_tower_video.v1",
+      "sha256": "694c68b1e863c38b58314c609ccab821fe51c378cbb5f909ccbf86ef05bffd6a"
+    },
+    {
+      "name": "original-video-evidence.json",
+      "source_schema": "missionos.starship_saved_video_evidence.v1",
+      "sha256": "c64601f7dfea312ca243f8df5024dfe3af0c1b5fe6f564e60db20b88fea063e4"
+    },
+    {
+      "name": "starship-qualification-preflight-stop-20261023.json",
+      "published_url": "/content/evidence/starship-qualification-preflight-stop-20261023.json",
+      "sha256": "533afa238b3a91f6dd3f08b085d20ec637c8f5f8b0e774f833ef8258c7a3adf1"
+    }
+  ],
+  "video": {
+    "run_id": "starship-final-live-T-20261022-v2",
+    "original_mission_date": "2026-10-22",
+    "source_identifier": "3dde77ca575e2ef3bd4c86bd93ba6bbfc578dca3",
+    "source_identifier_is_not_a_public_revision_citation": true,
+    "path": "/assets/media/starship-live-T-20261022-tower.mp4",
+    "sha256": "2cbdda7069c2e3b3a03fb78c216c571ab6f0608e6fa88242578619f5dadc172f",
+    "bytes": 83910046,
+    "duration_s": 250.1,
+    "width": 1600,
+    "height": 900,
+    "fps": 30,
+    "codec": "h264",
+    "audio": false,
+    "poster": "/assets/media/starship-live-T-20261022-tower-poster.png",
+    "poster_sha256": "823bb825ce8a289f834afb01f67316ac48ac05d3b6e8cd1999dc9c843990bc6f",
+    "tower_intro_s": 6,
+    "tower_motion": "static_illustrative_CG_still_with_fades",
+    "catch_performed": false,
+    "timeline_mapping": "0 <= video < 6: illustrative CG only; video >=6: original_video_time=video_time-6",
+    "original_mp4_sha256": "4f2026870012e00d6d7d2407deecc79ba8f0dc94a7aaa454b26a8bce61da7493",
+    "contact_endpoint_hold_s": 4,
+    "new_flights_for_export": 0,
+    "provider_calls_for_export": 0,
+    "original_verdict_changed": false,
+    "source_original_record_sha256": "5b9044c61b83dd5dd94347f0ec57418f825076d91fc82e037cc15f3e84a48699",
+    "source_original_verification_sha256": "b9c24be40d97c0ff8e13bfee0814159a95925c55e5d34b07d656b93c4494c2b0"
+  },
+  "original_mission": {
+    "provider_attempts": {
+      "jev": 10,
+      "deepseek": 1
+    },
+    "valid_responses": {
+      "jev": 10,
+      "deepseek": 1
+    },
+    "released_payloads": 13,
+    "retained_payloads": 13,
+    "modeled_ship_contact_speed_m_s_rounded": 3.46,
+    "approval": "One test-script HTTP scope approval; not a human review.",
+    "raw_histories_published": false
+  },
+  "original_timing": {
+    "interval": "worker_claim_to_serialized_worker_result",
+    "clock": "filesystem_UTC_mtime_ns_crosschecked_against_preserved_manifest",
+    "complete_monotonic_clock_pair_available": false,
+    "independent_time_authentication_established": false,
+    "elapsed_s": 2143.796402484,
+    "registered_maximum_s": 1800.0,
+    "saved_verifier_passed_unchanged": true,
+    "sleep_inclusive_registered_limit_met": false,
+    "os_recorded_sleep_duration_s": 862,
+    "sleep_subtracted_for_acceptance": false
+  },
+  "separate_certificate_preflight": {
+    "date": "2026-10-23",
+    "scope": "Planned qualification of four saved 23 October records, not certification of the 22 October video mission.",
+    "receipt": "/content/evidence/starship-qualification-preflight-stop-20261023.json",
+    "point_bytes": 51322536,
+    "actuator_history_bytes": 51235624,
+    "actuator_history_rows": 28025,
+    "maximum_point_bytes": 33554432,
+    "qualification_registration_created": false,
+    "qualification_campaign_started": false,
+    "complete_certificate_created": false,
+    "legacy39_refreshed": false,
+    "records_changed": false,
+    "new_flights": 0,
+    "provider_calls": 0,
+    "automatic_retry": false,
+    "required_next_boundary": "Complete-history comparison in bounded chunks without discarding history or expanding runtime authority. Subsequent implementation or partial checks are outside this dated report."
+  },
+  "publication_checks": {
+    "video_and_poster_match_reviewed_source_hashes": true,
+    "full_video_bitstream_decode_exit_code": 0,
+    "new_simulations": 0,
+    "new_model_calls": 0,
+    "certificate_execution": false
+  },
+  "limitations": [
+    "Illustrative CG is not camera footage or physical vehicle validation.",
+    "No tower catch is established.",
+    "The original timing failure remains unchanged.",
+    "The video edit does not issue or refresh any return certificate.",
+    "Full raw histories and the execution source are not published in this supplement.",
+    "Partial or subsequent qualification work is not evaluated by this dated snapshot."
+  ]
+}

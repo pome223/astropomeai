@@ -1,0 +1,28 @@
+{
+  "actuator_history_rows": 28025,
+  "automatic_retry": false,
+  "cause": "actual_point_preimages_exceed_unchanged_maximum_point_bytes",
+  "complete_certificate_created": false,
+  "component_bytes": {
+    "actuator_history": 51235624,
+    "inventory": 76889,
+    "state": 2190,
+    "vehicle": 7779
+  },
+  "contract_tests_passed": 57,
+  "exception": "final_qualification_point_preimages_required",
+  "followup": "separately_review_a_streaming_bound_full_history_checker_without_discarding_history_or_expanding_runtime_authority",
+  "legacy39_refreshed": false,
+  "maximum_point_bytes": 33554432,
+  "new_flights": 0,
+  "original_packed_sha256": "06066eff93591e812449d3cee372946320f3865bfc027b8302a05d677a9569fe",
+  "original_record_sha256": "cf490a9b9f701b86fcfd8366ee73c4fd774404625132d69a66591d66aa93f26c",
+  "original_records_changed": false,
+  "point_bytes": 51322536,
+  "provider_calls": 0,
+  "qualification_campaign_started": false,
+  "qualification_registration_created": false,
+  "runtime_admission": false,
+  "schema": "missionos.starship_final_qualification_preflight_stop.v1",
+  "verification_source_commit": "b6e0bb25da47f5fda24b2decf3db45f2e3a7bdf5"
+}

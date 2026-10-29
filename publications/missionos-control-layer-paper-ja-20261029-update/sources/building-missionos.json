@@ -1,0 +1,272 @@
+{
+  "slug": "building-missionos",
+  "title": "Building MissionOS: AI Mission Control, Tested from the Physics Up",
+  "subtitle": "A development story about return planning, fault diagnosis, simulation fidelity, and carrying a decision through to its outcome.",
+  "domain": "Space systems",
+  "kind": "Development story",
+  "card_label": "Development story",
+  "date": "2026-10-28",
+  "summary": "The full development story: a continuous flight simulator, AI mission decisions, fault diagnosis, physical-model audits, and the separately registered October 23 integrated mission.",
+  "abstract": "I wanted to give an AI responsibility for a continuing mission: watch the vehicle, gather evidence, compare its options, request approval when necessary, and follow its decisions through execution.\n\nA Starship-inspired simulator became the place to build that idea. Launch, payload deployment, orbital waiting, recovery, and engine faults form a connected chain. A choice made during deployment changes the mass that returns. Waiting for another orbit changes the resources available for recovery.\n\nBuilding MissionOS meant developing that chain at two levels: the system that makes and governs decisions, and the physical environment that gives those decisions consequences.\n\nThe most revealing part of the project came when we examined the assumptions behind our own successful flights. Comparing the simulator with public flight data led us into attitude dynamics, center of mass, flap authority, and a substantial reconstruction of the return controllers. The eventual integrated flight carries that whole development history.",
+  "abstract_label": "Introduction",
+  "keywords": [
+    "MissionOS",
+    "AI mission control",
+    "Starship",
+    "simulation fidelity",
+    "fault diagnosis",
+    "six-degree-of-freedom dynamics",
+    "development story",
+    "Medium"
+  ],
+  "cover": {
+    "src": "/assets/media/building-missionos-m3-poster.jpg",
+    "alt": "Saved M3 simulator replay with the orbital vehicle and mission-control telemetry."
+  },
+  "evidence_note": "Adapted from the author’s saved English manuscript for Medium, revision 6. Public references are pinned to MissionOS 56013c8b. Earlier recordings, historical execution sources, later saved-record qualification, and the public release remain distinct. The publication supplement records manuscript and figure provenance.",
+  "sections": [
+    {
+      "id": "the-simulator-that-makes-the-mission-continuous",
+      "title": "The simulator that makes the mission continuous",
+      "html": "<p>At its core is a <strong>six-degree-of-freedom model</strong> that integrates translation and rotation together. It carries position, velocity, a quaternion describing body orientation, and angular velocity. Forces and moments determine how those states evolve through a fourth-order Runge–Kutta integrator.</p><p>A gimballed engine changes both the thrust direction and the moment about the center of mass. Burning propellant changes the vehicle&#x27;s mass, center of mass, and inertia. The attitude controller requests an orientation; the dynamics determine how closely the vehicle can follow it. This coupling gives a control decision consequences throughout the trajectory.</p><p>Individual engines have configured thrust, specific impulse, mounting positions, and gimbal limits. Throttle, gimbal, and flap commands pass through actuator lag and rate limits before producing forces. RCS consists of finite thrusters at declared positions and directions, consuming propellant. Requested and achieved actuation are recorded separately.</p><p>The environment includes a WGS84 Earth, Earth rotation, gravity with J2, and a standard-atmosphere model. Local airflow produces forces on generic hull panels, flaps, and grid fins. Aerodynamics use a plate approximation; the atmosphere above 86 km uses an exponential surrogate. Thermal protection, structural flexibility, and propellant slosh remain outside this model&#x27;s coverage.</p><p>A continuous mission proceeds from launch through stage separation, Ship insertion, payload release, deorbit, entry, flip, and hull contact. Booster return inherits the actual separation state and engine failures. Released payloads have finite mass and inertia: separation applies a reaction to the parent, then each body propagates its own motion. A deployment choice therefore changes the mass that comes home.</p><p>The physics runs in a separate process. MissionOS receives observations and candidate assessments; a checked AI proposal becomes an objective for the Executor. Later observations establish what changed. Model API credentials stay with the host, outside the physics worker.</p><!-- media:missionos-architecture --><p>The CG replay reads saved states. Recorded quaternions determine the vehicle&#x27;s orientation, while actuator states, mission time, and the model&#x27;s external decision summary provide context. Ocean, clouds, lighting, and camera movement make that record easier to follow. The physical calculation and the presentation remain separate artifacts.</p><p>Numerical checks include analytic solutions, conservation properties, and timestep comparisons. The project also provides validation paths against declared NASA check cases and an independent dynamics implementation, Basilisk. Each comparison records the equations and conditions it covers.</p>"
+    },
+    {
+      "id": "first-give-the-controller-something-meaningful-to-compare",
+      "title": "First, give the controller something meaningful to compare",
+      "html": "<p>The first milestone, M1, centered on a recovery area becoming unavailable.</p><p>MissionOS had to notice the update, assess return opportunities, choose a plan, and confirm the eventual contact. An event-driven monitor detected one advisory update within <strong>0.2 simulated seconds</strong> and started a new assessment.</p><p>We then made candidate preparation a responsibility of the tool layer. MissionOS reuses an applicable forecast and calculates the missing alternative. Each candidate includes waiting time, fuel loss allowance, battery energy, temperature, recovery timing, and uncertainty. Preparation has a budget calculated backward from the existing return deadline.</p><p>That gives the model a concrete comparison. In one recorded decision, DeepSeek weighed overlapping recovery-time estimates against the additional resource cost of waiting for another orbit, then retained the original plan.</p><p>We also gave numerical evidence stable IDs. A model can point to the candidate fields supporting its decision, and a checker can resolve those IDs against the snapshot supplied at judgment time. This makes the cited numerical basis traceable. The model&#x27;s prose remains a separately recorded explanation.</p>"
+    },
+    {
+      "id": "carry-the-consequences-into-the-next-stage",
+      "title": "Carry the consequences into the next stage",
+      "html": "<p>M2 joined deployment supervision to return planning. The returning vehicle inherits its actual retained payload inventory and corresponding mass.</p><p>M3 added inflight scope amendment. A proposed return can be physically feasible while requiring a broader approval grant. MissionOS binds approval to the particular candidate, its digest, and its expiry, then records one-time consumption and checks the resulting reservation in a later observation.</p><p>An authenticated test-operator script supplied the approval in these experiments. The exchange crossed the real HTTP boundary, connecting the approval request, candidate identity, authorized update, and subsequent observation.</p><!-- media:m3-mission-poster --><!-- media:m3-recorded-mission --><p>The division of work stays consistent:</p><p><strong>AI judges. A human approves the scope. Rules constrain. Executor acts. Verifier checks.</strong></p><p>Jev handles monitoring and bounded choices. DeepSeek handles selected deeper assessments. Numerical tools estimate and predict. Fast flight-control loops execute the permitted objective.</p>"
+    },
+    {
+      "id": "build-fault-diagnosis-on-measured-sensitivity",
+      "title": "Build fault diagnosis on measured sensitivity",
+      "html": "<p>The trouble engine brought reproducible disturbances into the physical simulation. A source-linked incident catalog informed six test families: Booster ascent engine loss, Ship engine loss, Booster restart failure, directional RCS loss, a deployment-mechanism fault, and tower unavailability. Their seeded probabilities are engineering test settings.</p><p>For symptom-based recovery, we concentrated on Ship propulsion capability. Before introducing AI, we separated the capability assumed by the controller from the capability used by the physical plant.</p><p>A <strong>3×3 matrix</strong> crossed assumed and actual thrust at 100%, 80%, and 60%. The three matched cells satisfied the contact gates. All six mismatched cells exceeded the contact-speed limit, exposing the return procedure&#x27;s sensitivity to the capability estimate. Every outer control/physics step carried an audit of which vehicle model supplied each value.</p><!-- media:thrust-capability-matrix --><p>Next came the estimator. With synthetic sensor noise, bias, and latency fixed in advance, it detected the 80% and 60% capability conditions in <strong>20 of 20 seeds each</strong>. The healthy condition produced <strong>zero alarms in 20 seeds</strong>. The true factor lay inside the reported band in every case.</p><p>We then tested post-burn adoption at five assumed values—<strong>76%, 78%, 80%, 82%, and 84%</strong>—against actual 80% thrust. All five met the registered gates at that saved starting state. The 76% point contacted at about <strong>4.96 m/s</strong>, close to the 5 m/s limit. These discrete measurements gave the later AI requests a physically grounded treatment of uncertainty.</p><p>Finally, we introduced an alternative explanation for the same symptom: an accelerometer gain error. Independent tracking supplied another view of the vehicle&#x27;s motion. The AI could request that observation, use the evidence to choose a response, and send its proposal through the independent check.</p><p>The work of diagnosis now had a complete sequence: symptom, information request, numerical estimate, choice, check, execution, and observed result.</p>"
+    },
+    {
+      "id": "check-a-successful-flight-against-the-world-outside-the-model",
+      "title": "Check a successful flight against the world outside the model",
+      "html": "<p>Alongside the mission architecture, we audited the simulator against public Flight 14 material.</p><p>The reference work separated official schedules, values read from the broadcast display, and quantities inferred from those readings. We compared altitude and speed as time series, checked selected frames by eye, and corrected several transcription errors while retaining the original data.</p><p>This changed the questions we asked of the physics. Ascent, stage separation, Booster apogee, return timing, entry attitude, and terminal descent all became measurable parts of the comparison. Calibration targets and held-out checks were registered separately, with a limited set of adjustable parameters.</p><p>The most consequential analysis concerned Ship&#x27;s entry attitude.</p><p>A static trim study examined the old panel-aerodynamics model with roughly <strong>103 tonnes of propellant</strong>. In the intended belly-oriented condition, the remaining pitch moment at 5 kPa dynamic pressure was about <strong>1.0 MN·m</strong>. The modeled RCS pitch authority was about <strong>0.08 MN·m</strong>. Center of mass, aerodynamic center, and flap geometry therefore became concrete design constraints.</p><p>Saved successful flights supplied another clue: their body-frame airflow had substantial components on two axes, corresponding to an approximately <strong>45-degree oblique flow orientation</strong>. The panel model could obtain a balancing solution in that orientation. The analysis showed that those earlier successful flights relied on a balancing solution produced by oblique airflow in that particular model. Its attitude and flap behavior differed from the intended belly-oriented entry. We made checking trim in the intended belly orientation an explicit task in redesigning the return.</p><p>The static result became a diagnosis to investigate through subsequent design and flight checks. We examined mass distribution and flap trim, revised attitude and terminal guidance, and carried the states produced by the revised ascent into both vehicles&#x27; return calculations. The research profile also incorporated the declared Flight-14-style engine shutdowns.</p><p>The result was a broader recovery effort: ascent, entry preparation, Booster return, landing-burn timing, numerical integration, and the interfaces between them were reviewed together. Each new controller had to work with the state produced by the preceding phase.</p><p>Agreement with public flight data remains limited after this reconstruction; these tests do not validate a real SpaceX vehicle. Booster recovery is assessed within a broad <strong>10 km development acceptance envelope</strong>.</p><p>That process gave the project a stronger foundation: successful trajectories came with an account of the assumptions and physical balances that supported them.</p>"
+    },
+    {
+      "id": "turn-recovery-research-into-decision-material",
+      "title": "Turn recovery research into decision material",
+      "html": "<p>Booster recovery developed along its own path. We built models for the tower, support pins, moving arms, contact loads, and support settling, alongside return-guidance experiments.</p><p>A tower capture requires position, velocity, attitude, angular rate, fuel, and arm timing to align at the same encounter. Keeping those stages explicit helped turn a visually attractive objective into a set of engineering questions. A launch-derived return ending in supported tower capture has yet to succeed in these experiments. The integrated demonstrations use ocean recovery as their executed objective.</p><p>The research history itself became an input to mission judgment. In the recorded <strong>October 14</strong> recovery experiment, DeepSeek received the current Booster observation and a reviewed report of catch-development evidence. It selected splashdown; an independent execution check accepted the choice, and a later observation confirmed the selected objective.</p><p>The <a class=\"citation\" href=\"https://github.com/user-attachments/assets/00a07f6d-93a3-407b-9f38-b6d017bd1c72\">120-second replay</a> shows that earlier decision alongside telemetry, ocean scenery, and an illustrative tower cutaway.</p><!-- media:recovery-decision-poster --><!-- media:recovery-recorded-decision -->"
+    },
+    {
+      "id": "make-the-experiment-as-traceable-as-the-mission",
+      "title": "Make the experiment as traceable as the mission",
+      "html": "<p>We registered each bounded experiment before execution: source, starting state, assumptions, allowed changes, contact gates, time and storage budgets, and the interpretation of possible outcomes.</p><p>Each attempt kept its own record and verdict. A later repair received a new identity. Saved-record verification let us investigate discrepancies while preserving the original numerical trajectory. Control-side assumptions and physical capability remained distinguishable throughout the audit.</p><p>Credential-free checker processes examined the permitted action separately from the model. Earlier nominal return qualification covered <strong>39 finite cases</strong>. Later exact-point work bound the current state, vehicle, inventory, plan, environment, and complete actuator history, with bounded chunks allowing every history row to be checked.</p><p>Those identities also define where a result applies. Each qualification belongs to its stated source and environment; each changed implementation has its own verification work.</p><!-- media:historical-return-census --><p>Operating the models added another layer of engineering. We recorded variation in Jev&#x27;s choices for an identical input, model-name and response-format compatibility, and long periods before a usable DeepSeek answer. Timing diagnostics separated HTTP arrival, stream activity, and answer events. These observations informed the Jev-first structure, explicit deeper review, deadlines, and preapproved fallback behavior.</p>"
+    },
+    {
+      "id": "bring-the-layers-together-in-one-mission",
+      "title": "Bring the layers together in one mission",
+      "html": "<p>On <strong>October 23</strong>, a registered integrated experiment connected launch monitoring, Booster recovery review, image-assisted deployment control, return replanning, scripted HTTP approval, injected propulsion reduction, independent tracking, and checked capability adoption.</p><p>The mission released thirteen payloads and retained thirteen under Jev’s checked decisions; that mass continued into return planning. It requested tracking after the propulsion symptoms and selected the numerical estimate. The independent guard preceded one-time application, and the verifier followed the return to contact.</p><p>The flight recorded <strong>10 valid Jev responses in 10 calls</strong>, <strong>one valid DeepSeek response in one call</strong>, Ship model contact at <strong>3.459 m/s</strong>, and <strong>51.209 tonnes</strong> of remaining propellant.</p><p>The October 22 attempt remains recorded as exceeding its registered time budget, with host sleep included in that interval. We then made a fresh registration with explicit timing boundaries and clock evidence, prevented host sleep, and executed a separate flight on October 23.</p><p>Before that flight, the registration defined the mission-supervisor interval for the <strong>1,800-second</strong> runtime gate. That interval measured <strong>1,304.871 seconds</strong>. The complete CLI, including separate pre-mission and post-mission checks, measured <strong>2,140.761 seconds</strong>. Both measurements stay attached to their original boundaries.</p><p>These figures describe one registered flight in a research simulator, together with its declared physical assumptions and test-operator approval. They sit alongside the earlier candidate comparisons, fault studies, static analyses, and recovery experiments.</p><p>The maintained integration is now public in <a class=\"citation\" href=\"https://github.com/pome223/missionos/pull/133\">MissionOS PR #133</a>, merged as <code>56013c8b</code>, with successful Python 3.11 and 3.13 CI. The <a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-final-mission.md\">integrated report</a> keeps execution, qualification, and public-release versions visible.</p><p>What I value most is the connection between judgment and investigation. The AI asks for evidence during a mission. As developers, we ask what supports a successful simulation, inspect the physical assumptions, and rebuild the pieces that need a stronger basis.</p><p>MissionOS is growing through that same cycle at both levels: observe, investigate, decide, check, execute, and carry the evidence forward.</p>"
+    },
+    {
+      "id": "explore-the-project",
+      "title": "Explore the project",
+      "html": "<ul><li><a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-orbit-events.md\">Event-driven monitoring</a> and <a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-comparison-preparation.md\">automatic candidate preparation</a>.</li><li><a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-trouble-engine.md\">Trouble-engine families and incident sources</a>.</li><li><a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/examples/spaceflight/starship-ship-fault-step1-5-registration.json\">Capability-matrix protocol</a> and <a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/examples/spaceflight/starship-ship-fault-step2-registration.json\">estimator/tolerance protocol</a>.</li><li><a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-visual-research.md\">Public-data observation ledger</a> and <a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/src/runtime/starship_entry_trim.py\">entry attitude and trim preparation implementation</a>.</li></ul><ul><li><a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-sixdof.md\">Six-degree-of-freedom model overview</a> and <a class=\"citation\" href=\"https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-sixdof-contract.md\">state, force, and verification contract</a></li></ul>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Publication provenance and saved evidence for this development story",
+      "url": "/content/evidence/building-missionos-publication.json",
+      "detail": "Author manuscript revision 6, unchanged figure hashes, original video identities, the one authority-wording correction, and selected saved-study values."
+    },
+    {
+      "id": "s2",
+      "title": "MissionOS PR #133",
+      "url": "https://github.com/pome223/missionos/pull/133",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s3",
+      "title": "Integrated report",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-final-mission.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s4",
+      "title": "Event-driven monitoring",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-orbit-events.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s5",
+      "title": "Automatic candidate preparation",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-comparison-preparation.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s6",
+      "title": "Trouble-engine families and incident sources",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-trouble-engine.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s7",
+      "title": "Capability-matrix protocol",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/examples/spaceflight/starship-ship-fault-step1-5-registration.json",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s8",
+      "title": "Estimator/tolerance protocol",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/examples/spaceflight/starship-ship-fault-step2-registration.json",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s9",
+      "title": "Public-data observation ledger",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-visual-research.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s10",
+      "title": "Entry attitude and trim preparation implementation",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/src/runtime/starship_entry_trim.py",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s11",
+      "title": "Six-degree-of-freedom model overview",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-sixdof.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s12",
+      "title": "State, force, and verification contract",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-sixdof-contract.md",
+      "detail": "Linked in the original English manuscript; public source retained at the cited revision."
+    },
+    {
+      "id": "s13",
+      "title": "M3 candidate-bound approval and mission completion",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-m3-completion.md",
+      "detail": "Public report supporting the corresponding historical recording or figure."
+    },
+    {
+      "id": "s14",
+      "title": "Booster recovery decision and research-history evidence",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-booster-recovery-decision.md",
+      "detail": "Public report supporting the corresponding historical recording or figure."
+    },
+    {
+      "id": "s15",
+      "title": "Historical state-dependent return qualification",
+      "url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-state-return.md",
+      "detail": "Public report supporting the corresponding historical recording or figure."
+    }
+  ],
+  "media": [
+    {
+      "id": "missionos-architecture",
+      "title": "How the physical simulator connects to MissionOS",
+      "src": "/assets/media/building-missionos-flow.png",
+      "width": 1440,
+      "height": 1000,
+      "source_url": "/content/evidence/building-missionos-publication.json",
+      "source_ref": "s1",
+      "type": "image",
+      "inline": true,
+      "after_section": "the-simulator-that-makes-the-mission-continuous",
+      "alt": "How the simulator connects to MissionOS: physical state, observations, judgment, permission, execution, and saved evidence.",
+      "caption": "Editorial architecture diagram based on the public implementation. It separates the physical plant, numerical tools, AI judgment, permission, execution, and replay."
+    },
+    {
+      "id": "m3-mission-poster",
+      "title": "The October 12 M3 development mission",
+      "src": "/assets/media/building-missionos-m3-poster.jpg",
+      "width": 1280,
+      "height": 720,
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-ai-mission-m3-20261012/mission-poster.jpg",
+      "source_ref": "s13",
+      "type": "image",
+      "inline": true,
+      "after_section": "carry-the-consequences-into-the-next-stage",
+      "alt": "An M3 replay combining the orbital vehicle, AI decision, approval, and telemetry.",
+      "caption": "October 12 M3 development record: 26 payload releases, a next-orbit decision, candidate-bound approval, and return in a 112-second replay."
+    },
+    {
+      "id": "m3-recorded-mission",
+      "type": "youtube",
+      "youtube_id": "9udkr9AbCUE",
+      "src": "https://www.youtube.com/watch?v=9udkr9AbCUE",
+      "title": "Watch the 112-second M3 mission",
+      "caption": "October 12 M3 development recording: 26 payload releases, candidate-bound approval and a next-orbit return. This is an earlier mission, separate from the October 23 integrated flight below.",
+      "alt": "Saved MissionOS simulator replay with synchronized decisions and telemetry.",
+      "inline": true,
+      "after_section": "carry-the-consequences-into-the-next-stage",
+      "duration_seconds": 112.021,
+      "width": 1280,
+      "height": 720,
+      "poster": "/assets/media/building-missionos-m3-poster.jpg",
+      "source_ref": "s13",
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/agents/starship-m3-completion.md"
+    },
+    {
+      "id": "thrust-capability-matrix",
+      "title": "Assumed capability versus actual thrust",
+      "src": "/assets/media/building-missionos-thrust-matrix.png",
+      "width": 1280,
+      "height": 1080,
+      "source_url": "/content/evidence/building-missionos-publication.json",
+      "source_ref": "s1",
+      "type": "image",
+      "inline": true,
+      "after_section": "build-fault-diagnosis-on-measured-sensitivity",
+      "alt": "Contact speed across nine assumed-versus-actual thrust combinations.",
+      "caption": "Physics-only tests from one saved starting state. Values are contact speed in m/s; green marks the 5 m/s speed gate. These sampled points do not establish a continuous operating envelope."
+    },
+    {
+      "id": "recovery-decision-poster",
+      "title": "The October 14 recovery decision",
+      "src": "/assets/media/building-missionos-recovery-poster.jpg",
+      "width": 1280,
+      "height": 720,
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "source_ref": "s14",
+      "type": "image",
+      "inline": true,
+      "after_section": "turn-recovery-research-into-decision-material",
+      "alt": "An earlier MissionOS recovery-decision replay with synchronized mission information.",
+      "caption": "Video and image: October 14 development recording. The integrated-flight figures below belong to October 23."
+    },
+    {
+      "id": "recovery-recorded-decision",
+      "type": "youtube",
+      "youtube_id": "c0LhVXtGzL4",
+      "src": "https://www.youtube.com/watch?v=c0LhVXtGzL4",
+      "title": "Watch the 120-second recovery-decision replay",
+      "caption": "October 14 development recording: DeepSeek selects splashdown after reviewing recovery research. The tower cutaway is illustrative; it is not a successful catch. This is separate from the October 23 integrated flight.",
+      "alt": "Saved MissionOS simulator replay with synchronized decisions and telemetry.",
+      "inline": true,
+      "after_section": "turn-recovery-research-into-decision-material",
+      "duration_seconds": 120.021,
+      "width": 1280,
+      "height": 720,
+      "poster": "/assets/media/building-missionos-recovery-poster.jpg",
+      "source_ref": "s14",
+      "source_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/starship-booster-recovery-decision.md"
+    },
+    {
+      "id": "historical-return-census",
+      "title": "The earlier 39-case return census",
+      "src": "/assets/figures/starship-mission-simulation-qualification-census.png",
+      "width": 1275,
+      "height": 1050,
+      "source_url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/assets/starship-state-return-qualification/qualification-census.png",
+      "source_ref": "s15",
+      "type": "image",
+      "inline": true,
+      "after_section": "make-the-experiment-as-traceable-as-the-mission",
+      "alt": "The earlier 39-case qualification study: retained payload count against contact speed, tilt, and remaining fuel.",
+      "caption": "An earlier source-bound 39-flight study. Blue shows the inventory census, orange shows initial-fuel perturbations, and dashed lines show the gates. This is separate from later integrated flights and qualification of the public port."
+    }
+  ]
+}

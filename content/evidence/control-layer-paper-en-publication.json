@@ -1,0 +1,100 @@
+{
+  "schema": "astropome.manuscript_publication.v1",
+  "published": "2026-10-29",
+  "revision": "2026-10-29-english-public-report",
+  "language": "en",
+  "title": "MissionOS: A Mission-Control Layer Connecting AI Agents and Physical AI to Human Judgment",
+  "source_manuscript": {
+    "filename": "docs/reports/missionos-control-layer.md",
+    "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer.md",
+    "sha256": "c48a2a020530bd955f627118b21c0b5f07ee725b9b7c5c51b1aa6095377bbe18",
+    "bytes": 57871,
+    "git_blob": "4c7982b7aff2348778128ce76b10ebf050619c30",
+    "url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/reports/missionos-control-layer.md",
+    "unchanged": true
+  },
+  "original_zip": {
+    "path": "/publications/missionos-control-layer-paper-en-20261029.zip",
+    "sha256": "0842f6232c0d75600a0ac295d395ffe9bb13ed02a95f31559b49b7bb314f933f",
+    "bytes": 2134802,
+    "unchanged": false,
+    "note": "New portable publication package containing the byte-unchanged upstream Markdown, eight figures, upstream provenance, and a package README; no upstream original ZIP was supplied."
+  },
+  "figures": 8,
+  "tables": 5,
+  "references": 20,
+  "public_source_commit": "f204d91c7649afd68a97a38b5bd730b117eaa855",
+  "underlying_study_source_commit": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+  "upstream_provenance": {
+    "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/provenance.json",
+    "url": "https://github.com/pome223/missionos/blob/f204d91c7649afd68a97a38b5bd730b117eaa855/docs/assets/missionos-control-layer-report/provenance.json",
+    "git_blob": "6a1f570d846f425c3b4188771824f2cc6bc66961",
+    "unchanged": true
+  },
+  "editorial_changes": [
+    "No English narrative edits or new translation. The English report at the pinned public source commit is the source.",
+    "Site navigation, language links, article labels, citation layout, table wrappers, figure controls, downloads, and a publication-copy link in Appendix A were added.",
+    "The two Mermaid blocks are displayed using the unchanged upstream English PNG reading copies; the original editable Mermaid remains in the byte-unchanged Markdown download.",
+    "The six other figures are byte-identical to the figure hashes in the upstream English provenance record. The package preserves repository-relative paths so the original Markdown links resolve.",
+    "All eight captions and all twenty references retain their full wording and links, including PLATEAU attribution and the CC BY 4.0 license."
+  ],
+  "new_simulation_runs": 0,
+  "new_experiment_model_calls": 0,
+  "files": [
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/README.md",
+      "bytes": 813,
+      "sha256": "972afbe4ccaa23b2277b9ec82d17ab936e8ff89ceb73db0e94d36a8376c7a406"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/go2-agent-delivery-20260925/media/agent-poster.jpg",
+      "bytes": 47421,
+      "sha256": "170b87b5dcc1c890b456a7b61780178f9867eef698b9cbdd47542a9f31a2e0de"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-01-architecture.png",
+      "bytes": 78201,
+      "sha256": "54e81922209782cba72ce4694c9397122eb643156b3efd4fefe727db0bf0d710"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/figure-05-cognitive-bridge.png",
+      "bytes": 62467,
+      "sha256": "a894228f5f3b9c226aba5539953b3730df189e4dbdded6a72a9cfbad11fa62a1"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/provenance.json",
+      "bytes": 18698,
+      "sha256": "e23f43eba4a3f55002dfa7eb50710fface57c0050df7f6281dcd408772c0feea"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/starship-thrust-matrix.png",
+      "bytes": 130449,
+      "sha256": "bc032bc750500f0d6a1a048e41b563649824b886f764264ee183df41a3c41779"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-cargo-native.png",
+      "bytes": 103154,
+      "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/missionos-control-layer-report/yokohama-wam-rejection.png",
+      "bytes": 150129,
+      "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/assets/starship-booster-recovery-decision-20261014/mission-poster.jpg",
+      "bytes": 141577,
+      "sha256": "5bf513f9cb286475f5061d4518c0294e2f479a7007189ddda67555c62e3c5d67"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/examples/assets/missionos-two-obstacle-recovery-map.png",
+      "bytes": 1450720,
+      "sha256": "69fa1d9a5609bb586b1b18e2ec0a1308b0ed7f61fba0bc153366693d1bea2a2f"
+    },
+    {
+      "path": "/publications/missionos-control-layer-paper-en-20261029/docs/reports/missionos-control-layer.md",
+      "bytes": 57871,
+      "sha256": "c48a2a020530bd955f627118b21c0b5f07ee725b9b7c5c51b1aa6095377bbe18"
+    }
+  ]
+}

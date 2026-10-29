@@ -1,0 +1,207 @@
+{
+  "slug": "starship-mission-simulation",
+  "title": "Mission-Level Replanning in a Starship-Inspired Simulator",
+  "subtitle": "Coupled six-degree-of-freedom dynamics, finite return qualification, and observed AI decisions",
+  "domain": "Space systems",
+  "kind": "Technical research article",
+  "date": "2026-10-22",
+  "summary": "A development simulator connects approved mission scope to live return replanning while distinguishing record integrity, modeled contact, and real vehicle capability.",
+  "abstract": "A mission controller must respond to changed recovery information while preserving the distinction between deciding, executing, and verifying an outcome. Public MissionOS work studies this problem in a Starship-inspired six-degree-of-freedom simulator with finite actuators and independently propagated payload bodies. A shared return controller passed a finite thirty-nine-case inventory and fuel census. A subsequent three-scenario HTTP experiment preserved the nominal return, executed a live-model-selected later orbital opportunity after an availability update, and exercised a checked outage fallback. These are bounded development-model results. Failed propulsion cases, calibration dependence, numerical sensitivity, and unfinished launch-derived catch remain visible, and no result establishes SpaceX flight fidelity, real landing, recovery, or satellite service. A dated update adds a 250.1-second replay of a separate 22 October mission, including six seconds of illustrative tower CG. No catch was performed; the original time-limit failure is preserved. A separate 23 October certificate preflight stopped at the history-size limit without issuing a return certificate.",
+  "keywords": [
+    "mission replanning",
+    "six-degree-of-freedom simulation",
+    "Starship-inspired",
+    "Jev",
+    "return qualification",
+    "verification"
+  ],
+  "sections": [
+    {
+      "id": "october-update",
+      "title": "Update: the 22 October recording and 23 October certificate preflight",
+      "html": "<p><strong>Recording update, published 24 October 2026.</strong> The 4-minute-10-second video above is a saved-state CG presentation of <code>starship-final-live-T-20261022-v2</code>, the original 22 October simulator mission. Its first six seconds show an illustrative tower with stationary arms and fades. <strong>No tower catch was performed.</strong> From six seconds onward, the footage follows the original recording with a six-second offset; the final four seconds hold the saved terminal state for reading. This edit is presentation work, not a new flight or a revised experimental verdict. <a class=\"citation\" href=\"#s9\">[9]</a></p><p>The original flight recorded ten valid Jev responses out of ten and one valid DeepSeek response out of one, thirteen released payloads and thirteen retained, and a modeled Ship contact speed of approximately 3.46 m/s. The scope extension consumed one test-script HTTP approval; this was not approval by a human operator. These observations belong to this single saved mission and do not replace the earlier M1 cohort below. <a class=\"citation\" href=\"#s9\">[9]</a></p><p><strong>The registered timing condition was not met.</strong> Elapsed wall time was approximately 2,143.8 seconds against a 1,800-second limit, including about 862 seconds of computer suspension. This duration was reconstructed from preserved timestamps; a complete monotonic start/end pair and independent time authentication were unavailable. Passing saved-record checks and displaying a low modeled contact speed do not turn this timing failure into an accepted trial, a physical landing, or a successful catch. <a class=\"citation\" href=\"#s9\">[9]</a></p><p><strong>Separate certificate status, as reported on 23 October: not issued.</strong> A preflight for a different campaign covering four saved 23 October records rejected a 51,322,536-byte point bundle (approximately 48.9 MiB) against a 33,554,432-byte limit (32 MiB). Of that bundle, 51,235,624 bytes were actuator history covering 28,025 rows. The records were preserved and the attempt stopped before qualification. That stopped attempt and the video edit added no flights, provider API submissions, or retries. It was not a certification run for the 22 October video. <a class=\"citation\" href=\"#s10\">[10]</a></p><p>The next verification requirement is a mechanism that can compare the complete history in bounded chunks without omitting records. A later implementation or partial check must not be treated as a completed qualification campaign or an issued certificate. This dated report does not assess subsequent work in progress, and the historical 39-case census below does not supply a refreshed certificate for these later records.</p><p>For the subsequent development history, including simulator reconstruction, complete-history checking, and the separately registered 23 October integrated flight, read <a href=\"/research/building-missionos/\">Building MissionOS: AI Mission Control, Tested from the Physics Up</a>. The preflight stop above remains a retained report of the earlier attempt.</p>"
+    },
+    {
+      "id": "model",
+      "title": "1. Model and research boundary",
+      "html": "<p>The simulator couples rigid-body translation and rotation. Engine positions, achieved gimbal angles, finite aerodynamic surfaces, and reaction-control forces determine motion; fuel changes mass, center of mass, and inertia. A commanded attitude is a controller request rather than a direct assignment to the integrated quaternion. Launch, rigid separation, orbital motion, finite payload release, and return are connected, with released bodies propagated separately. <a class=\"citation\" href=\"#s1\">[1]</a></p><p>This is an engineering development model informed by public source inventories, not identified SpaceX software or a validated reconstruction of a particular flight. Plate aerodynamics, generic guidance, and navigation assumptions omit structural flexibility, slosh, thermal-protection dynamics, and general open-system rotational mass-flux effects. Numerical reference comparisons qualify declared subproblems only. Generic payload separation does not model unfolding, communications, orbit raising, or Starlink service. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s2\">[2]</a></p>"
+    },
+    {
+      "id": "authority",
+      "title": "2. Mission authority and verification methods",
+      "html": "<p>MissionOS binds a displayed plan to source and configuration identities. Once-approved scope permits a separate simulator process to execute bounded commands. Rules constrain the available actions; independent checks compare signed receipts, saved outputs, and later observations. A returned verified status can mean record integrity alone. It does not automatically certify successful return, capture, or mission completion. The public short gimbal fixture and historical full-flight records are separate observations. <a class=\"citation\" href=\"#s3\">[3]</a></p><p>Return qualification retains four modeled contact limits: 5 m/s speed, 5° tilt, 0.02 rad/s body rotation, and 28 t fuel reserve. The shared controller prepares entry bank and flap trim from current mass, geometry, and flow. Admission requires consistency with a recorded coast trajectory, including time, position, velocity, attitude, and fuel. A source change requires renewed qualification. Neither an AI decision nor an automatic fallback bypasses these checks. <a class=\"citation\" href=\"#s4\">[4]</a></p>"
+    },
+    {
+      "id": "qualification",
+      "title": "3. Finite qualification and preserved failures",
+      "html": "<p>The reported census passed 39/39 cases: twenty-seven retained-payload inventories, from zero through twenty-six, and twelve selected initial-fuel perturbations. Maximum contact speed was 4.691 m/s, maximum tilt 2.755°, and minimum remaining fuel 45.231 t. These are finite, source-bound cases rather than a broad orbit or disturbance envelope. Matching tolerances accommodate sampled data; they are not evidence of physical robustness. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>Five fixture conditions separately exercised normal operation, a release fault, fuel shortage, tower unavailability, and an operations notice. Record checks passed, but fuel shortage prohibited return and remained unresolved after observation. A late engine-loss probe retained a 22.735 m/s impact. A delayed-response probe held for 25.25 s and shifted remaining release times by 10.75 s while still satisfying its return checks; this does not cover arbitrary waiting histories. <a class=\"citation\" href=\"#s4\">[4]</a></p><p>Earlier live experiments also remain historical. A release-fault comparison changed modeled contact from 238.74 to 3.22 m/s, but the current fixed baseline now uses the improved return tool. That old difference is therefore not a current measure of AI benefit. Another historical live response failed format validation and ended in a 619.78 m/s impact. Preserving these results prevents controller repairs from retroactively becoming successful AI trials. <a class=\"citation\" href=\"#s5\">[5]</a></p>"
+    },
+    {
+      "id": "prediction",
+      "title": "4. Shared prediction and delayed return",
+      "html": "<p>Prediction was connected to the same Ship return controller used for execution. A regression reproduced 97,703 samples from thirty-nine recorded flights, including commands, events, and outcomes. Fixed candidate delays included a later orbital opportunity. In the earlier timing screen, a sixty-second change in return-request timing moved the modeled contact location by about 278 km, despite similar contact speed and tilt. Thus a return planner must evaluate location and availability as well as terminal kinematics. <a class=\"citation\" href=\"#s6\">[6]</a></p><p>These screens used frozen candidates, saved plant state, and no hosted-model calls. Matching predictions from the same model establish numerical reproduction rather than physical accuracy. Roughly forty-eight-second CPU forecasts also raised a live integration question: the mission continues to advance while a prediction is computed. The later M1 workflow adds recovery-area admission, bounded waiting resources, updated observations, and an explicit decision loop. <a class=\"citation\" href=\"#s6\">[6]</a> <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    },
+    {
+      "id": "m1",
+      "title": "5. Live mission replanning results",
+      "html": "<p>Three recorded HTTP runs reached their declared M1 criteria. All released twenty-six generic rigid payloads and used zero human inflight commands. The normal scenario preserved the initial return. In the update scenario, a recovery coordinator withdrew the planned area, Jev selected the next orbital opportunity, and execution followed a revised return. The outage scenario used a fixture decision outage and independently checked fallback. <a class=\"citation\" href=\"#s7\">[7]</a></p><table><caption>Three distinct M1 scenarios; Ship contact is a modeled endpoint</caption><thead><tr><th scope=\"col\">Scenario</th><th scope=\"col\">Return</th><th scope=\"col\">Contact speed / tilt</th><th scope=\"col\">Jev calls</th></tr></thead><tbody><tr><th scope=\"row\">Normal</th><td>Original opportunity</td><td>4.608 m/s / 2.375°</td><td>3 live</td></tr><tr><th scope=\"row\">Recovery update</th><td>Later opportunity</td><td>4.613 m/s / 2.396°</td><td>10 live</td></tr><tr><th scope=\"row\">Persistent decision outage</th><td>Checked later-opportunity fallback</td><td>4.613 m/s / 2.396°</td><td>0; fixture outage</td></tr></tbody></table><p>The changed return occurred approximately 90.85 minutes later and contacted inside the fixed western study area's available interval. Rescoring the original contact against the changed notice put it outside the available area/time; that rescoring was not another baseline flight. DeepSeek was available but not requested. The actual model choice and its subsequent effect establish AI participation; call counts alone do not establish benefit. <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    },
+    {
+      "id": "discussion",
+      "title": "6. Interpretation and limitations",
+      "html": "<p>The two recovery study areas were calibrated using earlier engineering forecasts. The result consequently shows selection among admitted study opportunities, not guidance to arbitrary real sites. Quantized navigation and waiting power, temperature, and propellant-loss bounds are explicit synthetic assumptions. Three perturbed forecasts and a finer-step forecast had to pass, yet the finer-step check shifted predicted locations by about 77 km. Precise physical recovery guidance is unestablished. <a class=\"citation\" href=\"#s7\">[7]</a></p><p>Low-speed hull contact does not establish structural or thermal survival, actual water entry, recovery, or reuse. Launch-derived tower catch remains unfinished; a separately initialized near-tower arm-support test cannot replace arrival from launch. Public compact evidence enables inspection of decisions and results but is not the complete raw study archive. The next defensible research advance is broader source-bound uncertainty and failure coverage with retained negative outcomes, rather than relabeling these development scenarios as operational spacecraft capability. <a class=\"citation\" href=\"#s1\">[1]</a> <a class=\"citation\" href=\"#s3\">[3]</a> <a class=\"citation\" href=\"#s7\">[7]</a></p>"
+    }
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Coupled six-degree-of-freedom model",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-sixdof.md",
+      "detail": "Finite actuators, integrated dynamics, and explicit fidelity/catch boundaries."
+    },
+    {
+      "id": "s2",
+      "title": "What the spacecraft research supports",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-research.md",
+      "detail": "Primary-source inventory boundaries and limits on vehicle and mission interpretation."
+    },
+    {
+      "id": "s3",
+      "title": "MissionOS spacecraft simulation showcase",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-mission-showcase.md",
+      "detail": "Public fixture versus historical full-flight evidence; approval, execution, receipt, and claim boundaries."
+    },
+    {
+      "id": "s4",
+      "title": "State-dependent return qualification",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-state-return.md",
+      "detail": "39-case census, current fixture conditions, unresolved fuel shortage, and terminal engine-loss impact."
+    },
+    {
+      "id": "s5",
+      "title": "Historical mission decisions and failures",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-mission-decisions.md",
+      "detail": "Live-model and fixture distinctions; historical comparator changes and preserved failed outcomes."
+    },
+    {
+      "id": "s6",
+      "title": "Return prediction for replanning",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-return-replanning.md",
+      "detail": "39-flight shared-controller regression, fixed timing screens, exact reproduction and CPU-time limits."
+    },
+    {
+      "id": "s7",
+      "title": "M1 live return replanning",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-m1-operations.md",
+      "detail": "Three recorded HTTP scenarios, Jev counts, observed changed return, calibrated areas and numerical sensitivity."
+    },
+    {
+      "id": "s8",
+      "title": "MissionOS: Starship return actuator-allocation study",
+      "url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/examples/starship-return-allocation.md",
+      "detail": "Historical source-bound comparison of linear and nonlinear allocation at a retained-payload checkpoint; the nonlinear candidate was rejected. Separate from the later qualification census."
+    },
+    {
+      "id": "s9",
+      "title": "22 October saved mission video and 23 October certificate-preflight status",
+      "url": "/content/evidence/starship-october-record-update.json",
+      "detail": "Curated publication supplement from reviewed saved records: video/source hashes, timing failure, illustrative tower and no-catch boundary, and a separate stopped certificate preflight. Raw histories and the full execution source are not reproduced."
+    },
+    {
+      "id": "s10",
+      "title": "23 October certificate-preflight stop receipt",
+      "url": "/content/evidence/starship-qualification-preflight-stop-20261023.json",
+      "detail": "Unchanged portable receipt: full point/history sizes, unchanged 32 MiB cap, no campaign start or certificate, preserved records and zero retry, flight, or provider call."
+    }
+  ],
+  "media": [
+    {
+      "id": "starship-oct22-tower-replay",
+      "type": "video",
+      "title": "22 October mission replay — illustrative tower, no catch",
+      "caption": "A 4:10 saved-state CG video from the original 22 October live-model simulator mission. The first six seconds are an illustrative, stationary tower scene; no catch was performed. The remaining footage reuses the saved mission with a six-second offset. The original timing acceptance failed, and this presentation does not issue or refresh a return certificate. Japanese on-screen annotations are retained; the English update below explains the evidence and limitations.",
+      "alt": "Illustrative static recovery tower followed by the saved 22 October simulator mission; tower catch not performed.",
+      "source_ref": "s9",
+      "after_section": "lead",
+      "src": "/assets/media/starship-live-T-20261022-tower.mp4",
+      "source_url": "/content/evidence/starship-october-record-update.json",
+      "width": 1600,
+      "height": 900,
+      "poster": "/assets/media/starship-live-T-20261022-tower-poster.png",
+      "duration_seconds": 250.1
+    },
+    {
+      "id": "starship-launch-release",
+      "type": "video",
+      "title": "Launch, separation, and 26 payload releases",
+      "caption": "Historical fixture-planned numerical mission: launch, stage separation, 26 generic rigid-body releases, and a Ship return attempt. No provider inference or LLM-selected releases. The 36-second montage uses time compression and explicit orbit cuts. It is separate from the later live M1 replanning experiment; modeled contact is not verified landing or recovery.",
+      "alt": "Saved-state computer graphics replay of a Starship-inspired numerical launch, stage separation, generic payload releases, and return attempt.",
+      "source_ref": "s3",
+      "after_section": "model",
+      "src": "/assets/media/starship-mission-simulation-starship-launch-release.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/nominal-flight.mp4",
+      "width": 960,
+      "height": 540,
+      "poster": "/assets/media/starship-mission-simulation-starship-launch-release-poster.jpg",
+      "duration_seconds": 36.0
+    },
+    {
+      "id": "starship-release-supervision",
+      "type": "video",
+      "title": "A missing release and a checked skip operation",
+      "caption": "Historical 28-second saved-state replay of deployment supervision. Jev provides fault routing; a fixed skip procedure passes Rules and is checked against two later sequencer observations. Zero payloads separate, DeepSeek is not called, and the mission does not complete. This is not footage of the later M1 return-replanning runs.",
+      "alt": "Saved numerical deployment-supervision replay showing a missing release, a bounded skip command, and subsequent sequencer observations.",
+      "source_ref": "s3",
+      "after_section": "authority",
+      "src": "/assets/media/starship-mission-simulation-starship-release-supervision.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/deployment-supervision.mp4",
+      "width": 960,
+      "height": 540,
+      "poster": "/assets/media/starship-mission-simulation-starship-release-supervision-poster.jpg",
+      "duration_seconds": 28.0
+    },
+    {
+      "id": "starship-qualified-return-census",
+      "type": "image",
+      "title": "Return qualification across retained inventories",
+      "caption": "Published return census: 27 retained-payload inventories and 12 selected initial-fuel perturbations meet the modeled contact limits in 39 of 39 cases. These source-bound simulations qualify a finite set of coast trajectories, not arbitrary orbits, structural survival, or real recovery.",
+      "alt": "Plot of Ship return qualification across zero to twenty-six retained payloads and selected initial-fuel probes, showing modeled terminal measurements.",
+      "source_ref": "s4",
+      "after_section": "qualification",
+      "src": "/assets/figures/starship-mission-simulation-qualification-census.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-state-return-qualification/qualification-census.png",
+      "width": 1275,
+      "height": 1050
+    },
+    {
+      "id": "starship-booster-return-negative",
+      "type": "video",
+      "title": "A booster return attempt that did not qualify",
+      "caption": "A 30-second replay of a separate 60-simulator-second continuation from a saved launch-derived booster state. It did not reach the handoff conditions; final fuel was 3.569 t, below the 6.918 t support reserve. This preserved historical failure is neither a complete launch-to-catch flight nor a live M1 replanning run.",
+      "alt": "Saved numerical booster-return continuation showing the final approach, reserve depletion, and unsuccessful endpoint.",
+      "source_ref": "s3",
+      "after_section": "qualification",
+      "src": "/assets/media/starship-mission-simulation-starship-booster-return-negative.mp4",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-mission-20261006/return-negative.mp4",
+      "width": 960,
+      "height": 540,
+      "poster": "/assets/media/starship-mission-simulation-starship-booster-return-negative-poster.jpg",
+      "duration_seconds": 30.0
+    },
+    {
+      "id": "starship-rejected-allocation",
+      "type": "image",
+      "title": "A rejected controller change remains part of the record",
+      "caption": "Historical 15-retained-payload diagnostic: a predeclared 120-second pair compares linear and nonlinear actuator allocation from the same saved checkpoint. Both fail the unchanged whole-interval attitude/rate gate, and the nonlinear candidate is rejected. This earlier negative study is separate from the later 39-case return census.",
+      "alt": "Published comparison of a retained-fifteen-payload return continuation under the existing linear endpoint allocator and a rejected nonlinear endpoint candidate.",
+      "source_ref": "s8",
+      "after_section": "qualification",
+      "src": "/assets/media/starship-mission-simulation-starship-rejected-allocation.png",
+      "source_url": "https://github.com/pome223/missionos/blob/7f0128491ac1e998c05580b50707ee8cab7543c6/docs/assets/starship-return-allocation-20261007/retained15-rejected-endpoint.png",
+      "width": 1360,
+      "height": 880
+    }
+  ],
+  "updated": "2026-10-28",
+  "evidence_note": "The historical studies cite public MissionOS main at 7f012849. The dated October update additionally summarizes reviewed saved records and the supplied video; it is separate from the earlier M1 experiments. The portable supplement identifies evidence hashes and limits of public reproducibility."
+}

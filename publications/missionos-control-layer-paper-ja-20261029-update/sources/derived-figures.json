@@ -1,0 +1,169 @@
+[
+  {
+    "path": "assets/yokohama-cargo-native.png",
+    "sha256": "66902b11a97db4302ed01be9a188f0cc6dbbc86cb8b1a55d36c84499032689b7",
+    "bytes": 103154,
+    "dimensions_px": [
+      1414,
+      352
+    ],
+    "kind": "composite_of_published_saved_images",
+    "origins": [
+      {
+        "label": "a",
+        "repository_path": "docs/examples/yokohama-cargo-flight/images/cycle-2-observed.png",
+        "ref": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+        "blob_sha": "866b5334c002556762e5eb6413c1095786cf4bb3",
+        "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-cargo-flight/images/cycle-2-observed.png",
+        "sha256": "8fc0c367d872414986f0c59424c7f2a7b469e8c1e8f1c60647edc77b9e4aeca9",
+        "bytes": 13431,
+        "source_dimensions_px": [
+          640,
+          360
+        ],
+        "output_box_px": [
+          12,
+          12,
+          545,
+          312
+        ],
+        "output_dimensions_px": [
+          533,
+          300
+        ]
+      },
+      {
+        "label": "b",
+        "repository_path": "docs/examples/yokohama-cargo-flight/images/cycle-2-vla-prediction.png",
+        "ref": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+        "blob_sha": "bd5966e0ee53950723c7aaf5b34376882a7c912a",
+        "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-cargo-flight/images/cycle-2-vla-prediction.png",
+        "sha256": "7d8a12f55bf19e7040d2a2340d578b9414355a5e4cbbd280b0e63c8f36a0ec13",
+        "bytes": 31421,
+        "source_dimensions_px": [
+          224,
+          224
+        ],
+        "output_box_px": [
+          557,
+          12,
+          857,
+          312
+        ],
+        "output_dimensions_px": [
+          300,
+          300
+        ]
+      },
+      {
+        "label": "c",
+        "repository_path": "docs/examples/yokohama-cargo-flight/images/cargo-after-receipt.png",
+        "ref": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+        "blob_sha": "6612e70891d924bd6ccac57b04616073c279c39d",
+        "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-cargo-flight/images/cargo-after-receipt.png",
+        "sha256": "c3460fe4d010d318b3b9eb7ada5d63a42f6133b5d553b5902e43ab798e907c4b",
+        "bytes": 11653,
+        "source_dimensions_px": [
+          640,
+          360
+        ],
+        "output_box_px": [
+          869,
+          12,
+          1402,
+          312
+        ],
+        "output_dimensions_px": [
+          533,
+          300
+        ]
+      }
+    ],
+    "source_data_license": {
+      "source_data": "3D City Model of Yokohama, catalog fiscal year 2024",
+      "attribution": "Yokohama City / Project PLATEAU; modified by MissionOS",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "dataset_url": "https://www.geospatial.jp/ckan/dataset/plateau-14100-yokohama-shi-2024",
+      "attribution_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-urban-scene/ATTRIBUTION.md",
+      "scope": "Attribution for the source 3D city model and its derived scene geometry."
+    },
+    "transform": "Resize each source panel using LANCZOS, arrange on a white canvas, and add panel labels. Observed images are reduced from 640 x 360 to 533 x 300; prediction images are enlarged from 224 x 224 to 300 x 300.",
+    "verification": {
+      "resized_panel_pixels_equal": true,
+      "comparison": "Every RGB pixel inside each listed output box equals the resized pinned source image. Panel labels and canvas margins are outside the compared boxes."
+    }
+  },
+  {
+    "path": "assets/yokohama-wam-rejection.png",
+    "sha256": "7b3f8eaacfc3eb3d750cd9159dcb0dfced36565b26dfacd152b3cdf9d9522ab7",
+    "bytes": 150129,
+    "dimensions_px": [
+      869,
+      352
+    ],
+    "kind": "composite_of_published_saved_images",
+    "origins": [
+      {
+        "label": "a",
+        "repository_path": "docs/examples/yokohama-native-flight/images/cycle-1-observed.png",
+        "ref": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+        "blob_sha": "a383dc1780178d64dfc80d3bc170a7013c04bb57",
+        "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-native-flight/images/cycle-1-observed.png",
+        "sha256": "6f96291f0bd3d2bfbdcc90582058ee7b61f3ee890c3470d802d58bc633c6dfc9",
+        "bytes": 21159,
+        "source_dimensions_px": [
+          640,
+          360
+        ],
+        "output_box_px": [
+          12,
+          12,
+          545,
+          312
+        ],
+        "output_dimensions_px": [
+          533,
+          300
+        ]
+      },
+      {
+        "label": "b",
+        "repository_path": "docs/examples/yokohama-native-flight/images/cycle-1-hold-prediction.png",
+        "ref": "56013c8bd656b77e707a65e691be0f8c6f050ca5",
+        "blob_sha": "1ec84e12b6c831aa506d9f824be24b28c569d1cc",
+        "url": "https://raw.githubusercontent.com/pome223/missionos/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-native-flight/images/cycle-1-hold-prediction.png",
+        "sha256": "bbace67e23fcffb45cce080561c2ebd577a3f6fec074591689c7f73df71d9e4b",
+        "bytes": 62079,
+        "source_dimensions_px": [
+          224,
+          224
+        ],
+        "output_box_px": [
+          557,
+          12,
+          857,
+          312
+        ],
+        "output_dimensions_px": [
+          300,
+          300
+        ]
+      }
+    ],
+    "source_data_license": {
+      "source_data": "3D City Model of Yokohama, catalog fiscal year 2024",
+      "attribution": "Yokohama City / Project PLATEAU; modified by MissionOS",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "dataset_url": "https://www.geospatial.jp/ckan/dataset/plateau-14100-yokohama-shi-2024",
+      "attribution_url": "https://github.com/pome223/missionos/blob/56013c8bd656b77e707a65e691be0f8c6f050ca5/docs/examples/yokohama-urban-scene/ATTRIBUTION.md",
+      "scope": "Attribution for the source 3D city model and its derived scene geometry."
+    },
+    "transform": "Resize each source panel using LANCZOS, arrange on a white canvas, and add panel labels. Observed images are reduced from 640 x 360 to 533 x 300; prediction images are enlarged from 224 x 224 to 300 x 300.",
+    "verification": {
+      "resized_panel_pixels_equal": true,
+      "comparison": "Every RGB pixel inside each listed output box equals the resized pinned source image. Panel labels and canvas margins are outside the compared boxes."
+    }
+  }
+]
